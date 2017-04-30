@@ -12,15 +12,17 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Created by 长宏 on 2017/3/20 0020.
  */
 public class MDBadapter {
-    public static  NameableExecutor executor;
+    public static ExecutorService executor;
     public static final Set<String> dbset = new HashSet<>();
     static {
-//        executor = MycatServer.getInstance().getBusinessExecutor();
+        executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
         loaddbset();
     }
 
