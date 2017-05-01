@@ -279,7 +279,7 @@
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-maven-plugin</artifactId>
                     <configuration>
-                        <mainClass>io.jsql.web.Application</mainClass>
+                        <mainClass>io.jsql.Main</mainClass>
                         <layout>ZIP</layout>
                     </configuration>
                 </plugin>
