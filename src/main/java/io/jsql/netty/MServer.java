@@ -15,6 +15,8 @@
  */
 package io.jsql.netty;
 
+import io.jsql.my_config.MyProperties;
+import io.jsql.orientstorage.Log;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -23,6 +25,8 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.concurrent.DefaultEventExecutorGroup;
 import io.netty.util.concurrent.EventExecutorGroup;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * .
@@ -30,9 +34,11 @@ import io.netty.util.concurrent.EventExecutorGroup;
  */
 public final class MServer {
 
-    static final int PORT = Integer.parseInt(System.getProperty("port", "9999"));
+    static final int PORT = MyProperties.getInt("port");
 
+    static Logger logger = LoggerFactory.getLogger(MServer.class.getName());
     public static void main(String[] args) throws Exception {
+        logger.info("port is " + PORT);
         final EventExecutorGroup group = new DefaultEventExecutorGroup(Runtime.getRuntime().availableProcessors());
         // Configure the server.
         EventLoopGroup bossGroup = new NioEventLoopGroup(1);
