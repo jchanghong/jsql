@@ -1,10 +1,10 @@
-package io.jsql.databaseorient.constant;
+package io.jsql.orientstorage.constant;
 
 import com.orientechnologies.orient.core.db.document.ODatabaseDocumentTx;
 import com.orientechnologies.orient.core.metadata.schema.OClass;
 import com.orientechnologies.orient.core.metadata.schema.OType;
 import com.orientechnologies.orient.core.record.impl.ODocument;
-import io.jsql.databaseorient.adapter.MDBadapter;
+import io.jsql.orientstorage.adapter.MDBadapter;
 
 /**
  * Created by 长宏 on 2017/3/23 0023.

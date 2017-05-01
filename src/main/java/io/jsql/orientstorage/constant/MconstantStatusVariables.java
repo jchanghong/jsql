@@ -1,4 +1,4 @@
-package io.jsql.databaseorient.constant;
+package io.jsql.orientstorage.constant;
 
 import java.util.HashMap;
 import java.util.Map;

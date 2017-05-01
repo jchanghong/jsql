@@ -1,7 +1,7 @@
-package io.jsql.databaseorient.constant;
+package io.jsql.orientstorage.constant;
 
-import io.jsql.databaseorient.adapter.MDBadapter;
-import io.jsql.databaseorient.adapter.MException;
+import io.jsql.orientstorage.adapter.MDBadapter;
+import io.jsql.storage.MException;
 
 /**
  * Created by 长宏 on 2017/3/23 0023.

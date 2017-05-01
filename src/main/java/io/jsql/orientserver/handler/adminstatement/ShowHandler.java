@@ -25,7 +25,7 @@ package io.jsql.orientserver.handler.adminstatement;
 
 import com.alibaba.druid.sql.ast.statement.SQLShowTablesStatement;
 import com.alibaba.druid.sql.dialect.mysql.ast.statement.*;
-import io.jsql.databaseorient.constant.MvariableTable;
+import io.jsql.orientstorage.constant.MvariableTable;
 import io.jsql.orientserver.OConnection;
 import io.jsql.orientserver.handler.data_mannipulation.MselectVariables;
 import io.jsql.orientserver.response.MShowDatabases;

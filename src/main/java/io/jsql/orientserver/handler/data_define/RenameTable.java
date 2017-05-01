@@ -3,9 +3,9 @@ package io.jsql.orientserver.handler.data_define;
 import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlRenameTableStatement;
 import com.orientechnologies.orient.core.db.OPartitionedDatabasePool;
 import com.orientechnologies.orient.core.db.document.ODatabaseDocumentTx;
-import io.jsql.databaseorient.adapter.MDBadapter;
-import io.jsql.databaseorient.adapter.MException;
 import io.jsql.orientserver.OConnection;
+import io.jsql.storage.DBAdmin;
+import io.jsql.storage.MException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,11 +28,10 @@ public class RenameTable {
     static final Map<String, MException> map = new HashMap<>();
 
     public static void handle(MySqlRenameTableStatement x, OConnection connection) {
-        if (MDBadapter.currentDB == null) {
+        if (DBAdmin.currentDB == null) {
             connection.writeErrMessage("没有选择数据库");
         }
-        OPartitionedDatabasePool pool = MDBadapter.getdbpool(MDBadapter.currentDB);
-        ODatabaseDocumentTx tx = pool.acquire();
+        ODatabaseDocumentTx tx = OConnection.DB_ADMIN.getdb(DBAdmin.currentDB);
         tx.activateOnCurrentThread();
         String oldname = x.getItems().get(0).getName().toString();
         String newname = x.getItems().get(0).getTo().toString();
@@ -46,18 +45,19 @@ public class RenameTable {
         builder.append("  NAME ");
         builder.append(newname);
         map.clear();
-        MDBadapter.executor.execute(() -> {
-            try {
-                MDBadapter.exesql(builder.toString(), MDBadapter.currentDB);
-            } catch (MException e) {
-                e.printStackTrace();
-                map.put("k", e);
-            }
-        });
-        if (map.size() > 0) {
-            connection.writeErrMessage(map.get("k").getMessage());
-            return;
-        }
+        OConnection.DB_ADMIN.exesqlNoResultAsyn(builder.toString(), DBAdmin.currentDB);
+//        MDBadapter.executor.execute(() -> {
+//            try {
+//                MDBadapter.exesql(builder.toString(), MDBadapter.currentDB);
+//            } catch (MException e) {
+//                e.printStackTrace();
+//                map.put("k", e);
+//            }
+//        });
+//        if (map.size() > 0) {
+//            connection.writeErrMessage(map.get("k").getMessage());
+//            return;
+//        }
         connection.writeok();
     }
 }

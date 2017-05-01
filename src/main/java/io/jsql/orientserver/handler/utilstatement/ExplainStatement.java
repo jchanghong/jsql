@@ -5,12 +5,12 @@ import com.orientechnologies.orient.core.metadata.schema.OClass;
 import com.orientechnologies.orient.core.metadata.schema.OProperty;
 import io.jsql.config.ErrorCode;
 import io.jsql.config.Fields;
-import io.jsql.databaseorient.adapter.MDBadapter;
 import io.jsql.mysql.PacketUtil;
 import io.jsql.mysql.mysql.EOFPacket;
 import io.jsql.mysql.mysql.FieldPacket;
 import io.jsql.mysql.mysql.ResultSetHeaderPacket;
 import io.jsql.orientserver.OConnection;
+import io.jsql.storage.DBAdmin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +55,7 @@ public class ExplainStatement {
     explain table完成
      */
     public static void handle(String statement, OConnection c) {
-        if (MDBadapter.currentDB == null) {
+        if (DBAdmin.currentDB == null) {
             c.writeErrMessage(ErrorCode.ER_NO_DB_ERROR, "no database selected!!");
             return;
         }
@@ -69,13 +69,14 @@ public class ExplainStatement {
         /*
         List<ODocument> data;
         try {
-            data = MDBadapter.exequery(stmt,MDBadapter.currentDB);
+            data = DBAdmin.exequery(stmt,DBAdmin.currentDB);
         } catch (MException e) {
             e.printStackTrace();
             c.writeErrMessage(ErrorCode.ERR_HANDLE_DATA, e.getMessage());
             return;
         }*/
-        ODatabaseDocumentTx documentTx = MDBadapter.getCurrentDB();
+        ODatabaseDocumentTx documentTx = OConnection.DB_ADMIN.getdb(DBAdmin.currentDB);
+        documentTx.activateOnCurrentThread();
         String sqll = stmt.trim();
         String list[] = sqll.split("\\s+");//以空格分隔开字符串取出tablename适用于explain tb_name不适用于explain select*from tb_name
         OClass oClass = documentTx.getMetadata().getSchema().getClass(list[1]);

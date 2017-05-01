@@ -1,6 +1,7 @@
-package io.jsql.databaseorient;
+package io.jsql.orientstorage;
 
-import io.jsql.databaseorient.adapter.MException;
+
+import io.jsql.storage.MException;
 
 /**
  * Created by 长宏 on 2017/2/23 0023.
@@ -8,8 +9,8 @@ import io.jsql.databaseorient.adapter.MException;
  */
 public class TestOrientDB {
     public static void main(String[] args) throws MException {
-//        MDBadapter.currentDB = "changhong";
-//        List<Map<String, String>> list = MDBadapter.exequery("select * from t1");
+//        DBAdmin.currentDB = "changhong";
+//        List<Map<String, String>> list = DBAdmin.exequery("select * from t1");
 //        System.out.println(list.size());
 //
 //        ODatabaseDocumentTx db = new ODatabaseDocumentTx

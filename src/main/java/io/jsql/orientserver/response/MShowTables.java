@@ -4,11 +4,10 @@ import com.alibaba.druid.sql.ast.statement.SQLShowTablesStatement;
 import com.orientechnologies.orient.core.db.document.ODatabaseDocumentTx;
 import io.jsql.config.ErrorCode;
 import io.jsql.config.Fields;
-import io.jsql.databaseorient.adapter.MDBadapter;
-import io.jsql.databaseorient.adapter.MtableAdapter;
 import io.jsql.mysql.PacketUtil;
 import io.jsql.mysql.mysql.*;
 import io.jsql.orientserver.OConnection;
+import io.jsql.storage.DBAdmin;
 import io.jsql.util.StringUtil;
 
 import java.util.Set;
@@ -37,12 +36,12 @@ public class MShowTables {
      */
     public static void response(OConnection c, SQLShowTablesStatement stmt, int type) {
         if (stmt.getDatabase() != null) {
-            MDBadapter.currentDB = stmt.getDatabase().getSimpleName();
-            if (MDBadapter.currentDB.startsWith("`") || MDBadapter.currentDB.startsWith("'")) {
-                MDBadapter.currentDB = MDBadapter.currentDB.substring(1, MDBadapter.currentDB.length() - 1);
+            DBAdmin.currentDB = stmt.getDatabase().getSimpleName();
+            if (DBAdmin.currentDB.startsWith("`") || DBAdmin.currentDB.startsWith("'")) {
+                DBAdmin.currentDB = DBAdmin.currentDB.substring(1, DBAdmin.currentDB.length() - 1);
             }
         }
-        if (MDBadapter.currentDB == null) {
+        if (DBAdmin.currentDB == null) {
             c.writeErrMessage(ErrorCode.ER_NO_DB_ERROR, "no database selected!!!");
             return;
         }
@@ -55,8 +54,9 @@ public class MShowTables {
 
         // write rows
         packetId = eof.packetId;
-        ODatabaseDocumentTx documentTx = MDBadapter.getCurrentDB();
-        Set<String> getalltable = MtableAdapter.getalltable(documentTx);
+        ODatabaseDocumentTx documentTx = OConnection.DB_ADMIN.getdb(DBAdmin.currentDB);
+        documentTx.activateOnCurrentThread();
+        Set<String> getalltable = OConnection.TABLE_ADMIN.getalltable(DBAdmin.currentDB);
         MySQLPacket[] rowss = new MySQLPacket[getalltable.size()];
         int index = 0;
         for (String name : getalltable) {

@@ -1,4 +1,4 @@
-package io.jsql.databaseorient.test;
+package io.jsql.orientstorage.test;
 
 import java.sql.*;
 

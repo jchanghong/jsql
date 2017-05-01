@@ -25,11 +25,11 @@ package io.jsql.mysql.handler;
 
 
 import io.jsql.config.ErrorCode;
-import io.jsql.databaseorient.adapter.MDBadapter;
 import io.jsql.mysql.MySQLMessage;
 import io.jsql.mysql.mysql.CommandPacket;
 import io.jsql.mysql.mysql.MySQLPacket;
 import io.jsql.orientserver.OConnection;
+import io.jsql.storage.DBAdmin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -163,12 +163,12 @@ public class MysqlCommandHandler implements MysqlPacketHander {
         mm.position(0);
         String db = mm.readString();
         // 检查schema的有效性
-        if (!MDBadapter.dbset.contains(db)) {
+        if (!OConnection.DB_ADMIN.getallDBs().contains(db)) {
             source.writeErrMessage(ErrorCode.ER_BAD_DB_ERROR, "Unknown database '" + db + "'");
             return;
         }
         source.schema = db;
-        MDBadapter.currentDB = db;
+        DBAdmin.currentDB = db;
         source.writeok();
     }
 

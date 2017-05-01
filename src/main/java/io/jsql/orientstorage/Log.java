@@ -3,7 +3,7 @@
  * changhong@uestc
  */
 
-package io.jsql.databaseorient;
+package io.jsql.orientstorage;
 
 public interface Log {
     default void info(Object info) {

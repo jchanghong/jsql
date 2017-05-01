@@ -1,4 +1,4 @@
-package io.jsql.databaseorient.adapter;
+package io.jsql.orientstorage.adapter2;
 
 import com.alibaba.druid.sql.ast.statement.SQLColumnDefinition;
 import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlCreateTableStatement;
@@ -6,36 +6,42 @@ import com.orientechnologies.orient.core.db.document.ODatabaseDocumentTx;
 import com.orientechnologies.orient.core.metadata.schema.OClass;
 import com.orientechnologies.orient.core.metadata.schema.OSchema;
 import com.orientechnologies.orient.core.metadata.schema.OType;
-import io.jsql.databaseorient.sqlhander.sqlutil.MSQLutil;
+import com.orientechnologies.orient.core.record.impl.ODocument;
+import io.jsql.orientstorage.sqlhander.sqlutil.MSQLutil;
+import io.jsql.storage.DBAdmin;
+import io.jsql.storage.MException;
+import io.jsql.storage.TableAdmin;
 
+import java.io.IOException;
 import java.util.*;
 
 /**
  * Created by 长宏 on 2017/3/20 0020.
  */
-public class MtableAdapter {
-    /**
-     * Droptable boolean.
-     *
-     * @param dbname the dbname
-     * @param table  the table
-     * @return the boolean
-     */
-    public static void droptable(String dbname, String table) throws MException {
-        if (!MDBadapter.dbset.contains(dbname)) {
+public class OrientTableAdmin implements TableAdmin{
+    private static OrientTableAdmin me = new OrientTableAdmin();
+    private DBAdmin dbAdmin;
+  private   OrientTableAdmin() {
+        try {
+            dbAdmin = OrientDbAdmin.getInstance();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public static OrientTableAdmin getInstance() {
+        return me;
+    }
+
+    @Override
+    public void droptableSyn(String dbname, String table) throws MException {
+        if (!dbAdmin.getallDBs().contains(dbname)) {
             throw new MException("db不存在");
         }
-        try (ODatabaseDocumentTx db = MDBadapter.getCurrentDB(dbname)) {
+        try (ODatabaseDocumentTx db = dbAdmin.getdb(dbname)) {
+            db.activateOnCurrentThread();
             OSchema oSchema = db.getMetadata().getSchema();
             if (oSchema.existsClass(table)) {
-                MDBadapter.executor.execute(() -> {
-                    try (ODatabaseDocumentTx db2 = MDBadapter.getCurrentDB(dbname)) {
-                        db2.activateOnCurrentThread();
-                        db2.getMetadata().getSchema().dropClass(table);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                });
+                        db.getMetadata().getSchema().dropClass(table);
             } else {
                 throw new MException("table 不存在");
             }
@@ -44,30 +50,20 @@ public class MtableAdapter {
         }
     }
 
-    /**
-     * Createtable boolean.
-     *
-     * @param dbname               the dbname
-     * @param createTableStatement the create table statement
-     * @return the boolean
-     */
-    public static void createtable(String dbname, MySqlCreateTableStatement createTableStatement) throws MException {
-        if (!MDBadapter.dbset.contains(dbname)) {
+    @Override
+    public void createtableSyn(String dbname, MySqlCreateTableStatement createTableStatement) throws MException {
+        if (!dbAdmin.getallDBs().contains(dbname)) {
             throw new MException("db不存在");
         }
-        ODatabaseDocumentTx db = MDBadapter.getCurrentDB(dbname);
-//        db.activateOnCurrentThread();
+        ODatabaseDocumentTx db = dbAdmin.getdb(dbname);
+        db.activateOnCurrentThread();
         OSchema oSchema = db.getMetadata().getSchema();
         String table = createTableStatement.getTableSource().toString();
         if (oSchema.existsClass(table)) {
             db.close();
             throw new MException("table已经存在");
         }
-        db.close();
-        MDBadapter.executor.execute(() -> {
-            //            db.activateOnCurrentThread();
-            try (ODatabaseDocumentTx documentTx = MDBadapter.getCurrentDB(dbname)) {
-                OClass oClass = documentTx.getMetadata().getSchema()
+                OClass oClass = db.getMetadata().getSchema()
                         .createClass(table);
                 oClass.setStrictMode(true);
                 List<String> dstring = new ArrayList<>();
@@ -108,52 +104,40 @@ public class MtableAdapter {
                         }
                     }
                 });
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
+        db.close();
+
     }
 
-    /**
-     * Gets .
-     *
-     * @param dbname the dbname
-     * @param db     the db不关闭
-     * @return the
-     */
-    static public Set<String> getalltable(ODatabaseDocumentTx db) {
-        Set<String> strings = new HashSet<>();
+    @Override
+    public Set<String> getalltable(String dbname) {
+        ODatabaseDocumentTx db = dbAdmin.getdb(dbname);
         db.activateOnCurrentThread();
         OSchema oSchema = db.getMetadata().getSchema();
-        oSchema.getClasses().forEach(a -> strings.add(a.getName()));
-        return strings;
+        Set<String> map = new HashSet<>();
+        oSchema.getClasses().forEach(a->map.add(a.getName()));
+        db.close();
+        return map;
     }
 
-    /**
-     * Gets .
-     *
-     * @param tablename the tablename
-     * @param db        the db不关闭
-     * @return the
-     */
-    public static OClass gettableclass(String tablename, ODatabaseDocumentTx db) {
+    @Override
+    public OClass gettableclass(String tablename, String dbname) {
+        ODatabaseDocumentTx db = dbAdmin.getdb(dbname);
         db.activateOnCurrentThread();
         OSchema oSchema = db.getMetadata().getSchema();
-        return oSchema.getClass(tablename);
+       OClass oClass= oSchema.getClass(tablename);
+        db.close();
+        return oClass;
     }
 
-    /**
-     * Gets .
-     *
-     * @param dbname    the dbname
-     * @param tablename the tablename
-     * @param db        the db不关闭
-     * @return the
-     */
-    public static OClass gettableclass(String dbname, String tablename, ODatabaseDocumentTx db) {
-        db.activateOnCurrentThread();
-        OSchema oSchema = db.getMetadata().getSchema();
-        return oSchema.getClass(tablename);
+    @Override
+    public List<ODocument> selectSyn(OClass oClass) {
+        try {
+            return dbAdmin.exequery("select * from " + oClass.getName(), DBAdmin.currentDB);
+        } catch (MException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
+
 
 }

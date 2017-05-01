@@ -24,11 +24,12 @@
 package io.jsql.orientserver.response;
 
 import io.jsql.config.Fields;
-import io.jsql.databaseorient.adapter.MDBadapter;
 import io.jsql.mysql.PacketUtil;
 import io.jsql.mysql.mysql.*;
 import io.jsql.orientserver.OConnection;
 import io.jsql.util.StringUtil;
+
+import java.util.Set;
 
 /**
  * @author show database语句
@@ -53,9 +54,10 @@ public class MShowDatabases {
         // write rows
         byte packetId = eof.packetId;
 
-        MySQLPacket[] rows = new MySQLPacket[MDBadapter.dbset.size()];
+        Set<String> strings = OConnection.DB_ADMIN.getallDBs();
+        MySQLPacket[] rows = new MySQLPacket[strings.size()];
         int index = 0;
-        for (String name : MDBadapter.dbset) {
+        for (String name :strings) {
             RowDataPacket row = new RowDataPacket(FIELD_COUNT);
             row.add(StringUtil.encode(name, c.charset));
             row.packetId = ++packetId;

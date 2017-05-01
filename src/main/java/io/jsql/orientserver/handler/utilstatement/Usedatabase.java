@@ -2,8 +2,8 @@ package io.jsql.orientserver.handler.utilstatement;
 
 import com.alibaba.druid.sql.ast.statement.SQLUseStatement;
 import io.jsql.config.ErrorCode;
-import io.jsql.databaseorient.adapter.MDBadapter;
 import io.jsql.orientserver.OConnection;
+import io.jsql.storage.DBAdmin;
 import io.jsql.util.StringUtil;
 
 /**
@@ -24,11 +24,11 @@ public class Usedatabase {
             }
         }
         // 检查schema的有效性
-        if (!MDBadapter.dbset.contains(schema)) {
+        if (!OConnection.DB_ADMIN.getallDBs().contains(schema)) {
             connection.writeErrMessage(ErrorCode.ER_BAD_DB_ERROR, "Unknown database '" + schema + "'");
             return;
         }
-        MDBadapter.currentDB = schema;
+        DBAdmin.currentDB = schema;
         connection.writeok();
     }
 }

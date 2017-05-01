@@ -29,13 +29,12 @@ import com.alibaba.druid.sql.ast.statement.SQLSelectItem;
 import com.alibaba.druid.sql.ast.statement.SQLSelectStatement;
 import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlSelectQueryBlock;
 import com.orientechnologies.orient.core.record.impl.ODocument;
-import io.jsql.databaseorient.adapter.MDBadapter;
-import io.jsql.databaseorient.adapter.MException;
-import io.jsql.databaseorient.constant.Minformation_schama;
-import io.jsql.databaseorient.constant.MvariableTable;
+import io.jsql.orientstorage.constant.Minformation_schama;
+import io.jsql.orientstorage.constant.MvariableTable;
 import io.jsql.orientserver.OConnection;
 import io.jsql.orientserver.response.*;
 import io.jsql.orientserver.util.Mcomputer;
+import io.jsql.storage.MException;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -137,7 +136,7 @@ public final class MSelectHandler {
                 what = what.substring(index + 1);
                 what = "select value from " + MvariableTable.tablename + "  where Variable_name='" + what + "';";
                 try {
-                    List<ODocument> documents = MDBadapter.exequery(what, Minformation_schama.dbname);
+                    List<ODocument> documents = OConnection.DB_ADMIN.exequery(what, Minformation_schama.dbname);
                     Select1Response.response(c, what, Arrays.asList(documents.get(0).field("value")));
                     return;
                 } catch (MException e) {

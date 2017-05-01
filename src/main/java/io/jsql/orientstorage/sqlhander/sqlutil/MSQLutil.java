@@ -1,4 +1,4 @@
-package io.jsql.databaseorient.sqlhander.sqlutil;
+package io.jsql.orientstorage.sqlhander.sqlutil;
 
 import com.alibaba.druid.sql.SQLUtils;
 import com.alibaba.druid.sql.ast.statement.SQLColumnDefinition;

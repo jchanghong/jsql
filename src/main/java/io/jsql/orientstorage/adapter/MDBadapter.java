@@ -1,10 +1,11 @@
-package io.jsql.databaseorient.adapter;
+package io.jsql.orientstorage.adapter;
 
 import com.orientechnologies.orient.core.db.OPartitionedDatabasePool;
 import com.orientechnologies.orient.core.db.document.ODatabaseDocumentTx;
 import com.orientechnologies.orient.core.record.impl.ODocument;
 import com.orientechnologies.orient.core.sql.OCommandSQL;
 import com.orientechnologies.orient.core.sql.query.OSQLSynchQuery;
+import io.jsql.storage.MException;
 
 import java.io.File;
 import java.util.HashSet;

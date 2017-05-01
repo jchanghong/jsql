@@ -24,11 +24,11 @@
 package io.jsql.mysql.handler;
 
 import io.jsql.config.ErrorCode;
-import io.jsql.databaseorient.adapter.MDBadapter;
 import io.jsql.mysql.CharsetUtil;
 import io.jsql.mysql.mysql.AuthPacket;
 import io.jsql.mysql.mysql.MySQLPacket;
 import io.jsql.orientserver.OConnection;
+import io.jsql.storage.DBAdmin;
 import io.netty.buffer.Unpooled;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,7 +54,7 @@ public class MysqlAuthHander implements MysqlPacketHander {
 ////            source.close("quit packet");
 //            return;
 //        }
-        MDBadapter.currentDB = auth.database;
+        DBAdmin.currentDB = auth.database;
         source.schema = (auth.database);
 
         // check user
@@ -77,7 +77,7 @@ public class MysqlAuthHander implements MysqlPacketHander {
 //             return;
 //        }
 
-//            MDBadapter.currentDB = auth.database;
+//            DBAdmin.currentDB = auth.database;
 //        source.setSchema(auth.database);
         // check schema
 //        switch (checkSchema(auth.database, auth.user)) {

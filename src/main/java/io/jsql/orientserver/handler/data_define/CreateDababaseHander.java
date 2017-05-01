@@ -1,10 +1,9 @@
 package io.jsql.orientserver.handler.data_define;
 
 import com.alibaba.druid.sql.ast.statement.SQLCreateDatabaseStatement;
-import io.jsql.databaseorient.adapter.MDBadapter;
-import io.jsql.databaseorient.adapter.MException;
-import io.jsql.databaseorient.sqlhander.sqlutil.MSQLutil;
+import io.jsql.orientstorage.sqlhander.sqlutil.MSQLutil;
 import io.jsql.orientserver.OConnection;
+import io.jsql.storage.MException;
 
 /**
  * Created by 长宏 on 2017/2/25 0025.
@@ -20,13 +19,7 @@ import io.jsql.orientserver.OConnection;
  */
 public class CreateDababaseHander {
     public static void handle(SQLCreateDatabaseStatement createDatabaseStatement, OConnection c) {
-        try {
-            MDBadapter.createdb(MSQLutil.getdbname(createDatabaseStatement));
+            OConnection.DB_ADMIN.createdbAsyn(MSQLutil.getdbname(createDatabaseStatement));
             c.writeok();
-        } catch (MException e) {
-            e.printStackTrace();
-            c.writeErrMessage(e.getMessage());
-        }
-
     }
 }

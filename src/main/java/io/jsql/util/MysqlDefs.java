@@ -187,7 +187,7 @@ public final class MysqlDefs {
     //
     // Constants defined from mysql
     //
-    // DB Operations
+    // DBAdmin Operations
     public static final int SLEEP = 0;
 
     public static final int STATISTICS = 9;

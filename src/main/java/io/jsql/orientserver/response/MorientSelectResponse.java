@@ -30,12 +30,12 @@ import com.orientechnologies.orient.core.metadata.schema.OProperty;
 import com.orientechnologies.orient.core.record.impl.ODocument;
 import io.jsql.config.ErrorCode;
 import io.jsql.config.Fields;
-import io.jsql.databaseorient.adapter.MDBadapter;
-import io.jsql.databaseorient.adapter.MException;
-import io.jsql.databaseorient.sqlhander.sqlutil.MSQLutil;
+import io.jsql.orientstorage.sqlhander.sqlutil.MSQLutil;
 import io.jsql.mysql.PacketUtil;
 import io.jsql.mysql.mysql.*;
 import io.jsql.orientserver.OConnection;
+import io.jsql.storage.DBAdmin;
+import io.jsql.storage.MException;
 import io.jsql.util.StringUtil;
 
 import java.util.ArrayList;
@@ -58,7 +58,7 @@ public class MorientSelectResponse {
      * @param stmt the stmt
      */
     public static void responseselect(OConnection c, String stmt, SQLSelectStatement statement) {
-        if (MDBadapter.currentDB == null) {
+        if (DBAdmin.currentDB == null) {
             c.writeErrMessage(ErrorCode.ER_NO_DB_ERROR, "no database selected!!");
             return;
         }
@@ -69,13 +69,14 @@ public class MorientSelectResponse {
         List<String> selects;
         List<ODocument> data;
         try {
-            data = MDBadapter.exequery(stmt, MDBadapter.currentDB);
+            data = OConnection.DB_ADMIN.exequery(stmt, DBAdmin.currentDB);
         } catch (MException e) {
             e.printStackTrace();
             c.writeErrMessage(ErrorCode.ERR_HANDLE_DATA, e.getMessage());
             return;
         }
-        ODatabaseDocumentTx documentTx = MDBadapter.getCurrentDB();
+        ODatabaseDocumentTx documentTx = OConnection.DB_ADMIN.getdb(DBAdmin.currentDB);
+        documentTx.activateOnCurrentThread();
         OClass oClass = documentTx.getMetadata().getSchema().getClass(MSQLutil.gettablename(statement));
         if (oClass == null) {
             c.writeErrMessage(ErrorCode.ERR_HANDLE_DATA, "error");

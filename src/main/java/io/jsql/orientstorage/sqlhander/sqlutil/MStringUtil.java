@@ -1,4 +1,4 @@
-package io.jsql.databaseorient.sqlhander.sqlutil;
+package io.jsql.orientstorage.sqlhander.sqlutil;
 
 /**
  * Created by 长宏 on 2016/12/17 0017.

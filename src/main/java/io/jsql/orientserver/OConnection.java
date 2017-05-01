@@ -28,6 +28,11 @@ import io.jsql.config.ErrorCode;
 import io.jsql.config.Versions;
 import io.jsql.mysql.handler.*;
 import io.jsql.mysql.mysql.*;
+import io.jsql.orientstorage.adapter2.OrientDbAdmin;
+import io.jsql.orientstorage.adapter2.OrientTableAdmin;
+import io.jsql.storage.DBAdmin;
+import io.jsql.storage.MException;
+import io.jsql.storage.TableAdmin;
 import io.jsql.util.RandomUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -43,6 +48,16 @@ import java.io.UnsupportedEncodingException;
  * @author changhong.基于orientdb的服务器 ，9999端口连接
  */
 public class OConnection {
+    public static  DBAdmin DB_ADMIN;
+    public static TableAdmin TABLE_ADMIN;
+    static {
+        try {
+            DB_ADMIN=OrientDbAdmin.getInstance();
+            TABLE_ADMIN = OrientTableAdmin.getInstance();
+        } catch (MException e) {
+            e.printStackTrace();
+        }
+    }
     private static final Logger LOGGER = LoggerFactory
             .getLogger(OConnection.class);
     public final boolean txInterrupted;

@@ -4,11 +4,10 @@ import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlReplaceStatement;
 import com.orientechnologies.orient.core.db.document.ODatabaseDocumentTx;
 import com.orientechnologies.orient.core.metadata.schema.OClass;
 import io.jsql.config.ErrorCode;
-import io.jsql.databaseorient.adapter.MDBadapter;
-import io.jsql.databaseorient.adapter.MException;
-import io.jsql.databaseorient.adapter.MtableAdapter;
 import io.jsql.mysql.mysql.OkPacket;
 import io.jsql.orientserver.OConnection;
+import io.jsql.storage.DBAdmin;
+import io.jsql.storage.MException;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -24,14 +23,14 @@ import java.util.Set;
 public class Mrepelace {
     public static void handle(MySqlReplaceStatement x, OConnection connection) {
 
-        if (MDBadapter.currentDB == null) {
+        if (DBAdmin.currentDB == null) {
             connection.writeErrMessage(ErrorCode.ER_NO_DB_ERROR, "没有选择数据库");
         }
-        ODatabaseDocumentTx getdbtx = MDBadapter.getCurrentDB();
+        ODatabaseDocumentTx getdbtx = OConnection.DB_ADMIN.getdb(DBAdmin.currentDB);
         try {
             String table = x.getTableName().toString();
-//            getdbtx.activateOnCurrentThread();
-            OClass oClass = MtableAdapter.gettableclass(table, getdbtx);
+            getdbtx.activateOnCurrentThread();
+            OClass oClass = OConnection.TABLE_ADMIN.gettableclass(table, DBAdmin.currentDB);
             Set<String> sets = new HashSet<>();
             oClass.properties().forEach(a -> sets.add(a.getName()));
             StringBuilder builder = new StringBuilder();
@@ -39,8 +38,8 @@ public class Mrepelace {
             sets.forEach(a -> builder.append(a + ","));
             builder.deleteCharAt(builder.length() - 1);
             String sql = x.toString().replace(table, builder.toString());
-            Object o = MDBadapter.exesql(sql, MDBadapter.currentDB);
-//            getdbtx.close();
+            Object o = OConnection.DB_ADMIN.exesqlforResult(sql, DBAdmin.currentDB);
+            getdbtx.close();
             if (o instanceof Number) {
                 OkPacket okPacket = new OkPacket();
                 okPacket.read(OkPacket.OK);

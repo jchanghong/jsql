@@ -1,4 +1,4 @@
-package io.jsql.databaseorient.adapter;
+package io.jsql.storage;
 
 import java.io.IOException;
 

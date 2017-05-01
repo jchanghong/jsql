@@ -5,13 +5,12 @@ import com.alibaba.druid.sql.ast.statement.SQLSelectStatement;
 import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlSelectQueryBlock;
 import com.orientechnologies.orient.core.record.impl.ODocument;
 import io.jsql.config.Fields;
-import io.jsql.databaseorient.adapter.MDBadapter;
-import io.jsql.databaseorient.adapter.MException;
-import io.jsql.databaseorient.constant.Minformation_schama;
-import io.jsql.databaseorient.constant.MvariableTable;
+import io.jsql.orientstorage.constant.Minformation_schama;
+import io.jsql.orientstorage.constant.MvariableTable;
 import io.jsql.mysql.PacketUtil;
 import io.jsql.mysql.mysql.*;
 import io.jsql.orientserver.OConnection;
+import io.jsql.storage.MException;
 import io.jsql.util.StringUtil;
 
 import java.util.ArrayList;
@@ -50,7 +49,7 @@ public class MselectVariables {
         byte packetId = eof.packetId;
         List<ODocument> datas;
         try {
-            datas = MDBadapter.exequery(statement, Minformation_schama.dbname);
+            datas = OConnection.DB_ADMIN.exequery(statement, Minformation_schama.dbname);
         } catch (MException e) {
             e.printStackTrace();
             c.writeErrMessage(e.getMessage());
@@ -81,7 +80,7 @@ public class MselectVariables {
 
     public static List<String> getbs(SQLSelectStatement selectStatement, List<String> column) {
         try {
-            List<ODocument> datas = MDBadapter.exequery("select * from " + MvariableTable.tablename, Minformation_schama.dbname);
+            List<ODocument> datas = OConnection.DB_ADMIN.exequery("select * from " + MvariableTable.tablename, Minformation_schama.dbname);
             List<String> list = new ArrayList<>(column.size());
             for (String c :
                     column) {

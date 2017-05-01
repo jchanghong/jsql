@@ -1,4 +1,4 @@
-package io.jsql.databaseorient.test;
+package io.jsql.orientstorage.test;
 
 import com.alibaba.druid.sql.ast.SQLStatement;
 import com.alibaba.druid.sql.dialect.mysql.parser.MySqlStatementParser;
