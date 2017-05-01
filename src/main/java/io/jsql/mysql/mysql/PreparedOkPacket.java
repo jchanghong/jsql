@@ -30,18 +30,18 @@ import io.netty.channel.Channel;
 
 /**
  * <pre>
- * From server to client, in response to prepared statement initialization packet. 
- * It is made up of: 
+ * From server to client, in response to prepared statement initialization packet.
+ * It is made up of:
  *   1.a PREPARE_OK packet
- *   2.if "number of parameters" > 0 
- *       (field packets) as in a Result Set Header Packet 
+ *   2.if "number of parameters" > 0
+ *       (field packets) as in a Result Set Header Packet
  *       (EOF packet)
- *   3.if "number of columns" > 0 
- *       (field packets) as in a Result Set Header Packet 
+ *   3.if "number of columns" > 0
+ *       (field packets) as in a Result Set Header Packet
  *       (EOF packet)
- *   
+ *
  * -----------------------------------------------------------------------------------------
- * 
+ *
  *  Bytes              Name
  *  -----              ----
  *  1                  0 - marker for OK packet
@@ -50,20 +50,20 @@ import io.netty.channel.Channel;
  *  2                  number of parameters in query
  *  1                  filler (always 0)
  *  2                  warning count
- *  
+ *
  *  @see http://dev.mysql.com/doc/internals/en/prepared-statement-initialization-packet.html
  * </pre>
- * 
+ *
  * @author jsql
- * @author  changhong
+ * @author changhong
  */
 public class PreparedOkPacket extends MySQLPacket {
 
-    public byte flag;
+    public final byte flag;
+    public final byte filler;
     public long statementId;
     public int columnsNumber;
     public int parametersNumber;
-    public byte filler;
     public int warningCount;
 
     public PreparedOkPacket() {

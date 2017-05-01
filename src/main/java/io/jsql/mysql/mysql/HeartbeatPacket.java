@@ -28,15 +28,15 @@ import io.jsql.mysql.MySQLMessage;
 
 /**
  * From client to server when the client do heartbeat between jsql cluster.
- * 
+ * <p>
  * <pre>
  * Bytes         Name
  * -----         ----
  * 1             command
  * n             id
- * 
+ *
  * @author jsql
- * @author  changhong
+ * @author changhong
  */
 public class HeartbeatPacket extends MySQLPacket {
 

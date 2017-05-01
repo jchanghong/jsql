@@ -24,7 +24,8 @@ import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.concurrent.DefaultEventExecutorGroup;
 import io.netty.util.concurrent.EventExecutorGroup;
 
-/**.
+/**
+ * .
  * 服务器
  */
 public final class MServer {
@@ -39,20 +40,20 @@ public final class MServer {
         try {
             ServerBootstrap b = new ServerBootstrap();
             b.group(bossGroup, workerGroup)
-             .channel(NioServerSocketChannel.class)
-             .option(ChannelOption.SO_BACKLOG, 100)
+                    .channel(NioServerSocketChannel.class)
+                    .option(ChannelOption.SO_BACKLOG, 100)
 //             .handler(new LoggingHandler(LogLevel.INFO))
-             .childHandler(new ChannelInitializer<SocketChannel>() {
-                 @Override
-                 public void initChannel(SocketChannel ch) throws Exception {
-                     ChannelPipeline p = ch.pipeline();
-                     //p.addLast(new LoggingHandler(LogLevel.INFO));
-                     p.addLast("idle", new IdleStateHandler(10, 5, 0));
-                     p.addLast("decoder", new ByteToMysqlDecoder());
-                     p.addLast("packet", new ByteToMysqlPacket());
-                     p.addLast(group, "hander", new MysqlPacketHander());
-                 }
-             });
+                    .childHandler(new ChannelInitializer<SocketChannel>() {
+                        @Override
+                        public void initChannel(SocketChannel ch) throws Exception {
+                            ChannelPipeline p = ch.pipeline();
+                            //p.addLast(new LoggingHandler(LogLevel.INFO));
+                            p.addLast("idle", new IdleStateHandler(10, 5, 0));
+                            p.addLast("decoder", new ByteToMysqlDecoder());
+                            p.addLast("packet", new ByteToMysqlPacket());
+                            p.addLast(group, "hander", new MysqlPacketHander());
+                        }
+                    });
             // Start the server.
             ChannelFuture f = b.bind(PORT).sync();
 

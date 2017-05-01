@@ -33,7 +33,7 @@ import io.netty.channel.Channel;
  * From Server To Client, part of Result Set Packets. One for each column in the
  * result set. Thus, if the value of field_columns in the Result Set Header
  * Packet is 3, then the Field Packet occurs 3 times.
- * 
+ * <p>
  * <pre>
  * Bytes                      Name
  * -----                      ----
@@ -51,147 +51,148 @@ import io.netty.channel.Channel;
  * 1                          decimals
  * 2                          (filler), always 0x00
  * n (Length Coded Binary)    default
- * 
+ *
  * @see http://forge.mysql.com/wiki/MySQL_Internals_ClientServer_Protocol#Field_Packet
  * </pre>
- * 
+ *
  * @author jsql
- *  @author  changhong
+ * @author changhong
  */
 public class FieldPacket extends MySQLPacket {
-	private static final byte[] DEFAULT_CATALOG = "def".getBytes();
-	private static final byte[] FILLER = new byte[2];
+    private static final byte[] DEFAULT_CATALOG = "def".getBytes();
+    private static final byte[] FILLER = new byte[2];
 
-	public byte[] catalog = DEFAULT_CATALOG;
-	public byte[] db;
-	public byte[] table;
-	public byte[] orgTable;
-	public byte[] name;
-	public byte[] orgName;
-	public int charsetIndex;
-	public long length;
-	public int type;
-	public int flags;
-	public byte decimals;
-	public byte[] definition;
+    public byte[] catalog = DEFAULT_CATALOG;
+    public byte[] db;
+    public byte[] table;
+    public byte[] orgTable;
+    public byte[] name;
+    public byte[] orgName;
+    public int charsetIndex;
+    public long length;
+    public int type;
+    public int flags;
+    public byte decimals;
+    public byte[] definition;
 
-	/**
-	 * 把字节数组转变成FieldPacket
-	 */
-	@Override
-	public void read(byte[] data) {
-		MySQLMessage mm = new MySQLMessage(data);
-		this.packetLength = mm.readUB3();
-		this.packetId = mm.read();
-		readBody(mm);
-	}
+    /**
+     * 把字节数组转变成FieldPacket
+     */
+    @Override
+    public void read(byte[] data) {
+        MySQLMessage mm = new MySQLMessage(data);
+        this.packetLength = mm.readUB3();
+        this.packetId = mm.read();
+        readBody(mm);
+    }
 
-	/**
-	 * 把BinaryPacket转变成FieldPacket
-	 */
-	public void read(BinaryPacket bin) {
-		this.packetLength = bin.packetLength;
-		this.packetId = bin.packetId;
-		readBody(new MySQLMessage(bin.data));
-	}
+    /**
+     * 把BinaryPacket转变成FieldPacket
+     */
+    public void read(BinaryPacket bin) {
+        this.packetLength = bin.packetLength;
+        this.packetId = bin.packetId;
+        readBody(new MySQLMessage(bin.data));
+    }
 
-	/*public ByteBuffer write(ByteBuffer buffer
-			 ) {
-		int size = calcPacketSize();
+    /*public ByteBuffer write(ByteBuffer buffer
+             ) {
+        int size = calcPacketSize();
 //		buffer = c.checkWriteBuffer(buffer, c.getPacketHeaderSize() + size,
 //				writeSocketIfFull);
-		BufferUtil.writeUB3(buffer, size);
-		buffer.put(packetId);
-		writeBody(buffer);
-		return buffer;
-	}*/
-	public ByteBuf write2(ByteBuf buffer
-			 ) {
-		int size = calcPacketSize();
+        BufferUtil.writeUB3(buffer, size);
+        buffer.put(packetId);
+        writeBody(buffer);
+        return buffer;
+    }*/
+    public ByteBuf write2(ByteBuf buffer
+    ) {
+        int size = calcPacketSize();
 //		buffer = c.checkWriteBuffer(buffer, c.getPacketHeaderSize() + size,
 //				writeSocketIfFull);
-		MBufferUtil.writeUB3(buffer, size);
-		buffer.writeByte(packetId);
-		writeBody(buffer);
-		return buffer;
-	}
+        MBufferUtil.writeUB3(buffer, size);
+        buffer.writeByte(packetId);
+        writeBody(buffer);
+        return buffer;
+    }
 
-	@Override
-	public void write(Channel c) {
-		ByteBuf buf = Unpooled.buffer(512);
-		buf = write2(buf);
-		c.writeAndFlush(buf);
+    @Override
+    public void write(Channel c) {
+        ByteBuf buf = Unpooled.buffer(512);
+        buf = write2(buf);
+        c.writeAndFlush(buf);
 
-	}
-	@Override
-	public void write(ByteBuf buffer) {
-		int size = calcPacketSize();
+    }
+
+    @Override
+    public void write(ByteBuf buffer) {
+        int size = calcPacketSize();
 //		buffer = c.checkWriteBuffer(buffer, c.getPacketHeaderSize() + size,
 //				writeSocketIfFull);
-		MBufferUtil.writeUB3(buffer, size);
-		buffer.writeByte(packetId);
-		writeBody(buffer);
-	}
+        MBufferUtil.writeUB3(buffer, size);
+        buffer.writeByte(packetId);
+        writeBody(buffer);
+    }
 
-	@Override
-	public int calcPacketSize() {
-		int size = (catalog == null ? 1 : MBufferUtil.getLength(catalog));
-		size += (db == null ? 1 : MBufferUtil.getLength(db));
-		size += (table == null ? 1 : MBufferUtil.getLength(table));
-		size += (orgTable == null ? 1 : MBufferUtil.getLength(orgTable));
-		size += (name == null ? 1 : MBufferUtil.getLength(name));
-		size += (orgName == null ? 1 : MBufferUtil.getLength(orgName));
-		size += 13;// 1+2+4+1+2+1+2
-		if (definition != null) {
-			size += MBufferUtil.getLength(definition);
-		}
-		return size;
-	}
+    @Override
+    public int calcPacketSize() {
+        int size = (catalog == null ? 1 : MBufferUtil.getLength(catalog));
+        size += (db == null ? 1 : MBufferUtil.getLength(db));
+        size += (table == null ? 1 : MBufferUtil.getLength(table));
+        size += (orgTable == null ? 1 : MBufferUtil.getLength(orgTable));
+        size += (name == null ? 1 : MBufferUtil.getLength(name));
+        size += (orgName == null ? 1 : MBufferUtil.getLength(orgName));
+        size += 13;// 1+2+4+1+2+1+2
+        if (definition != null) {
+            size += MBufferUtil.getLength(definition);
+        }
+        return size;
+    }
 
-	@Override
-	protected String getPacketInfo() {
-		return "MySQL Field Packet";
-	}
+    @Override
+    protected String getPacketInfo() {
+        return "MySQL Field Packet";
+    }
 
-	private void readBody(MySQLMessage mm) {
-		this.catalog = mm.readBytesWithLength();
-		this.db = mm.readBytesWithLength();
-		this.table = mm.readBytesWithLength();
-		this.orgTable = mm.readBytesWithLength();
-		this.name = mm.readBytesWithLength();
-		this.orgName = mm.readBytesWithLength();
-		mm.move(1);
-		this.charsetIndex = mm.readUB2();
-		this.length = mm.readUB4();
-		this.type = mm.read() & 0xff;
-		this.flags = mm.readUB2();
-		this.decimals = mm.read();
-		mm.move(FILLER.length);
-		if (mm.hasRemaining()) {
-			this.definition = mm.readBytesWithLength();
-		}
-	}
+    private void readBody(MySQLMessage mm) {
+        this.catalog = mm.readBytesWithLength();
+        this.db = mm.readBytesWithLength();
+        this.table = mm.readBytesWithLength();
+        this.orgTable = mm.readBytesWithLength();
+        this.name = mm.readBytesWithLength();
+        this.orgName = mm.readBytesWithLength();
+        mm.move(1);
+        this.charsetIndex = mm.readUB2();
+        this.length = mm.readUB4();
+        this.type = mm.read() & 0xff;
+        this.flags = mm.readUB2();
+        this.decimals = mm.read();
+        mm.move(FILLER.length);
+        if (mm.hasRemaining()) {
+            this.definition = mm.readBytesWithLength();
+        }
+    }
 
-	private void writeBody(ByteBuf buffer) {
-		byte nullVal = 0;
-		MBufferUtil.writeWithLength(buffer, catalog, nullVal);
-		MBufferUtil.writeWithLength(buffer, db, nullVal);
-		MBufferUtil.writeWithLength(buffer, table, nullVal);
-		MBufferUtil.writeWithLength(buffer, orgTable, nullVal);
-		MBufferUtil.writeWithLength(buffer, name, nullVal);
-		MBufferUtil.writeWithLength(buffer, orgName, nullVal);
-		buffer.writeByte((byte) 0x0C);
-		MBufferUtil.writeUB2(buffer, charsetIndex);
-		MBufferUtil.writeUB4(buffer, length);
-		buffer.writeByte((byte) (type & 0xff));
-		MBufferUtil.writeUB2(buffer, flags);
-		buffer.writeByte(decimals);
-        buffer.writeByte((byte)0x00);
-        buffer.writeByte((byte)0x00);
-		if (definition != null) {
-			MBufferUtil.writeWithLength(buffer, definition);
-		}
-	}
+    private void writeBody(ByteBuf buffer) {
+        byte nullVal = 0;
+        MBufferUtil.writeWithLength(buffer, catalog, nullVal);
+        MBufferUtil.writeWithLength(buffer, db, nullVal);
+        MBufferUtil.writeWithLength(buffer, table, nullVal);
+        MBufferUtil.writeWithLength(buffer, orgTable, nullVal);
+        MBufferUtil.writeWithLength(buffer, name, nullVal);
+        MBufferUtil.writeWithLength(buffer, orgName, nullVal);
+        buffer.writeByte((byte) 0x0C);
+        MBufferUtil.writeUB2(buffer, charsetIndex);
+        MBufferUtil.writeUB4(buffer, length);
+        buffer.writeByte((byte) (type & 0xff));
+        MBufferUtil.writeUB2(buffer, flags);
+        buffer.writeByte(decimals);
+        buffer.writeByte((byte) 0x00);
+        buffer.writeByte((byte) 0x00);
+        if (definition != null) {
+            MBufferUtil.writeWithLength(buffer, definition);
+        }
+    }
 
 //	public  void write(BufferArray bufferArray) {
 //		int size = calcPacketSize();

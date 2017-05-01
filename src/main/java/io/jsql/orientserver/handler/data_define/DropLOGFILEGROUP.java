@@ -9,11 +9,9 @@ public class DropLOGFILEGROUP {
     public static boolean isme(String sql) {
         String sqll = sql.toUpperCase().trim();
         String list[] = sqll.split("\\s+");
-        if (list.length > 2 && list[0].equals("DROP") && list[1].equals("LOGFILE")) {
-            return true;
-        }
-        return false;
+        return list.length > 2 && list[0].equals("DROP") && list[1].equals("LOGFILE");
     }
+
     public static void handle(String sql, OConnection c) {
         c.writeok();
     }

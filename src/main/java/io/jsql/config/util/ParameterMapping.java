@@ -42,13 +42,14 @@ import java.util.Map;
  * @author jsql
  */
 public class ParameterMapping {
-    private static final Logger                              LOGGER      = LoggerFactory
-                                                                             .getLogger(ParameterMapping.class);
-    private static final Map<Class<?>, PropertyDescriptor[]> descriptors = new HashMap<Class<?>, PropertyDescriptor[]>();
+    private static final Logger LOGGER = LoggerFactory
+            .getLogger(ParameterMapping.class);
+    private static final Map<Class<?>, PropertyDescriptor[]> descriptors = new HashMap<>();
 
     /**
      * 将property键值对赋值组装到object中
-     * @param object 目标反射对象
+     *
+     * @param object    目标反射对象
      * @param parameter property的键值对
      * @throws IllegalAccessException
      * @throws InvocationTargetException
@@ -74,7 +75,7 @@ public class ParameterMapping {
             } else if (obj instanceof BeanConfig) {
                 value = createBean((BeanConfig) obj);
             } else if (obj instanceof BeanConfig[]) {
-                List<Object> list = new ArrayList<Object>();
+                List<Object> list = new ArrayList<>();
                 for (BeanConfig beanconfig : (BeanConfig[]) obj) {
                     list.add(createBean(beanconfig));
                 }
@@ -83,10 +84,10 @@ public class ParameterMapping {
             //赋值
             if (cls != null
                     && value != null) {
-                    Method method = pd.getWriteMethod();
-                    if (method != null) {
-                        method.invoke(object, new Object[] { value });
-                    }
+                Method method = pd.getWriteMethod();
+                if (method != null) {
+                    method.invoke(object, value);
+                }
             }
         }
     }
@@ -115,6 +116,7 @@ public class ParameterMapping {
 
     /**
      * 用于导出clazz这个JavaBean的所有属性的PropertyDescriptor
+     *
      * @param clazz
      * @return
      */
@@ -128,7 +130,7 @@ public class ParameterMapping {
             try {
                 BeanInfo beanInfo = Introspector.getBeanInfo(clazz);
                 pds = beanInfo.getPropertyDescriptors();
-                list = new ArrayList<PropertyDescriptor>();
+                list = new ArrayList<>();
                 //加载每一个类型不为空的property
                 for (int i = 0; i < pds.length; i++) {
                     if (null != pds[i].getPropertyType()) {
@@ -169,8 +171,8 @@ public class ParameterMapping {
                 || (cls.equals(Integer.class)) || (cls.equals(Long.class)) || (cls.equals(Float.class))
                 || (cls.equals(Double.class))) {
             try {
-                method = cls.getMethod("valueOf", new Class[] { String.class });
-                value = method.invoke(null, new Object[] { string });
+                method = cls.getMethod("valueOf", String.class);
+                value = method.invoke(null, string);
             } catch (Exception t) {
                 LOGGER.error("valueofError", t);
                 value = null;
@@ -188,15 +190,11 @@ public class ParameterMapping {
     }
 
     private static boolean isPrimitiveType(Class<?> cls) {
-        if (cls.equals(String.class) || cls.equals(Boolean.TYPE) || cls.equals(Byte.TYPE) || cls.equals(Short.TYPE)
+        return cls.equals(String.class) || cls.equals(Boolean.TYPE) || cls.equals(Byte.TYPE) || cls.equals(Short.TYPE)
                 || cls.equals(Integer.TYPE) || cls.equals(Long.TYPE) || cls.equals(Double.TYPE)
                 || cls.equals(Float.TYPE) || cls.equals(Boolean.class) || cls.equals(Byte.class)
                 || cls.equals(Short.class) || cls.equals(Integer.class) || cls.equals(Long.class)
-                || cls.equals(Float.class) || cls.equals(Double.class) || cls.equals(Class.class)) {
-            return true;
-        } else {
-            return false;
-        }
+                || cls.equals(Float.class) || cls.equals(Double.class) || cls.equals(Class.class);
     }
 
 }

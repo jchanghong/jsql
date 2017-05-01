@@ -11,7 +11,8 @@ import io.jsql.orientserver.OConnection;
 
 /**
  * SET 语句处理
- *基本完成
+ * 基本完成
+ *
  * @author changhong
  */
 public final class MSetHandler {
@@ -122,26 +123,27 @@ public final class MSetHandler {
 //                c.write(c.writeToBuffer(OkPacket.OK, c.allocate()));
 //        }
     }
-/*SET character_set_results = NULL*/
-    public static void handle(MySqlSetTransactionStatement x,OConnection c) {
+
+    /*SET character_set_results = NULL*/
+    public static void handle(MySqlSetTransactionStatement x, OConnection c) {
         if (c.autocommit) {
             c.writeErrMessage(ErrorCode.ERR_WRONG_USED,
                     "set xa cmd on can't used in autocommit connection ");
-            return;
         }
 //                c.getSession2().setXATXEnabled(true);
 //        c.write(c.writeToBuffer(OkPacket.OK, c?.allocate()));
     }
-//还没有写全部报错
-    public static void handle(MySqlSetPasswordStatement x,OConnection c) {
+
+    //还没有写全部报错
+    public static void handle(MySqlSetPasswordStatement x, OConnection c) {
 //        c.write(c.writeToBuffer(OkPacket.OK, c.allocate()));
     }
 
-    public static void handle(MySqlSetNamesStatement x,OConnection c) {
+    public static void handle(MySqlSetNamesStatement x, OConnection c) {
 //        c.write(c.writeToBuffer(OkPacket.OK, c.allocate()));
     }
 
-    public static void handle(MySqlSetCharSetStatement x,OConnection c) {
+    public static void handle(MySqlSetCharSetStatement x, OConnection c) {
 //        c.write(c.writeToBuffer(OkPacket.OK, c.allocate()));
     }
 

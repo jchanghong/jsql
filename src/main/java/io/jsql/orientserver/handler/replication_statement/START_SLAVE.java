@@ -9,6 +9,6 @@ import io.jsql.orientserver.OConnection;
  */
 public class START_SLAVE {
     public static void handle(String sql, OConnection c) {
-        c.writeErrMessage(ErrorCode.ER_NOT_SUPPORTED_YET,"暂未支持");
+        c.writeErrMessage(ErrorCode.ER_NOT_SUPPORTED_YET, "暂未支持");
     }
 }

@@ -19,36 +19,38 @@ import java.util.List;
 /**
  * Created by 长宏 on 2017/4/30 0030.
  */
-public class MysqlSQLhander implements SQLHander{
+public class MysqlSQLhander implements SQLHander {
     private static final Logger LOGGER = LoggerFactory
             .getLogger(MysqlSQLhander.class);
 
     private final OConnection source;
+    private final MySqlASTVisitor mySqlASTVisitor;
     protected Boolean readOnly;
     private Exception exception;
-    private MySqlASTVisitor mySqlASTVisitor;
 
     public MysqlSQLhander(OConnection source) {
         this.source = source;
         mySqlASTVisitor = new MSQLvisitor(source);
     }
+
     public void setReadOnly(Boolean readOnly) {
         this.readOnly = readOnly;
     }
+
     @Override
     public void handle(String sql) {
         System.out.println(sql);
 //        System.out.println(Thread.currentThread().getName());
         OConnection c = this.source;
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug(new StringBuilder().append(c).append(sql).toString());
+            LOGGER.debug(String.valueOf(c) + sql);
         }
         List<SQLStatement> lists;
         try {
             MySqlStatementParser parser = new MySqlStatementParser(sql);
             lists = parser.parseStatementList();
             lists.forEach(statement -> statement.accept(mySqlASTVisitor));
-            if (lists != null&&lists.size()>0) {
+            if (lists != null && lists.size() > 0) {
                 exception = null;
                 return;
             }
@@ -117,15 +119,15 @@ public class MysqlSQLhander implements SQLHander{
             return;
         }
         if (DropEVENT.isdropevent(sql)) {//判断是不是dropevent语句
-            DropEVENT.handle(sql,c);
+            DropEVENT.handle(sql, c);
             return;
         }
         if (DropFunction.isme(sql)) {
             DropFunction.handle(sql, c);
             return;
         }
-        if(ExplainStatement.isme(sql,c)){
-            ExplainStatement.handle(sql,c);
+        if (ExplainStatement.isme(sql, c)) {
+            ExplainStatement.handle(sql, c);
             return;
         }
         if (DropLOGFILEGROUP.isme(sql)) {

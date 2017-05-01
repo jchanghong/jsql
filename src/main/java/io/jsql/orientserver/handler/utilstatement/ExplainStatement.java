@@ -3,10 +3,10 @@ package io.jsql.orientserver.handler.utilstatement;
 import com.orientechnologies.orient.core.db.document.ODatabaseDocumentTx;
 import com.orientechnologies.orient.core.metadata.schema.OClass;
 import com.orientechnologies.orient.core.metadata.schema.OProperty;
-import io.jsql.mysql.PacketUtil;
 import io.jsql.config.ErrorCode;
 import io.jsql.config.Fields;
 import io.jsql.databaseorient.adapter.MDBadapter;
+import io.jsql.mysql.PacketUtil;
 import io.jsql.mysql.mysql.EOFPacket;
 import io.jsql.mysql.mysql.FieldPacket;
 import io.jsql.mysql.mysql.ResultSetHeaderPacket;
@@ -16,36 +16,51 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by 讯 on 2017/3/27.
+ * Created by 长宏 on 2017/3/27.
  */
 public class ExplainStatement {
-    public static boolean isme(String sql,OConnection c) {
+    /*
+
+
+            for (ODocument name : data) {
+                RowDataPacket row = new RowDataPacket(FIELD_COUNT);
+                selects.forEach(a -> {
+                    row.add(StringUtil.encode(name.field(a)==null?"null":name.field(a).toString(), c.getCharset()));
+                });
+                row.packetId = ++packetId;
+                buffer = row.write(buffer, c, true);
+            }*/
+    // write last eof
+    EOFPacket lastEof = new EOFPacket();
+
+    public static boolean isme(String sql, OConnection c) {
         String sqll = sql.toUpperCase().trim();
         String list[] = sqll.split("\\s+");
         if (list.length > 1 && list[0].equals("EXPLAIN")) {
             return true;
-        }
-        else if(list.length > 2 && list[0].equals("EXPLAIN")){
-            return ExplainStatement.handle2(sql,c);
+        } else if (list.length > 2 && list[0].equals("EXPLAIN")) {
+            return ExplainStatement.handle2(sql, c);
         }
         return false;
     }
-/*
-explain select*from tb_name
- */
+
+    /*
+    explain select*from tb_name
+     */
     private static boolean handle2(String sql, OConnection c) {
         return false;
     }
-/*
-explain table完成
- */
+
+    /*
+    explain table完成
+     */
     public static void handle(String statement, OConnection c) {
         if (MDBadapter.currentDB == null) {
             c.writeErrMessage(ErrorCode.ER_NO_DB_ERROR, "no database selected!!");
             return;
         }
 
-String stmt=statement.toString();
+        String stmt = statement;
         int FIELD_COUNT;
         ResultSetHeaderPacket header;
         FieldPacket[] fields;
@@ -71,7 +86,7 @@ String stmt=statement.toString();
             return;
         }
         List<OProperty> pro = new ArrayList<>();
-        oClass.properties().forEach(a -> pro.add(a));
+        oClass.properties().forEach(pro::add);
 
         //selects = MSQLutil.gettablenamefileds(stmt);
 
@@ -81,18 +96,18 @@ String stmt=statement.toString();
         int i = 0;
         byte packetId = 0;
         header.packetId = ++packetId;
-        fields[0]=PacketUtil.getField("Field",Fields.FIELD_TYPE_VAR_STRING);
-        fields[i++].packetId=++packetId;
-        fields[1]=PacketUtil.getField("Type",Fields.FIELD_TYPE_VAR_STRING);
-        fields[i++].packetId=++packetId;
-        fields[2]=PacketUtil.getField("Null",Fields.FIELD_TYPE_VAR_STRING);
-        fields[i++].packetId=++packetId;
-        fields[3]=PacketUtil.getField("Key",Fields.FIELD_TYPE_VAR_STRING);
-        fields[i++].packetId=++packetId;
-        fields[4]=PacketUtil.getField("Default",Fields.FIELD_TYPE_VAR_STRING);
-        fields[i++].packetId=++packetId;
-        fields[5]=PacketUtil.getField("Extra",Fields.FIELD_TYPE_VAR_STRING);
-        fields[i++].packetId=++packetId;
+        fields[0] = PacketUtil.getField("Field", Fields.FIELD_TYPE_VAR_STRING);
+        fields[i++].packetId = ++packetId;
+        fields[1] = PacketUtil.getField("Type", Fields.FIELD_TYPE_VAR_STRING);
+        fields[i++].packetId = ++packetId;
+        fields[2] = PacketUtil.getField("Null", Fields.FIELD_TYPE_VAR_STRING);
+        fields[i++].packetId = ++packetId;
+        fields[3] = PacketUtil.getField("Key", Fields.FIELD_TYPE_VAR_STRING);
+        fields[i++].packetId = ++packetId;
+        fields[4] = PacketUtil.getField("Default", Fields.FIELD_TYPE_VAR_STRING);
+        fields[i++].packetId = ++packetId;
+        fields[5] = PacketUtil.getField("Extra", Fields.FIELD_TYPE_VAR_STRING);
+        fields[i++].packetId = ++packetId;
 
 /*
         for (OProperty string : oClass.properties()) {
@@ -127,24 +142,11 @@ String stmt=statement.toString();
 //    row.add(StringUtil.encode("  ",c.getCharset()));
 //    row.packetId = ++packetId;
 //    buffer = row.write(buffer, c, true);
-}
-/*
-
-
-        for (ODocument name : data) {
-            RowDataPacket row = new RowDataPacket(FIELD_COUNT);
-            selects.forEach(a -> {
-                row.add(StringUtil.encode(name.field(a)==null?"null":name.field(a).toString(), c.getCharset()));
-            });
-            row.packetId = ++packetId;
-            buffer = row.write(buffer, c, true);
-        }*/
-        // write last eof
-        EOFPacket lastEof = new EOFPacket();
+    }
 //        lastEof.packetId = ++packetId;
 //        buffer = lastEof.write(buffer, c, true);
 //        // post write
 //        c.write(buffer);
 //        documentTx.close();
-    }
+}
 

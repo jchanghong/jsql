@@ -9,6 +9,7 @@ import java.util.Map;
  */
 public class MconstantStatusVariables {
     public static final Map<String, String> MAP = new HashMap<>();
+
     static {
 
     }

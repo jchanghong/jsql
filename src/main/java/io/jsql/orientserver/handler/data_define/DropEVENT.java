@@ -8,10 +8,7 @@ import io.jsql.orientserver.OConnection;
 public class DropEVENT {
     public static boolean isdropevent(String sql) {
         String[] strings = sql.split("\\s+");
-        if (strings.length > 2 && strings[0].equalsIgnoreCase("drop") && strings[1].equalsIgnoreCase("event")) {
-            return true;
-        }
-        return false;
+        return strings.length > 2 && strings[0].equalsIgnoreCase("drop") && strings[1].equalsIgnoreCase("event");
     }
 
     public static void handle(String sql, OConnection c) {

@@ -11,17 +11,19 @@ import io.jsql.orientserver.OConnection;
  * CHANGE MASTER TO MASTER_PASSWORD='new3cret';
  */
 public class CHANGE_MASTER_TO {
-    static String  options=null;
-    public static boolean isMe(String sql){
+    static String options = null;
+
+    public static boolean isMe(String sql) {
         String[] strings = sql.split("\\s+");
         if (strings.length > 3 && strings[0].equalsIgnoreCase("change") && strings[1].equalsIgnoreCase("master") && strings[2].equalsIgnoreCase("to")) {
-            for(int i=4;i<=(strings.length-1);i++)
-                options=options+strings[i];
+            for (int i = 4; i <= (strings.length - 1); i++)
+                options = options + strings[i];
             return true;
         }
         return false;
     }
+
     public static void handle(String sql, OConnection c) {
-        c.writeErrMessage(ErrorCode.ER_NOT_SUPPORTED_YET,"暂未支持");
+        c.writeErrMessage(ErrorCode.ER_NOT_SUPPORTED_YET, "暂未支持");
     }
 }

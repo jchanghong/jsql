@@ -1,6 +1,9 @@
 package io.jsql.netty;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
 
@@ -17,16 +20,16 @@ public class SocketTest {
         //建立连接后就可以往服务端写数据了
         PrintWriter writer = new PrintWriter(client.getOutputStream());
         BufferedReader reader = new BufferedReader(new InputStreamReader(client.getInputStream()));
-        writer.write("hello"+"\n");
+        writer.write("hello" + "\n");
         writer.flush();//写完后要记得flush
 
         System.out.println(reader.readLine());
         try {
-            for (;;) {
+            for (; ; ) {
 
                 Scanner scanner = new Scanner(System.in);
                 String s = scanner.nextLine();
-                writer.write(s+"\n");
+                writer.write(s + "\n");
                 writer.flush();
                 System.out.println(reader.readLine());
             }
@@ -34,7 +37,6 @@ public class SocketTest {
             writer.close();
             client.close();
         }
-
 
 
     }

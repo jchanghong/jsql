@@ -23,8 +23,8 @@
  */
 package io.jsql.orientserver.response;
 
-import io.jsql.mysql.PacketUtil;
 import io.jsql.config.Fields;
+import io.jsql.mysql.PacketUtil;
 import io.jsql.mysql.mysql.EOFPacket;
 import io.jsql.mysql.mysql.FieldPacket;
 import io.jsql.mysql.mysql.ResultSetHeaderPacket;
@@ -36,8 +36,10 @@ import io.jsql.orientserver.OConnection;
  * @author jsql
  */
 public class SelectVersion {
-    /**服务器版本**/
-    public static byte[] SERVER_VERSION = "jsql 1.0".getBytes();
+    /**
+     * 服务器版本
+     **/
+    public static final byte[] SERVER_VERSION = "jsql 1.0".getBytes();
     private static final int FIELD_COUNT = 1;
     private static final ResultSetHeaderPacket header = PacketUtil.getHeader(FIELD_COUNT);
     private static final FieldPacket[] fields = new FieldPacket[FIELD_COUNT];

@@ -35,10 +35,10 @@ public final class BeginHandler {
 
     public static void handle(String stmt, OConnection c) {
         if (c.autocommit) {
-            c.autocommit=(false);
+            c.autocommit = (false);
             c.write(Unpooled.wrappedBuffer(AC_OFF));
         } else {
-          c.writeok();
+            c.writeok();
         }
     }
 

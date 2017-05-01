@@ -1,9 +1,9 @@
 package io.jsql.orientserver.handler.adminstatement;
 
 import com.alibaba.druid.sql.ast.statement.SQLExplainStatement;
-import io.jsql.mysql.PacketUtil;
 import io.jsql.config.ErrorCode;
 import io.jsql.config.Fields;
+import io.jsql.mysql.PacketUtil;
 import io.jsql.mysql.mysql.FieldPacket;
 import io.jsql.orientserver.OConnection;
 import org.slf4j.Logger;
@@ -18,7 +18,7 @@ public class ExplainHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(ExplainHandler.class);
     private final static Pattern pattern = Pattern.compile("(?:(\\s*next\\s+value\\s+for\\s*MYCATSEQ_(\\w+))(,|\\)|\\s)*)+", Pattern.CASE_INSENSITIVE);
-//    private static final RouteResultsetNode[] EMPTY_ARRAY = new RouteResultsetNode[0];
+    //    private static final RouteResultsetNode[] EMPTY_ARRAY = new RouteResultsetNode[0];
     private static final int FIELD_COUNT = 2;
     private static final FieldPacket[] fields = new FieldPacket[FIELD_COUNT];
 
@@ -110,7 +110,7 @@ public class ExplainHandler {
 //        return false;
 //    }
 
-    public static void handle(SQLExplainStatement x,OConnection connection) {
+    public static void handle(SQLExplainStatement x, OConnection connection) {
         connection.writeErrMessage(ErrorCode.ER_CHECK_NO_SUCH_TABLE, "not soupot");
     }
 }

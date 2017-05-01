@@ -24,9 +24,9 @@
 package io.jsql.mysql.handler;
 
 
-import io.jsql.mysql.MySQLMessage;
 import io.jsql.config.ErrorCode;
 import io.jsql.databaseorient.adapter.MDBadapter;
+import io.jsql.mysql.MySQLMessage;
 import io.jsql.mysql.mysql.CommandPacket;
 import io.jsql.mysql.mysql.MySQLPacket;
 import io.jsql.orientserver.OConnection;
@@ -35,24 +35,22 @@ import java.io.UnsupportedEncodingException;
 
 /**
  * 前端命令处理器
- *处理命令包
-
+ * 处理命令包
  */
-public class MysqlCommandHandler implements MysqlPacketHander
-{
+public class MysqlCommandHandler implements MysqlPacketHander {
 
     protected final OConnection source;
 
-    public MysqlCommandHandler(OConnection connection)
-    {
+    public MysqlCommandHandler(OConnection connection) {
         this.source = connection;
     }
+
     @Override
     public void hander(MySQLPacket mySQLPacket) {
         handle((CommandPacket) mySQLPacket);
     }
-    public void handle(CommandPacket data)
-    {
+
+    public void handle(CommandPacket data) {
         System.out.println(data.toString());
 
 //        if(source.getLoadDataInfileHandler()!=null&&source.getLoadDataInfileHandler().isStartLoadData())
@@ -65,8 +63,7 @@ public class MysqlCommandHandler implements MysqlPacketHander
 //            }
 //            return;
 //        }
-        switch (data.command)
-        {
+        switch (data.command) {
             case MySQLPacket.COM_INIT_DB:
                 initDB(data);
                 break;
@@ -86,11 +83,11 @@ public class MysqlCommandHandler implements MysqlPacketHander
                 stmtPrepare(data);
                 break;
             case MySQLPacket.COM_STMT_SEND_LONG_DATA:
-            	stmtSendLongData(data);
-            	break;
+                stmtSendLongData(data);
+                break;
             case MySQLPacket.COM_STMT_RESET:
-            	stmtReset(data);
-            	break;
+                stmtReset(data);
+                break;
             case MySQLPacket.COM_STMT_EXECUTE:
                 stmtExecute(data);
                 break;
@@ -101,8 +98,8 @@ public class MysqlCommandHandler implements MysqlPacketHander
                 heartbeat(data);
                 break;
             default:
-                     source.writeErrMessage(ErrorCode.ER_UNKNOWN_COM_ERROR,
-                             "Unknown command");
+                source.writeErrMessage(ErrorCode.ER_UNKNOWN_COM_ERROR,
+                        "Unknown command");
 
         }
     }
@@ -144,6 +141,7 @@ public class MysqlCommandHandler implements MysqlPacketHander
     private void ping() {
         source.writeok();
     }
+
     private void query(CommandPacket data) {
         MySQLMessage mm = new MySQLMessage(data.arg);
         mm.position(0);
@@ -151,7 +149,7 @@ public class MysqlCommandHandler implements MysqlPacketHander
             String sql = mm.readString(source.charset);
             source.sqlHander.handle(sql);
         } catch (UnsupportedEncodingException e) {
-           source.writeErrMessage(ErrorCode.ER_UNKNOWN_CHARACTER_SET, "Unknown charset '" + source.charset + "'");
+            source.writeErrMessage(ErrorCode.ER_UNKNOWN_CHARACTER_SET, "Unknown charset '" + source.charset + "'");
             e.printStackTrace();
         }
     }
@@ -162,7 +160,7 @@ public class MysqlCommandHandler implements MysqlPacketHander
         String db = mm.readString();
         // 检查schema的有效性
         if (!MDBadapter.dbset.contains(db)) {
-           source.writeErrMessage(ErrorCode.ER_BAD_DB_ERROR, "Unknown database '" + db + "'");
+            source.writeErrMessage(ErrorCode.ER_BAD_DB_ERROR, "Unknown database '" + db + "'");
             return;
         }
         source.schema = db;

@@ -9,8 +9,8 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
  * byte到完整的byte包
  */
 public class ByteToMysqlDecoder extends ChannelInboundHandlerAdapter {
-   private ByteBuf buf;
     private final static int BUFF_SIZE = 1024;
+    private ByteBuf buf;
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {

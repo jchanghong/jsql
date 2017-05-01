@@ -31,7 +31,7 @@ import io.netty.channel.Channel;
 
 /**
  * From server to client during initial handshake.
- * 
+ * <p>
  * <pre>
  * Bytes                        Name
  * -----                        ----
@@ -45,15 +45,15 @@ import io.netty.channel.Channel;
  * 2                            server_status
  * 13                           (filler) always 0x00 ...
  * 13                           rest of scramble_buff (4.1)
- * 
+ *
  * @see http://forge.mysql.com/wiki/MySQL_Internals_ClientServer_Protocol#Handshake_Initialization_Packet
  * </pre>
- * 
+ *
  * @author jsql
- * @author  changhong
+ * @author changhong
  */
 public class HandshakePacket extends MySQLPacket {
-    private static final byte[] FILLER_13 = new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+    private static final byte[] FILLER_13 = new byte[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
     public byte protocolVersion;
     public byte[] serverVersion;
@@ -78,7 +78,8 @@ public class HandshakePacket extends MySQLPacket {
         mm.move(13);
         restOfScrambleBuff = mm.readBytesWithNull();
     }
-@Override
+
+    @Override
     public void read(byte[] data) {
         MySQLMessage mm = new MySQLMessage(data);
         packetLength = mm.readUB3();
@@ -93,7 +94,8 @@ public class HandshakePacket extends MySQLPacket {
         mm.move(13);
         restOfScrambleBuff = mm.readBytesWithNull();
     }
-@Override
+
+    @Override
     public void write(Channel c) {
         ByteBuf buffer = Unpooled.buffer(100);
 

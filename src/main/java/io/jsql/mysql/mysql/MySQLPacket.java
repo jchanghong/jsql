@@ -29,7 +29,7 @@ import io.netty.channel.Channel;
 
 /**
  * @author jsql
- * @author  changhong
+ * @author changhong
  */
 public abstract class MySQLPacket {
     /**
@@ -199,6 +199,7 @@ public abstract class MySQLPacket {
     public void write(Channel c) {
         throw new UnsupportedOperationException();
     }
+
     /**
      * 把数据包发送给一个buff保存
      */
@@ -223,8 +224,8 @@ public abstract class MySQLPacket {
 
     @Override
     public String toString() {
-        return new StringBuilder().append(getPacketInfo()).append("{length=").append(packetLength).append(",id=")
-                .append(packetId).append('}').toString();
+        return getPacketInfo() + "{length=" + packetLength + ",id=" +
+                packetId + '}';
     }
 
 }

@@ -1,7 +1,7 @@
 package io.jsql.orientserver.response;
 
-import io.jsql.mysql.PacketUtil;
 import io.jsql.config.Fields;
+import io.jsql.mysql.PacketUtil;
 import io.jsql.mysql.mysql.EOFPacket;
 import io.jsql.mysql.mysql.FieldPacket;
 import io.jsql.mysql.mysql.ResultSetHeaderPacket;

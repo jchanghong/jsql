@@ -36,17 +36,17 @@ public final class StartHandler {
 
     public static void handle(String stmt, OConnection c, int offset) {
 
-                if (c.autocommit) {
-                    c.autocommit=(false);
-                    c.write(Unpooled.wrappedBuffer(AC_OFF));
-                } else {
+        if (c.autocommit) {
+            c.autocommit = (false);
+            c.write(Unpooled.wrappedBuffer(AC_OFF));
+        } else {
 //                    c.getSession2().commit();
-                    c.writeok();
-                }
+            c.writeok();
+        }
 
     }
 
-    public static void handle(MySqlStartTransactionStatement x,OConnection c) {
+    public static void handle(MySqlStartTransactionStatement x, OConnection c) {
         c.writeok();
     }
 }

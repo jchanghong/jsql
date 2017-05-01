@@ -37,7 +37,14 @@ public class BeanConfig implements Cloneable {
 
     private String name;
     private String className;
-    private Map<String, Object> params = new HashMap<String, Object>();
+    private Map<String, Object> params = new HashMap<>();
+
+    private static boolean equals(String str1, String str2) {
+        if (str1 == null) {
+            return str2 == null;
+        }
+        return str1.equals(str2);
+    }
 
     public String getName() {
         return name;
@@ -87,9 +94,7 @@ public class BeanConfig implements Cloneable {
         BeanConfig bc = null;
         try {
             bc = getClass().newInstance();
-        } catch (InstantiationException e) {
-            throw new ConfigException(e);
-        } catch (IllegalAccessException e) {
+        } catch (InstantiationException | IllegalAccessException e) {
             throw new ConfigException(e);
         }
 //        if (bc == null) {
@@ -121,13 +126,6 @@ public class BeanConfig implements Cloneable {
             return isEquals;
         }
         return false;
-    }
-
-    private static boolean equals(String str1, String str2) {
-        if (str1 == null) {
-            return str2 == null;
-        }
-        return str1.equals(str2);
     }
 
 }

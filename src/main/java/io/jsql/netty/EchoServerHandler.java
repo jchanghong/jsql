@@ -27,6 +27,7 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter {
     EchoServerHandler() {
         System.out.println("new server hander");
     }
+
     @Override
     public void channelWritabilityChanged(ChannelHandlerContext ctx) throws Exception {
 
@@ -36,7 +37,7 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
 //        System.out.println(Thread.currentThread().getName());
-//        ByteBuf msg1 = (ByteBuf) msg;
+//        ByteBuf1 msg1 = (ByteBuf1) msg;
 //        byte[] bytes = new byte[msg1.readableBytes()];
 //        msg1.readBytes(bytes);
 //        String x = new String(bytes);

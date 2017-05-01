@@ -8,10 +8,13 @@ import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlCreateTableStateme
 import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlSelectQueryBlock;
 import com.alibaba.druid.sql.dialect.mysql.parser.MySqlStatementParser;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
- * Created by jiang on 2016/12/17 0017.
+ * Created by 长宏 on 2016/12/17 0017.
  */
 public class MSQLutil {
     /**
@@ -34,23 +37,24 @@ public class MSQLutil {
     public static List<String> gettablenamefileds(SQLSelectStatement sqlStatement) {
         MySqlSelectQueryBlock select = (MySqlSelectQueryBlock) sqlStatement.getSelect().getQuery();
         List<String> list = new ArrayList<>();
-        select.getSelectList().stream().forEach(a->list.add(a.getExpr().toString()));
+        select.getSelectList().forEach(a -> list.add(a.getExpr().toString()));
         return list;
     }
+
     /**
      * Gets .
      *
      * @param sqlStatement the sql statement
      * @return the
      */
-    public static Map<String,String> gettablenamefileds(MySqlCreateTableStatement sqlStatement) {
+    public static Map<String, String> gettablenamefileds(MySqlCreateTableStatement sqlStatement) {
         Map<String, String> list = new HashMap<>();
-       sqlStatement.getTableElementList().forEach(item->{
-           SQLColumnDefinition columnDefinition = (SQLColumnDefinition) item;
-           String name = columnDefinition.getName().toString();
-           String type = columnDefinition.getDataType().getName();
-           list.put(name, type);
-       });
+        sqlStatement.getTableElementList().forEach(item -> {
+            SQLColumnDefinition columnDefinition = (SQLColumnDefinition) item;
+            String name = columnDefinition.getName().toString();
+            String type = columnDefinition.getDataType().getName();
+            list.put(name, type);
+        });
         return list;
     }
 
@@ -62,10 +66,10 @@ public class MSQLutil {
      * @return the
      */
     public static String gettablename(String sqlselectStatement) {
-     SQLSelectStatement sqlSelectStatement = null;
-     MySqlStatementParser parser = new MySqlStatementParser(sqlselectStatement);
-     sqlSelectStatement = (SQLSelectStatement) parser.parseStatement();
-     return gettablename(sqlSelectStatement);
+        SQLSelectStatement sqlSelectStatement = null;
+        MySqlStatementParser parser = new MySqlStatementParser(sqlselectStatement);
+        sqlSelectStatement = (SQLSelectStatement) parser.parseStatement();
+        return gettablename(sqlSelectStatement);
     }
 
     /**

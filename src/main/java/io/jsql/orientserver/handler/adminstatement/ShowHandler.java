@@ -28,7 +28,9 @@ import com.alibaba.druid.sql.dialect.mysql.ast.statement.*;
 import io.jsql.databaseorient.constant.MvariableTable;
 import io.jsql.orientserver.OConnection;
 import io.jsql.orientserver.handler.data_mannipulation.MselectVariables;
-import io.jsql.orientserver.response.*;
+import io.jsql.orientserver.response.MShowDatabases;
+import io.jsql.orientserver.response.MShowTables;
+import io.jsql.orientserver.response.Select1Response;
 
 import java.util.ArrayList;
 
@@ -37,7 +39,7 @@ import java.util.ArrayList;
  */
 public final class ShowHandler {
 
-    public static void showcolumn(MySqlShowColumnsStatement x,OConnection connection) {
+    public static void showcolumn(MySqlShowColumnsStatement x, OConnection connection) {
         Select1Response.response(connection, "no", new ArrayList<>());
     }
 
@@ -230,11 +232,10 @@ public final class ShowHandler {
         String sql = x.toString();
         if (x.getWhere() == null) {
             sql = "select * from " + MvariableTable.tablename;
-        }
-        else {
+        } else {
             StringBuilder builder = new StringBuilder(sql);
             int index = sql.toLowerCase().indexOf("where");
-            sql = "select * from " + MvariableTable.tablename +" "+builder.substring(index);
+            sql = "select * from " + MvariableTable.tablename + " " + builder.substring(index);
         }
         MselectVariables.handle(connection, sql);
     }

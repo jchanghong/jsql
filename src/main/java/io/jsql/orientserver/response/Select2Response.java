@@ -23,8 +23,8 @@
  */
 package io.jsql.orientserver.response;
 
-import io.jsql.mysql.PacketUtil;
 import io.jsql.config.Fields;
+import io.jsql.mysql.PacketUtil;
 import io.jsql.mysql.mysql.*;
 import io.jsql.orientserver.OConnection;
 import io.jsql.util.StringUtil;
@@ -33,7 +33,7 @@ import java.util.List;
 
 /**
  * @author schanghong
- * select 返回2个列
+ *         select 返回2个列
  */
 public class Select2Response {
 
@@ -54,8 +54,8 @@ public class Select2Response {
     }
 
     public static void response(OConnection c, String column1, String colu2, List<String> clist1, List<String> clist2) {
-        fields[0]=PacketUtil.getField(column1, Fields.FIELD_TYPE_VAR_STRING);
-        fields[1]=PacketUtil.getField(colu2, Fields.FIELD_TYPE_VAR_STRING);
+        fields[0] = PacketUtil.getField(column1, Fields.FIELD_TYPE_VAR_STRING);
+        fields[1] = PacketUtil.getField(colu2, Fields.FIELD_TYPE_VAR_STRING);
 
         MySQLPacket[] rows = new MySQLPacket[clist1.size()];
         int index = 0;

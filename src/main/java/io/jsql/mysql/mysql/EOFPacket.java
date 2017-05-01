@@ -33,19 +33,19 @@ import io.netty.channel.Channel;
  * From Server To Client, at the end of a series of Field Packets, and at the
  * end of a series of Data Packets.With prepared statements, EOF Packet can also
  * end parameter information, which we'll describe later.
- * 
+ * <p>
  * <pre>
  * Bytes                 Name
  * -----                 ----
  * 1                     field_count, always = 0xfe
  * 2                     warning_count
  * 2                     Status Flags
- * 
+ *
  * @see http://forge.mysql.com/wiki/MySQL_Internals_ClientServer_Protocol#EOF_Packet
  * </pre>
- * 
+ *
  * @author jsql
- *  @author  changhong
+ * @author changhong
  */
 public class EOFPacket extends MySQLPacket {
     public static final byte FIELD_COUNT = (byte) 0xfe;
@@ -53,6 +53,7 @@ public class EOFPacket extends MySQLPacket {
     public byte fieldCount = FIELD_COUNT;
     public int warningCount;
     public int status = 2;
+
     @Override
     public void read(byte[] data) {
         MySQLMessage mm = new MySQLMessage(data);

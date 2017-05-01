@@ -23,9 +23,9 @@
  */
 package io.jsql.mysql.handler;
 
-import io.jsql.mysql.CharsetUtil;
 import io.jsql.config.ErrorCode;
 import io.jsql.databaseorient.adapter.MDBadapter;
+import io.jsql.mysql.CharsetUtil;
 import io.jsql.mysql.mysql.AuthPacket;
 import io.jsql.mysql.mysql.MySQLPacket;
 import io.jsql.orientserver.OConnection;
@@ -35,17 +35,17 @@ import org.slf4j.LoggerFactory;
 
 /**
  * 前端认证处理器
- *处理auth包
+ * 处理auth包
  */
-public class MysqlAuthHander implements MysqlPacketHander{
-	
+public class MysqlAuthHander implements MysqlPacketHander {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(MysqlAuthHander.class);
-    private static final byte[] AUTH_OK = new byte[] { 7, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0 };
-    
-   private final    OConnection source;
+    private static final byte[] AUTH_OK = new byte[]{7, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0};
+
+    private final OConnection source;
 
     public MysqlAuthHander(OConnection connection) {
-       this.source = connection;
+        this.source = connection;
     }
 
     public void handle(AuthPacket auth) {
@@ -54,8 +54,8 @@ public class MysqlAuthHander implements MysqlPacketHander{
 ////            source.close("quit packet");
 //            return;
 //        }
-            MDBadapter.currentDB = auth.database;
-            source.schema=(auth.database);
+        MDBadapter.currentDB = auth.database;
+        source.schema = (auth.database);
 
         // check user
 //        if (!checkUser(auth.user, source.getHost())) {
@@ -66,13 +66,11 @@ public class MysqlAuthHander implements MysqlPacketHander{
         // check password
         if (!checkPassword(auth.password, auth.user)) {
             failure(ErrorCode.ER_ACCESS_DENIED_ERROR, "Access denied for user '" + auth.user + "', because password is error ");
-            return;
-        }
-        else {
+        } else {
             success(auth);
 
         }
-        
+
         // check degrade
 //        if ( isDegrade( auth.user ) ) {
 //        	 failure(ErrorCode.ER_ACCESS_DENIED_ERROR, "Access denied for user '" + auth.user + "', because service be degraded ");
@@ -94,11 +92,11 @@ public class MysqlAuthHander implements MysqlPacketHander{
 //            success(auth);
 //        }
     }
-    
+
     //TODO: add by zhuam
     //前端 connection 达到该用户设定的阀值后, 立马降级拒绝连接
     protected boolean isDegrade(String user) {
-    	
+
 //    	int benchmark = source.getPrivileges().getBenchmark(user);
 //    	if ( benchmark > 0 ) {
 //
@@ -112,10 +110,10 @@ public class MysqlAuthHander implements MysqlPacketHander{
 //				return true;
 //			}
 //    	}
-		
-		return false;
+
+        return false;
     }
-    
+
 //    protected boolean checkUser(String user, String host) {
 //        return
 //                source.getPrivileges().userExists(user, host);
@@ -179,7 +177,7 @@ public class MysqlAuthHander implements MysqlPacketHander{
         source.authenticated = true;
         source.user = auth.user;
         source.schema = auth.database;
-        source.charsetIndex=(auth.charsetIndex);
+        source.charsetIndex = (auth.charsetIndex);
         source.charset = CharsetUtil.getCharset(source.charsetIndex);
 
         if (LOGGER.isInfoEnabled()) {

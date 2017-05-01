@@ -8,11 +8,10 @@ import io.jsql.databaseorient.adapter.MException;
  */
 public class Minformation_schama {
     public static final String dbname = "information_schema";
+
     public static void init_if_notexits() {
         if (MDBadapter.dbset.contains(dbname)) {
-            return;
-        }
-        else {
+        } else {
             try {
                 MDBadapter.createdbsyn(dbname);
                 MvariableTable.init_if_notexits();

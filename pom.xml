@@ -14,21 +14,21 @@
     <dependencies>
         <!-- <dependency> <groupId>com.google.guava</groupId> <artifactId>guava-parent</artifactId>
             <version>18.0</version> </dependency> -->
-        <dependency>
+     <!--   <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongo-java-driver</artifactId>
             <version>2.11.4</version>
-        </dependency>
-        <dependency>
+        </dependency>-->
+      <!--  <dependency>
             <groupId>org.iq80.leveldb</groupId>
             <artifactId>leveldb</artifactId>
             <version>0.7</version>
-        </dependency>
-        <dependency>
+        </dependency>-->
+       <!-- <dependency>
             <groupId>org.iq80.leveldb</groupId>
             <artifactId>leveldb-api</artifactId>
             <version>0.7</version>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
@@ -45,34 +45,34 @@
             <version>5.1.39</version>
             <!--	<scope>test</scope>-->
         </dependency>
-        <dependency>
+       <!-- <dependency>
             <groupId>net.sf.ehcache</groupId>
             <artifactId>ehcache-core</artifactId>
             <version>2.6.11</version>
             <scope>compile</scope>
-        </dependency>
-        <dependency>
+        </dependency>-->
+       <!-- <dependency>
             <groupId>org.mapdb</groupId>
             <artifactId>mapdb</artifactId>
             <version>1.0.7</version>
-        </dependency>
-        <dependency>
+        </dependency>-->
+      <!--  <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.4</version>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
+        </dependency>-->
+     <!--   <dependency>
             <groupId>org.apache.velocity</groupId>
             <artifactId>velocity</artifactId>
             <version>1.7</version>
-        </dependency>
-        <dependency>
+        </dependency>-->
+       <!-- <dependency>
             <groupId>org.codehaus.jsr166-mirror</groupId>
             <artifactId>jsr166y</artifactId>
             <version>1.7.0</version>
             <scope>test</scope>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>com.lmax</groupId>
             <artifactId>disruptor</artifactId>
@@ -93,23 +93,23 @@
              <artifactId>log4j-1.2-api</artifactId>
              <version>2.5</version>
          </dependency>-->
-        <dependency>
+    <!--    <dependency>
             <groupId>com.univocity</groupId>
             <artifactId>univocity-parsers</artifactId>
             <version>2.2.1</version>
             <type>jar</type>
-        </dependency>
+        </dependency>-->
 
 
-        <dependency>
+      <!--  <dependency>
             <groupId>com.sequoiadb</groupId>
             <artifactId>sequoiadb-driver</artifactId>
             <version>1.12</version>
-        </dependency>
+        </dependency>-->
 
 
         <!--DOM4J FOR XML -->
-        <dependency>
+      <!--  <dependency>
             <groupId>dom4j</groupId>
             <artifactId>dom4j</artifactId>
             <version>1.6.1</version>
@@ -119,10 +119,10 @@
                     <artifactId>xml-apis</artifactId>
                 </exclusion>
             </exclusions>
-        </dependency>
+        </dependency>-->
 
         <!-- zookeeper -->
-        <dependency>
+      <!--  <dependency>
             <groupId>org.apache.curator</groupId>
             <artifactId>curator-framework</artifactId>
             <version>2.11.0</version>
@@ -143,19 +143,19 @@
                     <artifactId>log4j</artifactId>
                 </exclusion>
             </exclusions>
-        </dependency>
-        <dependency>
+        </dependency>-->
+      <!--  <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
             <version>1.2.12</version>
-        </dependency>
+        </dependency>-->
         <!-- joda日期处理工具 -->
-        <dependency>
+       <!-- <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
             <version>2.9.3</version>
         </dependency>
-
+-->
         <dependency>
             <groupId>com.github.shyiko</groupId>
             <artifactId>mysql-binlog-connector-java</artifactId>

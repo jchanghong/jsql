@@ -23,8 +23,8 @@
  */
 package io.jsql.orientserver.response;
 
-import io.jsql.mysql.PacketUtil;
 import io.jsql.config.Fields;
+import io.jsql.mysql.PacketUtil;
 import io.jsql.mysql.mysql.*;
 import io.jsql.orientserver.OConnection;
 import io.jsql.util.StringUtil;
@@ -52,12 +52,12 @@ public class SelectUser {
     public static void response(OConnection c) {
 //        if (MycatServer.getInstance().isOnline()) {
 
-            byte packetId = eof.packetId;
-            RowDataPacket row = new RowDataPacket(FIELD_COUNT);
-            row.add(getUser(c));
-            row.packetId = ++packetId;
-            EOFPacket lastEof = new EOFPacket();
-            lastEof.packetId = ++packetId;
+        byte packetId = eof.packetId;
+        RowDataPacket row = new RowDataPacket(FIELD_COUNT);
+        row.add(getUser(c));
+        row.packetId = ++packetId;
+        EOFPacket lastEof = new EOFPacket();
+        lastEof.packetId = ++packetId;
         c.writeResultSet(header, fields, eof, new RowDataPacket[]{row}, lastEof);
 //        } else {
 //            error.write(c);
@@ -65,9 +65,7 @@ public class SelectUser {
     }
 
     private static byte[] getUser(OConnection c) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(c.user).append('@').append(c.user);
-        return StringUtil.encode(sb.toString(), c.charset);
+        return StringUtil.encode(c.user + '@' + c.user, c.charset);
     }
 
 }

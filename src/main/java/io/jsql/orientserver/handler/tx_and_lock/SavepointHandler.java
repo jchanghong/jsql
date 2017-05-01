@@ -36,11 +36,11 @@ public final class SavepointHandler {
 //        c.write(c.writeToBuffer(OkPacket.OK, c.allocate()));
     }
 
-    public static void handle(SQLSavePointStatement x,OConnection c) {
+    public static void handle(SQLSavePointStatement x, OConnection c) {
 //        c.write(c.writeToBuffer(OkPacket.OK, c.allocate()));
     }
 
-    public static void handle(SQLReleaseSavePointStatement x,OConnection c) {
+    public static void handle(SQLReleaseSavePointStatement x, OConnection c) {
 //        c.write(c.writeToBuffer(OkPacket.OK, c.allocate()));
     }
 }

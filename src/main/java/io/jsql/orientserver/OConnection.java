@@ -45,10 +45,13 @@ import java.io.UnsupportedEncodingException;
 public class OConnection {
     private static final Logger LOGGER = LoggerFactory
             .getLogger(OConnection.class);
+    public final boolean txInterrupted;
+    public final MysqlPacketHander authhander;
+    public final MysqlPacketHander comhander;
+    public final SQLHander sqlHander;
     public volatile int charsetIndex;
     public volatile int txIsolation;
     public volatile boolean autocommit;
-    public volatile boolean txInterrupted;
     public volatile String txInterrputMsg = "";
     public long lastInsertId;
     /**
@@ -61,9 +64,6 @@ public class OConnection {
     public byte[] seed;
     public boolean authenticated;
     public String user;
-    public MysqlPacketHander authhander;
-    public MysqlPacketHander comhander;
-    public SQLHander sqlHander;
 
     public OConnection() {
         this.txInterrupted = false;
@@ -72,7 +72,8 @@ public class OConnection {
         comhander = new MysqlCommandHandler(this);
         sqlHander = new MysqlSQLhander(this);
     }
-//    public boolean setCharset(String charset) {
+
+    //    public boolean setCharset(String charset) {
 //
 //        // 修复PHP字符集设置错误, 如： set names 'utf8'
 //        if (charset != null) {
@@ -88,7 +89,7 @@ public class OConnection {
 //            return false;
 //        }
 //    }
-    private final static byte[] encodeString(String src, String charset) {
+    private static byte[] encodeString(String src, String charset) {
         if (src == null) {
             return null;
         }
@@ -217,6 +218,7 @@ public class OConnection {
 //                + ", autocommit=" + autocommit + ", schema=" + schema + "]";
         return super.toString();
     }
+
     public void writeok() {
         write(Unpooled.wrappedBuffer(OkPacket.OK));
     }
@@ -275,6 +277,7 @@ public class OConnection {
         buf.release();
         buf = null;
     }
+
     private int getServerCapabilities() {
         int flag = 0;
         flag |= Capabilities.CLIENT_LONG_PASSWORD;
@@ -309,9 +312,11 @@ public class OConnection {
     public void handerAuth(AuthPacket authPacket) {
         authhander.hander(authPacket);
     }
+
     public void handerCommand(CommandPacket commandPacket) {
         comhander.hander(commandPacket);
     }
+
     public void write(ByteBuf byteBuf) {
         channelHandlerContext.writeAndFlush(byteBuf);
     }
@@ -320,7 +325,7 @@ public class OConnection {
 
         ByteBuf buf = allocate();
         header.write(buf);
-        for (MySQLPacket packet :filed) {
+        for (MySQLPacket packet : filed) {
             packet.write(buf);
         }
         eof1.write(buf);

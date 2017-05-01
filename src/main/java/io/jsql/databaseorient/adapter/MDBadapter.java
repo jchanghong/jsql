@@ -5,7 +5,6 @@ import com.orientechnologies.orient.core.db.document.ODatabaseDocumentTx;
 import com.orientechnologies.orient.core.record.impl.ODocument;
 import com.orientechnologies.orient.core.sql.OCommandSQL;
 import com.orientechnologies.orient.core.sql.query.OSQLSynchQuery;
-import io.jsql.util.NameableExecutor;
 
 import java.io.File;
 import java.util.HashSet;
@@ -19,8 +18,21 @@ import java.util.concurrent.Executors;
  * Created by 长宏 on 2017/3/20 0020.
  */
 public class MDBadapter {
-    public static ExecutorService executor;
+    public static final ExecutorService executor;
     public static final Set<String> dbset = new HashSet<>();
+    /**
+     * The constant DB_DIR.
+     */
+    private static final String DB_DIR = "database";
+    /**
+     * The Hash map.
+     */
+    private static final ConcurrentHashMap<String, OPartitionedDatabasePool> hashMap = new ConcurrentHashMap<>();
+    /**
+     * The constant currentDB.
+     */
+    public static String currentDB;
+
     static {
         executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
         loaddbset();
@@ -30,9 +42,9 @@ public class MDBadapter {
         if (!dbset.contains(dbname)) {
             return null;
         }
-        ODatabaseDocumentTx documentTx = getdbpool(dbname).acquire();
-        return documentTx;
+        return getdbpool(dbname).acquire();
     }
+
     public static ODatabaseDocumentTx getCurrentDB() {
         if (currentDB == null) {
             return null;
@@ -40,22 +52,8 @@ public class MDBadapter {
         if (!dbset.contains(currentDB)) {
             return null;
         }
-        ODatabaseDocumentTx documentTx = getdbpool(currentDB).acquire();
-        return documentTx;
+        return getdbpool(currentDB).acquire();
     }
-    /**
-     * The constant currentDB.
-     */
-    public static String currentDB;
-    /**
-     * The constant DB_DIR.
-     */
-    private static final String DB_DIR = "database";
-
-    /**
-     * The Hash map.
-     */
-    private static ConcurrentHashMap<String, OPartitionedDatabasePool> hashMap = new ConcurrentHashMap<>();
 
     /**
      * Deletedb boolean.
@@ -63,17 +61,17 @@ public class MDBadapter {
      * @param dbname the dbname
      * @return the boolean
      */
-    synchronized  public static void deletedb(String dbname) throws MException {
+    synchronized public static void deletedb(String dbname) throws MException {
         if (dbset.contains(dbname)) {
             dbset.remove(dbname);
-            executor.execute(()->{
+            executor.execute(() -> {
                 OPartitionedDatabasePool oDatabaseDocumentTx = getdbpool(dbname);
                 ODatabaseDocumentTx documentTx = oDatabaseDocumentTx.acquire();
                 documentTx.drop();
                 getdbpool(dbname).close();
                 hashMap.remove(dbname);
             });
-        }else {
+        } else {
             throw new MException("db 不存在");
         }
     }
@@ -84,32 +82,35 @@ public class MDBadapter {
      * @param dbname the dbname
      * @return the boolean
      */
-      static synchronized  public void createdb(String dbname) throws MException{
+    static synchronized public void createdb(String dbname) throws MException {
         if (dbset.contains(dbname)) {
             throw new MException("db已经存在");
         }
         dbset.add(dbname);
-        executor.execute(()->{
+        executor.execute(() -> {
             new ODatabaseDocumentTx(getlccalurl(dbname)).create().close();
             OPartitionedDatabasePool pool = new OPartitionedDatabasePool(getlccalurl(dbname), "admin", "admin");
             hashMap.put(dbname, pool);
         });
     }
+
     /**
      * Createdb boolean.
-     *同步
+     * 同步
+     *
      * @param dbname the dbname
      * @return the boolean
      */
-      static synchronized  public void createdbsyn(String dbname) throws MException{
+    static synchronized public void createdbsyn(String dbname) throws MException {
         if (dbset.contains(dbname)) {
             throw new MException("db已经存在");
         }
         dbset.add(dbname);
-            new ODatabaseDocumentTx(getlccalurl(dbname)).create().close();
-            OPartitionedDatabasePool pool = new OPartitionedDatabasePool(getlccalurl(dbname), "admin", "admin");
-            hashMap.put(dbname, pool);
+        new ODatabaseDocumentTx(getlccalurl(dbname)).create().close();
+        OPartitionedDatabasePool pool = new OPartitionedDatabasePool(getlccalurl(dbname), "admin", "admin");
+        hashMap.put(dbname, pool);
     }
+
     /**
      * Gets .
      *
@@ -152,7 +153,7 @@ public class MDBadapter {
      * @return the
      */
     public static String getmemoryurl(String petshop) {
-        return "memory:"+DB_DIR+"/" + petshop;
+        return "memory:" + DB_DIR + "/" + petshop;
     }
 
     /**
@@ -161,9 +162,8 @@ public class MDBadapter {
      * @param petshop the petshop
      * @return the
      */
-    public static String getlccalurl(String petshop)
-    {
-        return "plocal:"+DB_DIR+"/" + petshop;
+    public static String getlccalurl(String petshop) {
+        return "plocal:" + DB_DIR + "/" + petshop;
     }
 
     /**
@@ -184,9 +184,7 @@ public class MDBadapter {
      * @return the
      */
     public static String getfilepath(String dbname) {
-        StringBuilder builder = new StringBuilder();
-        builder.append(DB_DIR).append("/").append(dbname);
-        return builder.toString();
+        return DB_DIR + "/" + dbname;
     }
 
     /**
@@ -196,20 +194,19 @@ public class MDBadapter {
      * @return the string
      * @throws MException the orient exception
      */
-    public static Object exesql(String sql,String dbname) throws MException {
+    public static Object exesql(String sql, String dbname) throws MException {
         ODatabaseDocumentTx documentTx = null;
         if (dbname == null) {
             throw new MException("db is null");
         }
         try {
-            documentTx= getdbpool(dbname).acquire();
+            documentTx = getdbpool(dbname).acquire();
             documentTx.activateOnCurrentThread();
-            Object object=documentTx.command(new OCommandSQL(sql)).execute();
-            return object;
+            return documentTx.command(new OCommandSQL(sql)).execute();
         } catch (Exception e) {
             throw new MException(e.getMessage());
         } finally {
-            if (documentTx != null&& !documentTx.isClosed()) {
+            if (documentTx != null && !documentTx.isClosed()) {
                 documentTx.close();
             }
         }
@@ -223,7 +220,7 @@ public class MDBadapter {
      * @return the list
      * @throws MException the orient exception
      */
-    public static List<ODocument> exequery(String sqlquery,String dbname) throws MException {
+    public static List<ODocument> exequery(String sqlquery, String dbname) throws MException {
         ODatabaseDocumentTx documentTx = null;
         if (dbname == null) {
             throw new MException("db is null");
@@ -231,15 +228,14 @@ public class MDBadapter {
         try {
             documentTx = getdbpool(dbname).acquire();
             documentTx.activateOnCurrentThread();
-            List<ODocument> result = documentTx.query(
+            return documentTx.query(
                     new OSQLSynchQuery<ODocument>(
                             sqlquery));
-            return result;
         } catch (Exception e) {
             e.printStackTrace();
             throw new MException(e.getMessage());
         } finally {
-            if (documentTx != null&& !documentTx.isClosed()) {
+            if (documentTx != null && !documentTx.isClosed()) {
                 documentTx.close();
             }
         }

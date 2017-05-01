@@ -23,15 +23,15 @@
  */
 package io.jsql.mysql.mysql;
 
-import io.jsql.mysql.MBufferUtil;
 import io.jsql.config.Capabilities;
+import io.jsql.mysql.MBufferUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 
 /**
  * From jsql server to client during initial handshake.
- * 
+ * <p>
  * <pre>
  * Bytes                        Name
  * -----                        ----
@@ -57,19 +57,18 @@ import io.netty.channel.Channel;
  *   if capabilities & CLIENT_PLUGIN_AUTH {
  * string[NUL]    auth-plugin name
  * }
- * 
+ *
  * @see http://dev.mysql.com/doc/internals/en/connection-phase-packets.html#Protocol::HandshakeV10
  * </pre>
- * 
+ *
  * @author CrazyPig
- * @author  changhong
+ * @author changhong
  * @since 2016-11-13
- * 
  */
 public class HandshakeV10Packet extends MySQLPacket {
-    private static final byte[] FILLER_10 = new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+    private static final byte[] FILLER_10 = new byte[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     private static final byte[] DEFAULT_AUTH_PLUGIN_NAME = "mysql_native_password".getBytes();
-    
+    public final byte[] authPluginName = DEFAULT_AUTH_PLUGIN_NAME;
     public byte protocolVersion;
     public byte[] serverVersion;
     public long threadId;
@@ -78,7 +77,6 @@ public class HandshakeV10Packet extends MySQLPacket {
     public byte serverCharsetIndex;
     public int serverStatus;
     public byte[] restOfScrambleBuff; // auth-plugin-data-part-2
-    public byte[] authPluginName = DEFAULT_AUTH_PLUGIN_NAME;
 
     public void write(Channel c) {
 
@@ -89,32 +87,32 @@ public class HandshakeV10Packet extends MySQLPacket {
         MBufferUtil.writeWithNull(buffer, serverVersion);
         MBufferUtil.writeUB4(buffer, threadId);
         buffer.writeBytes(seed);
-        buffer.writeByte((byte)0); // [00] filler
+        buffer.writeByte((byte) 0); // [00] filler
         MBufferUtil.writeUB2(buffer, serverCapabilities); // capability flags (lower 2 bytes)
         buffer.writeByte(serverCharsetIndex);
         MBufferUtil.writeUB2(buffer, serverStatus);
         MBufferUtil.writeUB2(buffer, (serverCapabilities >> 16)); // capability flags (upper 2 bytes)
-        if((serverCapabilities & Capabilities.CLIENT_PLUGIN_AUTH) != 0) {
-        	if(restOfScrambleBuff.length <= 13) {
-        		buffer.writeByte((byte) (seed.length + 13));
-        	} else {
-        		buffer.writeByte((byte) (seed.length + restOfScrambleBuff.length));
-        	}
+        if ((serverCapabilities & Capabilities.CLIENT_PLUGIN_AUTH) != 0) {
+            if (restOfScrambleBuff.length <= 13) {
+                buffer.writeByte((byte) (seed.length + 13));
+            } else {
+                buffer.writeByte((byte) (seed.length + restOfScrambleBuff.length));
+            }
         } else {
-        	buffer.writeByte((byte) 0);
+            buffer.writeByte((byte) 0);
         }
         buffer.writeBytes(FILLER_10);
-        if((serverCapabilities & Capabilities.CLIENT_SECURE_CONNECTION) != 0) {
-        	buffer.writeBytes(restOfScrambleBuff);
-        	// restOfScrambleBuff.length always to be 12
-        	if(restOfScrambleBuff.length < 13) {
-        		for(int i = 13 - restOfScrambleBuff.length; i > 0; i--) {
-        			buffer.writeByte((byte)0);
-        		}
-        	}
+        if ((serverCapabilities & Capabilities.CLIENT_SECURE_CONNECTION) != 0) {
+            buffer.writeBytes(restOfScrambleBuff);
+            // restOfScrambleBuff.length always to be 12
+            if (restOfScrambleBuff.length < 13) {
+                for (int i = 13 - restOfScrambleBuff.length; i > 0; i--) {
+                    buffer.writeByte((byte) 0);
+                }
+            }
         }
-        if((serverCapabilities & Capabilities.CLIENT_PLUGIN_AUTH) != 0) {
-        	MBufferUtil.writeWithNull(buffer, authPluginName);
+        if ((serverCapabilities & Capabilities.CLIENT_PLUGIN_AUTH) != 0) {
+            MBufferUtil.writeWithNull(buffer, authPluginName);
         }
         c.writeAndFlush(buffer);
     }
@@ -137,16 +135,16 @@ public class HandshakeV10Packet extends MySQLPacket {
         size += 2; // capability flags (upper 2 bytes)
         size += 1;
         size += 10; // reserved (all [00])
-        if((serverCapabilities & Capabilities.CLIENT_SECURE_CONNECTION) != 0) {
-        	// restOfScrambleBuff.length always to be 12
-        	if(restOfScrambleBuff.length <= 13) {
-        		size += 13;
-        	} else {
-        		size += restOfScrambleBuff.length;
-        	}
+        if ((serverCapabilities & Capabilities.CLIENT_SECURE_CONNECTION) != 0) {
+            // restOfScrambleBuff.length always to be 12
+            if (restOfScrambleBuff.length <= 13) {
+                size += 13;
+            } else {
+                size += restOfScrambleBuff.length;
+            }
         }
-        if((serverCapabilities & Capabilities.CLIENT_PLUGIN_AUTH) != 0) {
-        	size += (authPluginName.length + 1); // auth-plugin name
+        if ((serverCapabilities & Capabilities.CLIENT_PLUGIN_AUTH) != 0) {
+            size += (authPluginName.length + 1); // auth-plugin name
         }
         return size;
     }

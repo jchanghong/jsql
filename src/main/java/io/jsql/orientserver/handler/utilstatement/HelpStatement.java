@@ -4,7 +4,7 @@ import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlHelpStatement;
 import io.jsql.orientserver.OConnection;
 import io.jsql.orientserver.response.Select1Response;
 
-import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * Created by 长宏 on 2017/2/25 0025.
@@ -17,16 +17,16 @@ public class HelpStatement {
         String helpstatment = x.toString();
         if (helpstatment.contains("use")) {
             //c.writeErrMessage(ErrorCode.ER_UNKNOWN_COM_ERROR, "The USE db_name statement tells MySQL to use the db_name database as the default (current) database for subsequent statements. ");
-       //   c.writeErrMessage(ErrorCode.ER_UNKNOWN_COM_ERROR, "Unsuppoted Message ");
+            //   c.writeErrMessage(ErrorCode.ER_UNKNOWN_COM_ERROR, "Unsuppoted Message ");
 
 //        c.writeOkMessage("hello");
 
 
-            Select1Response.response(c, "help use", Arrays.asList("use database ,比如use db;"));
+            Select1Response.response(c, "help use", Collections.singletonList("use database ,比如use db;"));
             return;
         }
         if (helpstatment.contains("show")) {
-            Select1Response.response(c, "help show", Arrays.asList("SHOW DATABASES [LIKE wild]\n" +
+            Select1Response.response(c, "help show", Collections.singletonList("SHOW DATABASES [LIKE wild]\n" +
                     "or SHOW TABLES [FROM db_name] [LIKE wild]\n" +
                     "or SHOW COLUMNS FROM tbl_name [FROM db_name] [LIKE wild]\n" +
                     "or SHOW INDEX FROM tbl_name [FROM db_name]\n" +
@@ -41,7 +41,7 @@ public class HelpStatement {
             return;
         }
         if (helpstatment.contains("select")) {
-            Select1Response.response(c, "help select", Arrays.asList("SELECT [STRAIGHT_JOIN] [SQL_SMALL_RESULT] [SQL_BIG_RESULT] [HIGH_PRIORITY]\n" +
+            Select1Response.response(c, "help select", Collections.singletonList("SELECT [STRAIGHT_JOIN] [SQL_SMALL_RESULT] [SQL_BIG_RESULT] [HIGH_PRIORITY]\n" +
                     "       [DISTINCT | DISTINCTROW | ALL]\n" +
                     "    select_expression,...\n" +
                     "    [INTO {OUTFILE | DUMPFILE} 'file_name' export_options]\n" +
@@ -57,13 +57,13 @@ public class HelpStatement {
             return;
         }
         if (helpstatment.contains("create")) {
-            Select1Response.response(c, "help create", Arrays.asList("CREATE DATABASE db_name CREATE DATABASE用给定的名字创建一个数据库。\n"+"CREATE [TEMPORARY] TABLE [IF NOT EXISTS] tbl_name [(create_definition,...)]\n" +
-                    "[table_options] [select_statement\nCREATE TABLE在当前数据库中用给出的名字创建一个数据库表。\n"+"CREATE INDEX被映射到一个ALTER TABLE语句来创建索引。\n"+"CREATE [AGGREGATE] FUNCTION function_name RETURNS {STRING|REAL|INTEGER}\n" +
-                    "       SONAME shared_library_name\n"+"CREATE FUNCTION在mysql.func系统表中保存函数名、类型和共享库名。"));
+            Select1Response.response(c, "help create", Collections.singletonList("CREATE DATABASE db_name CREATE DATABASE用给定的名字创建一个数据库。\n" + "CREATE [TEMPORARY] TABLE [IF NOT EXISTS] tbl_name [(create_definition,...)]\n" +
+                    "[table_options] [select_statement\nCREATE TABLE在当前数据库中用给出的名字创建一个数据库表。\n" + "CREATE INDEX被映射到一个ALTER TABLE语句来创建索引。\n" + "CREATE [AGGREGATE] FUNCTION function_name RETURNS {STRING|REAL|INTEGER}\n" +
+                    "       SONAME shared_library_name\n" + "CREATE FUNCTION在mysql.func系统表中保存函数名、类型和共享库名。"));
             return;
         }
         if (helpstatment.contains("insert")) {
-            Select1Response.response(c, "help insert", Arrays.asList("INSERT [LOW_PRIORITY | DELAYED] [IGNORE]\n" +
+            Select1Response.response(c, "help insert", Collections.singletonList("INSERT [LOW_PRIORITY | DELAYED] [IGNORE]\n" +
                     "        [INTO] tbl_name [(col_name,...)]\n" +
                     "        VALUES (expression,...),(...),...\n" +
                     "或  INSERT [LOW_PRIORITY | DELAYED] [IGNORE]\n" +
@@ -80,7 +80,7 @@ public class HelpStatement {
             return;
         }
         if (helpstatment.contains("alter")) {
-            Select1Response.response(c, "help alter", Arrays.asList("ALTER [IGNORE] TABLE tbl_name alter_spec [, alter_spec ...]\n" +
+            Select1Response.response(c, "help alter", Collections.singletonList("ALTER [IGNORE] TABLE tbl_name alter_spec [, alter_spec ...]\n" +
                     "\n" +
                     "alter_specification:\n" +
                     "        ADD [COLUMN] create_definition [FIRST | AFTER column_name ]\n" +
@@ -97,7 +97,6 @@ public class HelpStatement {
                     "  or    table_options\n" +
                     "\n" +
                     "ALTER TABLE允许你修改一个现有表的结构。例如，你可以增加或删除列、创造或消去索引、改变现有列的类型、或重新命名列或表本身。你也能改变表的注释和表的类型。\n"));
-            return;
         }
     }
 }

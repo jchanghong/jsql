@@ -9,7 +9,7 @@ import com.alibaba.druid.sql.dialect.mysql.visitor.MySqlSchemaStatVisitor;
  */
 public class TestDruid {
     public static void main(String[] args) {
-        String sql="SELECT  @@session.auto_increment_increment AS auto_increment_increment" ;
+        String sql = "SELECT  @@session.auto_increment_increment AS auto_increment_increment";
         String sql1 = "select @@se.ii";
         MySqlStatementParser parser = new MySqlStatementParser(sql);
         SQLStatement sqlStatement = parser.parseStatement();

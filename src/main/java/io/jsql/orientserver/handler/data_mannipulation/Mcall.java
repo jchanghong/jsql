@@ -6,8 +6,8 @@ import io.jsql.orientserver.OConnection;
 /**
  * Created by 长宏 on 2017/3/18 0018.
  * mysql> SET @increment = 10;
- mysql> CALL p(@version, @increment);
- mysql> SELECT @version, @increment;
+ * mysql> CALL p(@version, @increment);
+ * mysql> SELECT @version, @increment;
  */
 public class Mcall {
     public static void handle(SQLCallStatement x, OConnection connection) {

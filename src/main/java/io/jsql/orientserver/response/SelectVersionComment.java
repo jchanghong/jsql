@@ -23,8 +23,8 @@
  */
 package io.jsql.orientserver.response;
 
-import io.jsql.mysql.PacketUtil;
 import io.jsql.config.Fields;
+import io.jsql.mysql.PacketUtil;
 import io.jsql.mysql.mysql.*;
 import io.jsql.orientserver.OConnection;
 

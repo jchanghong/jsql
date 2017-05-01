@@ -30,7 +30,7 @@ import java.io.OutputStream;
 
 /**
  * @author jsql
- * @author  changhong
+ * @author changhong
  */
 public class Reply323Packet extends MySQLPacket {
 

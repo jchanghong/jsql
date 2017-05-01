@@ -28,12 +28,12 @@ import com.orientechnologies.orient.core.db.document.ODatabaseDocumentTx;
 import com.orientechnologies.orient.core.metadata.schema.OClass;
 import com.orientechnologies.orient.core.metadata.schema.OProperty;
 import com.orientechnologies.orient.core.record.impl.ODocument;
-import io.jsql.mysql.PacketUtil;
 import io.jsql.config.ErrorCode;
 import io.jsql.config.Fields;
 import io.jsql.databaseorient.adapter.MDBadapter;
 import io.jsql.databaseorient.adapter.MException;
 import io.jsql.databaseorient.sqlhander.sqlutil.MSQLutil;
+import io.jsql.mysql.PacketUtil;
 import io.jsql.mysql.mysql.*;
 import io.jsql.orientserver.OConnection;
 import io.jsql.util.StringUtil;
@@ -69,13 +69,13 @@ public class MorientSelectResponse {
         List<String> selects;
         List<ODocument> data;
         try {
-            data = MDBadapter.exequery(stmt,MDBadapter.currentDB);
+            data = MDBadapter.exequery(stmt, MDBadapter.currentDB);
         } catch (MException e) {
             e.printStackTrace();
             c.writeErrMessage(ErrorCode.ERR_HANDLE_DATA, e.getMessage());
             return;
         }
-      ODatabaseDocumentTx  documentTx = MDBadapter.getCurrentDB();
+        ODatabaseDocumentTx documentTx = MDBadapter.getCurrentDB();
         OClass oClass = documentTx.getMetadata().getSchema().getClass(MSQLutil.gettablename(statement));
         if (oClass == null) {
             c.writeErrMessage(ErrorCode.ERR_HANDLE_DATA, "error");
@@ -120,7 +120,7 @@ public class MorientSelectResponse {
         for (ODocument name : data) {
             RowDataPacket row = new RowDataPacket(FIELD_COUNT);
             selects.forEach(a -> {
-                row.add(StringUtil.encode(name.field(a)==null?"null":name.field(a).toString(), c.charset));
+                row.add(StringUtil.encode(name.field(a) == null ? "null" : name.field(a).toString(), c.charset));
             });
             row.packetId = ++packetId;
             rows[index++] = row;

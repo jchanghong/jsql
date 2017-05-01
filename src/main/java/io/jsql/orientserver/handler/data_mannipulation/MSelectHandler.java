@@ -38,14 +38,15 @@ import io.jsql.orientserver.response.*;
 import io.jsql.orientserver.util.Mcomputer;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
  * @author changhong
- * select 语句有些是selct table from,,,,,，
- * select 6+1;
- * select dabase();
- * 有些比如是select suer（）；
+ *         select 语句有些是selct table from,,,,,，
+ *         select 6+1;
+ *         select dabase();
+ *         有些比如是select suer（）；
  */
 public final class MSelectHandler {
 
@@ -53,7 +54,7 @@ public final class MSelectHandler {
 
         MySqlSelectQueryBlock queryBlock = (MySqlSelectQueryBlock) selectStatement.getSelect().getQuery();
         if (queryBlock.getFrom() != null) {
-            MorientSelectResponse.responseselect(c, selectStatement.toString(),selectStatement);
+            MorientSelectResponse.responseselect(c, selectStatement.toString(), selectStatement);
             return;
         }
         SQLSelectItem selectItem = queryBlock.getSelectList().get(0);
@@ -65,18 +66,18 @@ public final class MSelectHandler {
             number = false;
         }
         if (number) {
-            Select1Response.response(c, selectItem.toString(), Arrays.asList(selectItem.toString()));
+            Select1Response.response(c, selectItem.toString(), Collections.singletonList(selectItem.toString()));
             return;
         }
         if (selectItem.getExpr() instanceof SQLBinaryOpExpr) {
-            handleopexpr((SQLBinaryOpExpr) selectItem.getExpr(),c);
+            handleopexpr((SQLBinaryOpExpr) selectItem.getExpr(), c);
             return;
         }
 
         SQLExpr sqlExpr = selectItem.getExpr();
         if (selectStatement.toString().contains("@") && selectStatement.toString().contains("AS")) {
             List<String> column = MselectVariables.getcolumn(selectStatement);
-            List<String> value = MselectVariables.getbs(selectStatement,column);
+            List<String> value = MselectVariables.getbs(selectStatement, column);
             MselectNResponse.response(c, column, value);
             return;
         }
@@ -112,12 +113,12 @@ public final class MSelectHandler {
             return;
         }
         if (what.contains("LAST_INSERT_ID")) {
-                SelectLastInsertId.response(c, selectStatement.toString(), 1);
-                return;
+            SelectLastInsertId.response(c, selectStatement.toString(), 1);
+            return;
         }
         if (what.contains("IDENTITY")) {
-                SelectIdentity.response(c, selectStatement.toString(), 1, "mysql");
-                return;
+            SelectIdentity.response(c, selectStatement.toString(), 1, "mysql");
+            return;
         }
         if (what.contains("SELECT_VAR_ALL")) {
             ShowVariables.response(c);
@@ -137,7 +138,7 @@ public final class MSelectHandler {
                 what = "select value from " + MvariableTable.tablename + "  where Variable_name='" + what + "';";
                 try {
                     List<ODocument> documents = MDBadapter.exequery(what, Minformation_schama.dbname);
-                    Select1Response.response(c,what,Arrays.asList(documents.get(0).field("value")));
+                    Select1Response.response(c, what, Arrays.asList(documents.get(0).field("value")));
                     return;
                 } catch (MException e) {
                     e.printStackTrace();
@@ -149,9 +150,9 @@ public final class MSelectHandler {
         c.writeNotSurrport();
     }
 
-    private static void handleopexpr(SQLBinaryOpExpr sqlBinaryOpExpr,OConnection connection) {
+    private static void handleopexpr(SQLBinaryOpExpr sqlBinaryOpExpr, OConnection connection) {
         String columnname = sqlBinaryOpExpr.toString();
-        Select1Response.response(connection, columnname, Arrays.asList(Mcomputer.compute(columnname)+""));
+        Select1Response.response(connection, columnname, Collections.singletonList(Mcomputer.compute(columnname) + ""));
 
     }
 }

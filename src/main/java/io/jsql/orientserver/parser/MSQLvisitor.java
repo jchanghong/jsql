@@ -19,7 +19,7 @@ import io.jsql.orientserver.handler.utilstatement.Usedatabase;
  * Created by 长宏 on 2017/3/19 0019.
  */
 public class MSQLvisitor extends MySqlASTVisitorAdapter {
-    private OConnection connection;
+    private final OConnection connection;
 
     public MSQLvisitor(OConnection connection) {
         this.connection = connection;
@@ -48,9 +48,6 @@ public class MSQLvisitor extends MySqlASTVisitorAdapter {
         connection.writeok();
         return false;
     }
-
-
-
 
 
     @Override
@@ -121,7 +118,7 @@ public class MSQLvisitor extends MySqlASTVisitorAdapter {
 
     @Override
     public boolean visit(MySqlShowColumnsStatement x) {
-        ShowHandler.showcolumn(x,connection);
+        ShowHandler.showcolumn(x, connection);
         return false;
     }
 
@@ -212,7 +209,7 @@ public class MSQLvisitor extends MySqlASTVisitorAdapter {
 
     @Override
     public boolean visit(MySqlSetNamesStatement x) {
-       
+
         connection.writeok();
         return false;
     }
@@ -261,7 +258,7 @@ public class MSQLvisitor extends MySqlASTVisitorAdapter {
 
     @Override
     public boolean visit(MySqlShowContributorsStatement x) {
-       ShowHandler.showcontributors(x,connection);
+        ShowHandler.showcontributors(x, connection);
 
         return false;
     }
@@ -560,7 +557,6 @@ OR Variable_name = 'init_connect'*/
     }
 
 
-
     @Override
     public boolean visit(MySqlUnique x) {
         connection.writeok();
@@ -749,7 +745,6 @@ OR Variable_name = 'init_connect'*/
     }
 
 
-
     @Override
     public boolean visit(SQLCreateViewStatement x) {
         CreateView.handle(x, connection);
@@ -800,7 +795,7 @@ OR Variable_name = 'init_connect'*/
 
     @Override
     public boolean visit(SQLCreateDatabaseStatement x) {
-        CreateDababaseHander.handle(x,connection);
+        CreateDababaseHander.handle(x, connection);
         return false;
     }
 
@@ -937,7 +932,6 @@ OR Variable_name = 'init_connect'*/
     }
 
 
-
     @Override
     public boolean visit(SQLAlterTableRename x) {
         connection.writeok();
@@ -999,7 +993,6 @@ OR Variable_name = 'init_connect'*/
     }
 
 
-
     @Override
     public boolean visit(SQLCloseStatement x) {
         connection.writeok();
@@ -1038,7 +1031,7 @@ OR Variable_name = 'init_connect'*/
 
     @Override
     public boolean visit(SQLAlterDatabaseStatement x) {
-        AlterDatabase.handle(x,connection);
+        AlterDatabase.handle(x, connection);
         return false;
     }
 
@@ -1132,7 +1125,6 @@ OR Variable_name = 'init_connect'*/
     }
 
 
-
     @Override
     public boolean visit(SQLSelectGroupByClause x) {
         connection.writeok();
@@ -1156,7 +1148,6 @@ OR Variable_name = 'init_connect'*/
         connection.writeok();
         return false;
     }
-
 
 
     @Override
@@ -1252,7 +1243,6 @@ OR Variable_name = 'init_connect'*/
     }
 
 
-
     @Override
     public boolean visit(SQLUseStatement x) {
         Usedatabase.handle(x, connection);
@@ -1306,7 +1296,6 @@ OR Variable_name = 'init_connect'*/
         connection.writeok();
         return false;
     }
-
 
 
     @Override
@@ -1485,7 +1474,6 @@ OR Variable_name = 'init_connect'*/
         connection.writeok();
         return false;
     }
-
 
 
     @Override

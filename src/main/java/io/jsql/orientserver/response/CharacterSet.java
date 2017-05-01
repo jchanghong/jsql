@@ -23,8 +23,8 @@
  */
 package io.jsql.orientserver.response;
 
-/**
- * 字符集属性设置
+/*
+  字符集属性设置
  */
 
 /**

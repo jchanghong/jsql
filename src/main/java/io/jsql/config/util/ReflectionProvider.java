@@ -47,7 +47,7 @@ public class ReflectionProvider {
                     if (!Modifier.isPublic(c[i].getModifiers())) {
                         c[i].setAccessible(true);
                     }
-                    return c[i].newInstance(new Object[0]);
+                    return c[i].newInstance();
                 }
             }
             if (Serializable.class.isAssignableFrom(type)) {
@@ -56,9 +56,7 @@ public class ReflectionProvider {
                 throw new ObjectAccessException("Cannot construct " + type.getName()
                         + " as it does not have a no-args constructor");
             }
-        } catch (InstantiationException e) {
-            throw new ObjectAccessException("Cannot construct " + type.getName(), e);
-        } catch (IllegalAccessException e) {
+        } catch (InstantiationException | IllegalAccessException e) {
             throw new ObjectAccessException("Cannot construct " + type.getName(), e);
         } catch (InvocationTargetException e) {
             if (e.getTargetException() instanceof RuntimeException) {
@@ -73,7 +71,7 @@ public class ReflectionProvider {
     }
 
     public void visitSerializableFields(Object object, Visitor visitor) {
-        for (Iterator<Field> iterator = fieldDictionary.serializableFieldsFor(object.getClass()); iterator.hasNext();) {
+        for (Iterator<Field> iterator = fieldDictionary.serializableFieldsFor(object.getClass()); iterator.hasNext(); ) {
             Field field = iterator.next();
             if (!fieldModifiersSupported(field)) {
                 continue;
@@ -82,9 +80,7 @@ public class ReflectionProvider {
             try {
                 Object value = field.get(object);
                 visitor.visit(field.getName(), field.getType(), field.getDeclaringClass(), value);
-            } catch (IllegalArgumentException e) {
-                throw new ObjectAccessException("Could not get field " + field.getClass() + "." + field.getName(), e);
-            } catch (IllegalAccessException e) {
+            } catch (IllegalArgumentException | IllegalAccessException e) {
                 throw new ObjectAccessException("Could not get field " + field.getClass() + "." + field.getName(), e);
             }
         }
@@ -95,17 +91,15 @@ public class ReflectionProvider {
         validateFieldAccess(field);
         try {
             field.set(object, value);
-        } catch (IllegalArgumentException e) {
-            throw new ObjectAccessException("Could not set field " + field.getName() + "@" + object.getClass(), e);
-        } catch (IllegalAccessException e) {
+        } catch (IllegalArgumentException | IllegalAccessException e) {
             throw new ObjectAccessException("Could not set field " + field.getName() + "@" + object.getClass(), e);
         }
     }
 
     public void invokeMethod(Object object, String methodName, Object value, Class<?> definedIn) {
         try {
-            Method method = object.getClass().getMethod(methodName, new Class[] { value.getClass() });
-            method.invoke(object, new Object[] { value });
+            Method method = object.getClass().getMethod(methodName, value.getClass());
+            method.invoke(object, value);
         } catch (Exception e) {
             throw new ObjectAccessException("Could not invoke " + object.getClass() + "." + methodName, e);
         }

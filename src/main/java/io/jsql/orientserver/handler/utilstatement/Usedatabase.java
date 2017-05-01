@@ -7,7 +7,7 @@ import io.jsql.orientserver.OConnection;
 import io.jsql.util.StringUtil;
 
 /**
- * Created by jiang on 2017/2/26 0026.
+ * Created by 长宏 on 2017/2/26 0026.
  */
 public class Usedatabase {
     public static void handle(SQLUseStatement x, OConnection connection) {

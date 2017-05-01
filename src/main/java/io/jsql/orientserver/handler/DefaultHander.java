@@ -13,6 +13,7 @@ public class DefaultHander {
 //        MorientSelectResponse.response(connection,statement);
 
     }
+
     public static void handlequery(SQLStatement statement, OConnection connection) {
         connection.writeNotSurrport();
 //        MorientSelectResponse.responseselect(connection, statement);

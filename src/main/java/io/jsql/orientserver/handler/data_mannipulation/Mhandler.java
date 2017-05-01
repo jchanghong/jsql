@@ -10,11 +10,9 @@ public class Mhandler {
     public static boolean isme(String sql) {
         String sqll = sql.toUpperCase().trim();
         String list[] = sqll.split("\\s+");
-        if (list.length > 0 && list[0].equals("HANDLER")) {
-            return true;
-        }
-        return false;
+        return list.length > 0 && list[0].equals("HANDLER");
     }
+
     public static void handle(String sql, OConnection c) {
         c.writeok();
     }

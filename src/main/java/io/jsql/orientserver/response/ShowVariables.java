@@ -1,7 +1,7 @@
 package io.jsql.orientserver.response;
 
-import io.jsql.mysql.PacketUtil;
 import io.jsql.config.Fields;
+import io.jsql.mysql.PacketUtil;
 import io.jsql.mysql.mysql.*;
 import io.jsql.orientserver.OConnection;
 import io.jsql.util.StringUtil;
@@ -13,7 +13,6 @@ import java.util.Map;
 
 /**
  * Created by jiang on 2017/2/26 0026.
- *
  */
 public class ShowVariables {
 
@@ -21,6 +20,7 @@ public class ShowVariables {
     private static final ResultSetHeaderPacket header = PacketUtil.getHeader(FIELD_COUNT);
     private static final FieldPacket[] fields = new FieldPacket[FIELD_COUNT];
     private static final EOFPacket eof = new EOFPacket();
+    private static final Map<String, String> variables = new HashMap<>();
 
     static {
         int i = 0;
@@ -32,25 +32,6 @@ public class ShowVariables {
         fields[i++].packetId = ++packetId;
         eof.packetId = ++packetId;
     }
-
-    public static void response(OConnection c) {
-        // write rows
-        byte packetId = eof.packetId;
-
-        List<MySQLPacket> rows = new ArrayList<>();
-        for (Map.Entry<String,String> name : variables.entrySet()) {
-            RowDataPacket row = new RowDataPacket(FIELD_COUNT);
-            row.add(StringUtil.encode(name.getKey(), c.charset));
-            row.add(StringUtil.encode(name.getValue(), c.charset));
-            row.packetId = ++packetId;
-            rows.add(row);
-        }
-        // write last eof
-        EOFPacket lastEof = new EOFPacket();
-        lastEof.packetId = ++packetId;
-        c.writeResultSet(header, fields, eof, (MySQLPacket[]) rows.toArray(), lastEof);
-    }
-    private static final Map<String, String> variables = new HashMap<String, String>();
 
     static {
         variables.put("@@character_set_client", "utf8");
@@ -92,6 +73,24 @@ public class ShowVariables {
         variables.put("tx_isolation", "REPEATABLE-READ");
         variables.put("wait_timeout", "172800");
         variables.put("auto_increment_increment", "1");
+    }
+
+    public static void response(OConnection c) {
+        // write rows
+        byte packetId = eof.packetId;
+
+        List<MySQLPacket> rows = new ArrayList<>();
+        for (Map.Entry<String, String> name : variables.entrySet()) {
+            RowDataPacket row = new RowDataPacket(FIELD_COUNT);
+            row.add(StringUtil.encode(name.getKey(), c.charset));
+            row.add(StringUtil.encode(name.getValue(), c.charset));
+            row.packetId = ++packetId;
+            rows.add(row);
+        }
+        // write last eof
+        EOFPacket lastEof = new EOFPacket();
+        lastEof.packetId = ++packetId;
+        c.writeResultSet(header, fields, eof, (MySQLPacket[]) rows.toArray(), lastEof);
     }
 
 

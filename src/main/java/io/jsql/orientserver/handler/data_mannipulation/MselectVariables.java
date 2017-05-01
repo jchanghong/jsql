@@ -4,12 +4,12 @@ import com.alibaba.druid.sql.ast.statement.SQLSelectItem;
 import com.alibaba.druid.sql.ast.statement.SQLSelectStatement;
 import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlSelectQueryBlock;
 import com.orientechnologies.orient.core.record.impl.ODocument;
-import io.jsql.mysql.PacketUtil;
 import io.jsql.config.Fields;
 import io.jsql.databaseorient.adapter.MDBadapter;
 import io.jsql.databaseorient.adapter.MException;
 import io.jsql.databaseorient.constant.Minformation_schama;
 import io.jsql.databaseorient.constant.MvariableTable;
+import io.jsql.mysql.PacketUtil;
 import io.jsql.mysql.mysql.*;
 import io.jsql.orientserver.OConnection;
 import io.jsql.util.StringUtil;
@@ -83,8 +83,8 @@ public class MselectVariables {
         try {
             List<ODocument> datas = MDBadapter.exequery("select * from " + MvariableTable.tablename, Minformation_schama.dbname);
             List<String> list = new ArrayList<>(column.size());
-            for (String c:
-                 column) {
+            for (String c :
+                    column) {
                 list.add(getv(datas, c));
             }
             return list;
@@ -100,7 +100,7 @@ public class MselectVariables {
             if (d.field("Variable_name").equals(c)) {
                 return d.field("value");
             }
-            }
+        }
         return null;
     }
 }

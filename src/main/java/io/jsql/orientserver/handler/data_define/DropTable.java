@@ -15,15 +15,14 @@ public class DropTable {
         if (MDBadapter.currentDB == null) {
             connection.writeErrMessage(ErrorCode.ER_NO_DB_ERROR, "没有选择数据库");
         }
-        x.getTableSources().forEach(table->{
+        x.getTableSources().forEach(table -> {
             try {
-                MtableAdapter.droptable(MDBadapter.currentDB,table.toString());
+                MtableAdapter.droptable(MDBadapter.currentDB, table.toString());
             } catch (MException e) {
                 e.printStackTrace();
                 connection.writeErrMessage(e.getMessage());
-                return;
             }
         });
-            connection.writeok();
+        connection.writeok();
     }
 }

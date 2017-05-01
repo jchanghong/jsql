@@ -23,8 +23,8 @@
  */
 package io.jsql.orientserver.response;
 
-import io.jsql.mysql.PacketUtil;
 import io.jsql.config.Fields;
+import io.jsql.mysql.PacketUtil;
 import io.jsql.mysql.mysql.*;
 import io.jsql.orientserver.OConnection;
 import io.jsql.util.RandomUtil;
@@ -52,20 +52,18 @@ public class SelectConnnectID {
 
     public static void response(OConnection c) {
 
-            byte packetId = eof.packetId;
-            RowDataPacket row = new RowDataPacket(FIELD_COUNT);
-            row.add(getConnectID(c));
-            row.packetId = ++packetId;
+        byte packetId = eof.packetId;
+        RowDataPacket row = new RowDataPacket(FIELD_COUNT);
+        row.add(getConnectID(c));
+        row.packetId = ++packetId;
 
-            EOFPacket lastEof = new EOFPacket();
-            lastEof.packetId = ++packetId;
+        EOFPacket lastEof = new EOFPacket();
+        lastEof.packetId = ++packetId;
         c.writeResultSet(header, fields, eof, new RowDataPacket[]{row}, lastEof);
     }
 
     private static byte[] getConnectID(OConnection c) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(new String(RandomUtil.randomBytes(10000)));
-        return StringUtil.encode(sb.toString(), c.charset);
+        return StringUtil.encode(new String(RandomUtil.randomBytes(10000)), c.charset);
 //        return null;
     }
 

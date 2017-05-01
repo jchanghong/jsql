@@ -11,16 +11,14 @@ import io.jsql.databaseorient.adapter.MDBadapter;
  * Variable_name  value
  */
 public class MvariableTable {
-  public   final static String tablename = "variables";
-  public   final static String tablenamestatus = "status";
+    public final static String tablename = "variables";
+    public final static String tablenamestatus = "status";
 
     public static void init_if_notexits() {
         ODatabaseDocumentTx documentTx = MDBadapter.getCurrentDB(Minformation_schama.dbname);
         if (documentTx.getMetadata().getSchema().existsClass(tablename)) {
             documentTx.close();
-            return;
-        }
-        else {
+        } else {
             OClass oClass = documentTx.getMetadata().getSchema().createClass(tablename);
             OClass oClass1 = documentTx.getMetadata().getSchema().createClass(tablenamestatus);
             oClass.setStrictMode(true);
@@ -29,13 +27,13 @@ public class MvariableTable {
             oClass1.setStrictMode(true);
             oClass1.createProperty("Variable_name", OType.STRING);
             oClass1.createProperty("value", OType.STRING);
-            Mconstantvariables.MAP.entrySet().forEach(e->{
+            Mconstantvariables.MAP.entrySet().forEach(e -> {
                 ODocument document = new ODocument(tablename);
                 document.field("Variable_name", e.getKey());
                 document.field("value", e.getValue());
                 document.save();
             });
-            MconstantStatusVariables.MAP.entrySet().forEach(e->{
+            MconstantStatusVariables.MAP.entrySet().forEach(e -> {
                 ODocument document = new ODocument(tablenamestatus);
                 document.field("Variable_name", e.getKey());
                 document.field("value", e.getValue());

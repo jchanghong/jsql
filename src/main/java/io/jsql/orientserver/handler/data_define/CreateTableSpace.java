@@ -5,18 +5,16 @@ import io.jsql.orientserver.OConnection;
 /**
  * Created by 长宏 on 2017/3/18 0018.
  * mysql> CREATE TABLESPACE `ts1`
- ->     ADD DATAFILE 'ts1.ibd'
- ->     ENGINE=INNODB;
+ * ->     ADD DATAFILE 'ts1.ibd'
+ * ->     ENGINE=INNODB;
  */
 public class CreateTableSpace {
     public static boolean isme(String sql) {
         String sqll = sql.toUpperCase().trim();
         String list[] = sqll.split("\\s+");
-        if (list.length > 2 && list[0].equals("CREATE") && list[1].equals("TABLESPACE")) {
-            return true;
-        }
-        return false;
+        return list.length > 2 && list[0].equals("CREATE") && list[1].equals("TABLESPACE");
     }
+
     public static void handle(String sql, OConnection c) {
         c.writeok();
     }

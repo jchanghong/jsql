@@ -35,7 +35,7 @@ import java.io.InputStream;
 
 /**
  * @author jsql
- * @author  changhong
+ * @author changhong
  */
 public class BinaryPacket extends MySQLPacket {
     public static final byte OK = 1;

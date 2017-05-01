@@ -10,7 +10,7 @@ import io.jsql.orientserver.OConnection;
 /**
  * Created by 长宏 on 2017/3/18 0018.
  * DELETE FROM somelog WHERE user = 'jcole'
- ORDER BY timestamp_column LIMIT 1;
+ * ORDER BY timestamp_column LIMIT 1;
  */
 public class Mdelete {
     public static void handle(SQLDeleteStatement x, OConnection connection) {
@@ -19,10 +19,10 @@ public class Mdelete {
             return;
         }
         try {
-            Object o = MDBadapter.exesql(x.toString(),MDBadapter.currentDB);
+            Object o = MDBadapter.exesql(x.toString(), MDBadapter.currentDB);
             if (o instanceof Number) {
                 OkPacket okPacket = new OkPacket();
-                okPacket.read(okPacket.OK);
+                okPacket.read(OkPacket.OK);
                 okPacket.affectedRows = Long.parseLong(o.toString());
                 okPacket.write(connection.channelHandlerContext.channel());
                 return;

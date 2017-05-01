@@ -23,8 +23,8 @@
  */
 package io.jsql.orientserver.response;
 
-import io.jsql.mysql.PacketUtil;
 import io.jsql.config.Fields;
+import io.jsql.mysql.PacketUtil;
 import io.jsql.mysql.mysql.*;
 import io.jsql.orientserver.OConnection;
 import io.jsql.util.StringUtil;
@@ -33,8 +33,8 @@ import java.util.List;
 
 /**
  * @author changhong
- * 这个类用来简化常用的功能，
- * select 只还回一个列
+ *         这个类用来简化常用的功能，
+ *         select 只还回一个列
  */
 public class Select1Response {
 
@@ -62,13 +62,13 @@ public class Select1Response {
 
         MySQLPacket[] rows = new MySQLPacket[columnvaluess.size()];
         int index = 0;
-            for (String name : columnvaluess) {
-                RowDataPacket row = new RowDataPacket(FIELD_COUNT);
-                row.add(StringUtil.encode(name, c.charset));
-                row.packetId = ++packetId;
+        for (String name : columnvaluess) {
+            RowDataPacket row = new RowDataPacket(FIELD_COUNT);
+            row.add(StringUtil.encode(name, c.charset));
+            row.packetId = ++packetId;
 //                buffer = row.write(buffer, c, true);
-                rows[index++] = row;
-            }
+            rows[index++] = row;
+        }
         // write last eof
         EOFPacket lastEof = new EOFPacket();
         lastEof.packetId = ++packetId;

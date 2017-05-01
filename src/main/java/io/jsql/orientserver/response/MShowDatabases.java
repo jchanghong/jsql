@@ -23,9 +23,9 @@
  */
 package io.jsql.orientserver.response;
 
-import io.jsql.mysql.PacketUtil;
 import io.jsql.config.Fields;
 import io.jsql.databaseorient.adapter.MDBadapter;
+import io.jsql.mysql.PacketUtil;
 import io.jsql.mysql.mysql.*;
 import io.jsql.orientserver.OConnection;
 import io.jsql.util.StringUtil;
@@ -55,13 +55,13 @@ public class MShowDatabases {
 
         MySQLPacket[] rows = new MySQLPacket[MDBadapter.dbset.size()];
         int index = 0;
-            for (String name : MDBadapter.dbset) {
-                RowDataPacket row = new RowDataPacket(FIELD_COUNT);
-                row.add(StringUtil.encode(name, c.charset));
-                row.packetId = ++packetId;
-                rows[index++] = row;
+        for (String name : MDBadapter.dbset) {
+            RowDataPacket row = new RowDataPacket(FIELD_COUNT);
+            row.add(StringUtil.encode(name, c.charset));
+            row.packetId = ++packetId;
+            rows[index++] = row;
 
-            }
+        }
         // write last eof
         EOFPacket lastEof = new EOFPacket();
         lastEof.packetId = ++packetId;

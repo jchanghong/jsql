@@ -28,10 +28,14 @@ package io.jsql.config;
  */
 public abstract class Versions {
 
-    /**协议版本**/
+    /**
+     * 协议版本
+     **/
     public static final byte PROTOCOL_VERSION = 10;
 
-    /**服务器版本**/
+    /**
+     * 服务器版本
+     **/
     public static byte[] SERVER_VERSION = "5.6.29-jsql-1.6-BETA-20160929210846".getBytes();
 
     public static void setServerVersion(String version) {

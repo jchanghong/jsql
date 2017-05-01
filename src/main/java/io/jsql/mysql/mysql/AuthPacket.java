@@ -23,10 +23,10 @@
  */
 package io.jsql.mysql.mysql;
 
+import io.jsql.config.Capabilities;
 import io.jsql.mysql.MBufferUtil;
 import io.jsql.mysql.MySQLMessage;
 import io.jsql.mysql.StreamUtil;
-import io.jsql.config.Capabilities;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 
@@ -35,7 +35,7 @@ import java.io.OutputStream;
 
 /**
  * From client to server during initial handshake.
- * 
+ * <p>
  * <pre>
  * Bytes                        Name
  * -----                        ----
@@ -46,10 +46,10 @@ import java.io.OutputStream;
  * n (Null-Terminated String)   user
  * n (Length Coded Binary)      scramble_buff (1 + x bytes)
  * n (Null-Terminated String)   databasename (optional)
- * 
+ *
  * @see http://forge.mysql.com/wiki/MySQL_Internals_ClientServer_Protocol#Client_Authentication_Packet
  * </pre>
- * 
+ *
  * @author jsql
  * @author changhong
  */
@@ -63,7 +63,8 @@ public class AuthPacket extends MySQLPacket {
     public String user;
     public byte[] password;
     public String database;
-@Override
+
+    @Override
     public void read(byte[] data) {
         MySQLMessage mm = new MySQLMessage(data);
         packetLength = mm.readUB3();

@@ -45,7 +45,6 @@ public class KillHandler {
                 value = Long.parseLong(id);
             } catch (NumberFormatException e) {
                 c.writeErrMessage(ErrorCode.ER_NO_SUCH_THREAD, "Invalid connection id:" + id);
-                return;
             }
 
 //            // kill myself
@@ -80,7 +79,7 @@ public class KillHandler {
         return packet;
     }
 
-    public static void handle(MySqlKillStatement x,OConnection c) {
+    public static void handle(MySqlKillStatement x, OConnection c) {
         String id = x.getThreadId().toString();
         if (StringUtil.isEmpty(id)) {
             c.writeErrMessage(ErrorCode.ER_NO_SUCH_THREAD, "NULL connection id");
@@ -91,7 +90,6 @@ public class KillHandler {
                 value = Long.parseLong(id);
             } catch (NumberFormatException e) {
                 c.writeErrMessage(ErrorCode.ER_NO_SUCH_THREAD, "Invalid connection id:" + id);
-                return;
             }
 
 //            // kill myself

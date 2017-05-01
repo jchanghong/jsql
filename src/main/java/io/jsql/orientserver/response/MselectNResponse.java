@@ -23,8 +23,8 @@
  */
 package io.jsql.orientserver.response;
 
-import io.jsql.mysql.PacketUtil;
 import io.jsql.config.Fields;
+import io.jsql.mysql.PacketUtil;
 import io.jsql.mysql.mysql.EOFPacket;
 import io.jsql.mysql.mysql.FieldPacket;
 import io.jsql.mysql.mysql.ResultSetHeaderPacket;
@@ -36,7 +36,7 @@ import java.util.List;
 
 /**
  * @author changhong
- * select n个列，只有一行value
+ *         select n个列，只有一行value
  */
 public class MselectNResponse {
 
@@ -60,15 +60,14 @@ public class MselectNResponse {
         byte packetId = 0;
         header.packetId = ++packetId;
         for (String string : colums) {
-                fields[i] = PacketUtil.getField(string, Fields.FIELD_TYPE_VAR_STRING);
-                fields[i++].packetId = ++packetId;
+            fields[i] = PacketUtil.getField(string, Fields.FIELD_TYPE_VAR_STRING);
+            fields[i++].packetId = ++packetId;
         }
         eof = new EOFPacket();
         eof.packetId = ++packetId;
 
 
-
-            RowDataPacket row = new RowDataPacket(FIELD_COUNT);
+        RowDataPacket row = new RowDataPacket(FIELD_COUNT);
         for (String name : values) {
             row.add(StringUtil.encode(name, c.charset));
         }

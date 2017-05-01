@@ -9,7 +9,7 @@ import io.jsql.databaseorient.adapter.MtableAdapter;
 import io.jsql.orientserver.OConnection;
 
 /**
- * Created by jiang on 2017/2/26 0026.
+ * Created by 长宏 on 2017/2/26 0026.
  */
 public class CreateTable {
     public static void handle(MySqlCreateTableStatement x, OConnection c) {
@@ -20,7 +20,6 @@ public class CreateTable {
         try {
             MtableAdapter.createtable(MDBadapter.currentDB, x);
             c.writeok();
-            return;
         } catch (MException e) {
             e.printStackTrace();
             c.writeErrMessage(e.getMessage());

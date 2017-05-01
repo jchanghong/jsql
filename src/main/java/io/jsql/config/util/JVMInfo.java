@@ -36,9 +36,6 @@ public class JVMInfo {
     private static final boolean reverseFieldOrder;
     private static final float majorJavaVersion = getMajorJavaVersion(System.getProperty("java.specification.version"));
 
-    private ReflectionProvider reflectionProvider;
-    private Map<String, Class<?>> loaderCache = new HashMap<String, Class<?>>();
-
     static {
         boolean reverse = false;
         final Field[] fields = AttributedString.class.getDeclaredFields();
@@ -50,15 +47,17 @@ public class JVMInfo {
         reverseFieldOrder = reverse;
     }
 
+    private final Map<String, Class<?>> loaderCache = new HashMap<>();
+    private ReflectionProvider reflectionProvider;
+
     /**
      * Parses the java version system property to determine the major java
      * version, ie 1.x
-     * 
-     * @param javaVersion
-     *            the system property 'java.specification.version'
+     *
+     * @param javaVersion the system property 'java.specification.version'
      * @return A float of the form 1.x
      */
-    public static final float getMajorJavaVersion(String javaVersion) {
+    public static float getMajorJavaVersion(String javaVersion) {
         try {
             return Float.parseFloat(javaVersion.substring(0, 3));
         } catch (NumberFormatException e) {
@@ -137,6 +136,14 @@ public class JVMInfo {
         return false;
     }
 
+    public static boolean reverseFieldDefinition() {
+        return reverseFieldOrder;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(majorJavaVersion);
+    }
+
     public Class<?> loadClass(String name) {
         try {
             Class<?> clazz = loaderCache.get(name);
@@ -160,14 +167,6 @@ public class JVMInfo {
     protected boolean canUseSun14ReflectionProvider() {
         return (isSun() || isApple() || isHPUX() || isIBM() || isBlackdown() || isBEAWithUnsafeSupport()) && is14()
                 && loadClass("sun.misc.Unsafe") != null;
-    }
-
-    public static boolean reverseFieldDefinition() {
-        return reverseFieldOrder;
-    }
-
-    public static void main(String[] args) {
-        System.out.println(majorJavaVersion);
     }
 
 }

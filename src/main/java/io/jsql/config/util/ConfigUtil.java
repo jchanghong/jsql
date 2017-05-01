@@ -25,7 +25,10 @@ package io.jsql.config.util;
 
 import io.jsql.util.StringUtil;
 import org.w3c.dom.*;
-import org.xml.sax.*;
+import org.xml.sax.ErrorHandler;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -80,12 +83,7 @@ public class ConfigUtil {
         factory.setValidating(true);
         factory.setNamespaceAware(false);
         DocumentBuilder builder = factory.newDocumentBuilder();
-        builder.setEntityResolver(new EntityResolver() {
-            @Override
-            public InputSource resolveEntity(String publicId, String systemId) {
-                return new InputSource(dtd);
-            }
-        });
+        builder.setEntityResolver((publicId, systemId) -> new InputSource(dtd));
         builder.setErrorHandler(new ErrorHandler() {
             @Override
             public void warning(SAXParseException e) {
@@ -105,7 +103,7 @@ public class ConfigUtil {
     }
 
     public static Map<String, Object> loadAttributes(Element e) {
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<>();
         NamedNodeMap nm = e.getAttributes();
         for (int j = 0; j < nm.getLength(); j++) {
             Node n = nm.item(j);
@@ -131,11 +129,12 @@ public class ConfigUtil {
 
     /**
      * 获取节点下所有property
+     *
      * @param parent
      * @return key-value property键值对
      */
     public static Map<String, Object> loadElements(Element parent) {
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<>();
         NodeList children = parent.getChildNodes();
         for (int i = 0; i < children.getLength(); i++) {
             Node node = children.item(i);

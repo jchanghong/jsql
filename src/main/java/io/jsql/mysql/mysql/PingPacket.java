@@ -25,10 +25,10 @@ package io.jsql.mysql.mysql;
 
 /**
  * @author jsql
- * @author  changhong
+ * @author changhong
  */
 public class PingPacket extends MySQLPacket {
-    public static final byte[] PING = new byte[] { 1, 0, 0, 0, 14 };
+    public static final byte[] PING = new byte[]{1, 0, 0, 0, 14};
 
     @Override
     public void read(byte[] data) {

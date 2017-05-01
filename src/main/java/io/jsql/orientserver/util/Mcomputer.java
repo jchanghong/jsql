@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * Created by jiang on 2017/2/28 0028.
+ * Created by 长宏 on 2017/2/28 0028.
  */
 public class Mcomputer {
     private static List<Character> op1 = Arrays.asList('+', '-');
@@ -65,6 +65,7 @@ public class Mcomputer {
         }
         return exp;
     }
+
     /**
      * The entry point of application.
      *

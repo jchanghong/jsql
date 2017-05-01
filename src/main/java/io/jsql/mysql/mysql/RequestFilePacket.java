@@ -25,10 +25,10 @@ package io.jsql.mysql.mysql;
 
 /**
  * load data local infile 向客户端请求发送文件用
- *  @author  changhong
+ *
+ * @author changhong
  */
-public class RequestFilePacket extends MySQLPacket
-{
+public class RequestFilePacket extends MySQLPacket {
     public static final byte FIELD_COUNT = (byte) 251;
     public byte command = FIELD_COUNT;
     public byte[] fileName;
@@ -60,14 +60,12 @@ public class RequestFilePacket extends MySQLPacket
     }
 
     @Override
-    public int calcPacketSize()
-    {
+    public int calcPacketSize() {
         return fileName == null ? 1 : 1 + fileName.length;
     }
 
     @Override
-    protected String getPacketInfo()
-    {
+    protected String getPacketInfo() {
         return "MySQL Request File Packet";
     }
 

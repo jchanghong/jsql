@@ -12,8 +12,10 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
  */
 public class MysqlPacketHander extends ChannelInboundHandlerAdapter {
     OConnection connection;
+
     MysqlPacketHander() {
     }
+
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         MySQLPacket mySQLPacket = (MySQLPacket) msg;
@@ -21,8 +23,7 @@ public class MysqlPacketHander extends ChannelInboundHandlerAdapter {
             connection.handerAuth((AuthPacket) mySQLPacket);
         } else if (mySQLPacket instanceof CommandPacket) {
             connection.handerCommand((CommandPacket) mySQLPacket);
-        }
-        else {
+        } else {
 
         }
     }
@@ -30,7 +31,7 @@ public class MysqlPacketHander extends ChannelInboundHandlerAdapter {
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         connection = new OConnection();
-        connection.channelHandlerContext=(ctx);
+        connection.channelHandlerContext = (ctx);
         //发送握手包
         connection.register();
     }

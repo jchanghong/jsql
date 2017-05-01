@@ -35,8 +35,8 @@ public class StreamUtil {
     private static final long NULL_LENGTH = -1;
     private static final byte[] EMPTY_BYTES = new byte[0];
 
-    public static final void read(InputStream in, byte[] b, int offset, int length) throws IOException {
-        for (int got = 0; length > 0;) {
+    public static void read(InputStream in, byte[] b, int offset, int length) throws IOException {
+        for (int got = 0; length > 0; ) {
             got = in.read(b, offset, length);
             if (got < 0) {
                 throw new EOFException();
@@ -46,7 +46,7 @@ public class StreamUtil {
         }
     }
 
-    public static final byte read(InputStream in) throws IOException {
+    public static byte read(InputStream in) throws IOException {
         int got = in.read();
         if (got < 0) {
             throw new EOFException();
@@ -54,7 +54,7 @@ public class StreamUtil {
         return (byte) (got & 0xff);
     }
 
-    public static final int readUB2(InputStream in) throws IOException {
+    public static int readUB2(InputStream in) throws IOException {
         byte[] b = new byte[2];
         read(in, b, 0, b.length);
         int i = b[0] & 0xff;
@@ -62,7 +62,7 @@ public class StreamUtil {
         return i;
     }
 
-    public static final int readUB3(InputStream in) throws IOException {
+    public static int readUB3(InputStream in) throws IOException {
         byte[] b = new byte[3];
         read(in, b, 0, b.length);
         int i = b[0] & 0xff;
@@ -71,7 +71,7 @@ public class StreamUtil {
         return i;
     }
 
-    public static final int readInt(InputStream in) throws IOException {
+    public static int readInt(InputStream in) throws IOException {
         byte[] b = new byte[4];
         read(in, b, 0, b.length);
         int i = b[0] & 0xff;
@@ -81,11 +81,11 @@ public class StreamUtil {
         return i;
     }
 
-    public static final float readFloat(InputStream in) throws IOException {
+    public static float readFloat(InputStream in) throws IOException {
         return Float.intBitsToFloat(readInt(in));
     }
 
-    public static final long readUB4(InputStream in) throws IOException {
+    public static long readUB4(InputStream in) throws IOException {
         byte[] b = new byte[4];
         read(in, b, 0, b.length);
         long l = (long) (b[0] & 0xff);
@@ -95,7 +95,7 @@ public class StreamUtil {
         return l;
     }
 
-    public static final long readLong(InputStream in) throws IOException {
+    public static long readLong(InputStream in) throws IOException {
         byte[] b = new byte[8];
         read(in, b, 0, b.length);
         long l = (long) (b[0] & 0xff);
@@ -109,11 +109,11 @@ public class StreamUtil {
         return l;
     }
 
-    public static final double readDouble(InputStream in) throws IOException {
+    public static double readDouble(InputStream in) throws IOException {
         return Double.longBitsToDouble(readLong(in));
     }
 
-    public static final byte[] readWithLength(InputStream in) throws IOException {
+    public static byte[] readWithLength(InputStream in) throws IOException {
         int length = (int) readLength(in);
         if (length <= 0) {
             return EMPTY_BYTES;
@@ -123,18 +123,18 @@ public class StreamUtil {
         return b;
     }
 
-    public static final void write(OutputStream out, byte b) throws IOException {
+    public static void write(OutputStream out, byte b) throws IOException {
         out.write(b & 0xff);
     }
 
-    public static final void writeUB2(OutputStream out, int i) throws IOException {
+    public static void writeUB2(OutputStream out, int i) throws IOException {
         byte[] b = new byte[2];
         b[0] = (byte) (i & 0xff);
         b[1] = (byte) (i >>> 8);
         out.write(b);
     }
 
-    public static final void writeUB3(OutputStream out, int i) throws IOException {
+    public static void writeUB3(OutputStream out, int i) throws IOException {
         byte[] b = new byte[3];
         b[0] = (byte) (i & 0xff);
         b[1] = (byte) (i >>> 8);
@@ -142,7 +142,7 @@ public class StreamUtil {
         out.write(b);
     }
 
-    public static final void writeInt(OutputStream out, int i) throws IOException {
+    public static void writeInt(OutputStream out, int i) throws IOException {
         byte[] b = new byte[4];
         b[0] = (byte) (i & 0xff);
         b[1] = (byte) (i >>> 8);
@@ -151,11 +151,11 @@ public class StreamUtil {
         out.write(b);
     }
 
-    public static final void writeFloat(OutputStream out, float f) throws IOException {
+    public static void writeFloat(OutputStream out, float f) throws IOException {
         writeInt(out, Float.floatToIntBits(f));
     }
 
-    public static final void writeUB4(OutputStream out, long l) throws IOException {
+    public static void writeUB4(OutputStream out, long l) throws IOException {
         byte[] b = new byte[4];
         b[0] = (byte) (l & 0xff);
         b[1] = (byte) (l >>> 8);
@@ -164,7 +164,7 @@ public class StreamUtil {
         out.write(b);
     }
 
-    public static final void writeLong(OutputStream out, long l) throws IOException {
+    public static void writeLong(OutputStream out, long l) throws IOException {
         byte[] b = new byte[8];
         b[0] = (byte) (l & 0xff);
         b[1] = (byte) (l >>> 8);
@@ -177,30 +177,30 @@ public class StreamUtil {
         out.write(b);
     }
 
-    public static final void writeDouble(OutputStream out, double d) throws IOException {
+    public static void writeDouble(OutputStream out, double d) throws IOException {
         writeLong(out, Double.doubleToLongBits(d));
     }
 
-    public static final long readLength(InputStream in) throws IOException {
+    public static long readLength(InputStream in) throws IOException {
         int length = in.read();
         if (length < 0) {
             throw new EOFException();
         }
         switch (length) {
-        case 251:
-            return NULL_LENGTH;
-        case 252:
-            return readUB2(in);
-        case 253:
-            return readUB3(in);
-        case 254:
-            return readLong(in);
-        default:
-            return length;
+            case 251:
+                return NULL_LENGTH;
+            case 252:
+                return readUB2(in);
+            case 253:
+                return readUB3(in);
+            case 254:
+                return readLong(in);
+            default:
+                return length;
         }
     }
 
-    public static final void writeLength(OutputStream out, long length) throws IOException {
+    public static void writeLength(OutputStream out, long length) throws IOException {
         if (length < 251) {
             out.write((byte) length);
         } else if (length < 0x10000L) {
@@ -215,12 +215,12 @@ public class StreamUtil {
         }
     }
 
-    public static final void writeWithNull(OutputStream out, byte[] src) throws IOException {
+    public static void writeWithNull(OutputStream out, byte[] src) throws IOException {
         out.write(src);
         out.write((byte) 0);
     }
 
-    public static final void writeWithLength(OutputStream out, byte[] src) throws IOException {
+    public static void writeWithLength(OutputStream out, byte[] src) throws IOException {
         int length = src.length;
         if (length < 251) {
             out.write((byte) length);

@@ -2,11 +2,11 @@ package io.jsql.orientserver.response;
 
 import com.alibaba.druid.sql.ast.statement.SQLShowTablesStatement;
 import com.orientechnologies.orient.core.db.document.ODatabaseDocumentTx;
-import io.jsql.mysql.PacketUtil;
 import io.jsql.config.ErrorCode;
 import io.jsql.config.Fields;
 import io.jsql.databaseorient.adapter.MDBadapter;
 import io.jsql.databaseorient.adapter.MtableAdapter;
+import io.jsql.mysql.PacketUtil;
 import io.jsql.mysql.mysql.*;
 import io.jsql.orientserver.OConnection;
 import io.jsql.util.StringUtil;
@@ -38,7 +38,7 @@ public class MShowTables {
     public static void response(OConnection c, SQLShowTablesStatement stmt, int type) {
         if (stmt.getDatabase() != null) {
             MDBadapter.currentDB = stmt.getDatabase().getSimpleName();
-            if (MDBadapter.currentDB.startsWith("`")||MDBadapter.currentDB.startsWith("'")) {
+            if (MDBadapter.currentDB.startsWith("`") || MDBadapter.currentDB.startsWith("'")) {
                 MDBadapter.currentDB = MDBadapter.currentDB.substring(1, MDBadapter.currentDB.length() - 1);
             }
         }

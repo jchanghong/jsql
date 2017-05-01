@@ -31,8 +31,8 @@ import java.util.*;
 public class OrderRetainingMap<K, V> extends HashMap<K, V> {
     private static final long serialVersionUID = 1L;
 
-    private Set<K> keyOrder = new ArraySet<K>();
-    private List<V> valueOrder = new ArrayList<V>();
+    private final Set<K> keyOrder = new ArraySet<>();
+    private final List<V> valueOrder = new ArrayList<>();
 
     @Override
     public V put(K key, V value) {
