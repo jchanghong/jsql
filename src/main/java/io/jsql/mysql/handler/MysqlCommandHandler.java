@@ -30,6 +30,8 @@ import io.jsql.mysql.MySQLMessage;
 import io.jsql.mysql.mysql.CommandPacket;
 import io.jsql.mysql.mysql.MySQLPacket;
 import io.jsql.orientserver.OConnection;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.UnsupportedEncodingException;
 
@@ -38,6 +40,7 @@ import java.io.UnsupportedEncodingException;
  * 处理命令包
  */
 public class MysqlCommandHandler implements MysqlPacketHander {
+    public static Logger logger = LoggerFactory.getLogger(MysqlCommandHandler.class.getSimpleName());
 
     protected final OConnection source;
 
@@ -51,7 +54,8 @@ public class MysqlCommandHandler implements MysqlPacketHander {
     }
 
     public void handle(CommandPacket data) {
-        System.out.println(data.toString());
+        logger.debug(data.toString());
+        logger.info("command info");
 
 //        if(source.getLoadDataInfileHandler()!=null&&source.getLoadDataInfileHandler().isStartLoadData())
 //        {
