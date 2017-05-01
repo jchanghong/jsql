@@ -23,7 +23,7 @@ public class MDBadapter {
     /**
      * The constant DB_DIR.
      */
-    private static final String DB_DIR = "database";
+    private static final String DB_DIR = "databases";
     /**
      * The Hash map.
      */

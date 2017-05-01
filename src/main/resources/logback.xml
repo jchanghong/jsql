@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration>
+<configuration >
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <layout class="ch.qos.logback.classic.PatternLayout">
@@ -9,11 +9,11 @@
         </layout>
     </appender>
 
-    <logger name="com.mkyong.web" level="debug"
+  <!--  <logger name="com.mkyong.web" level="debug"
             additivity="false">
         <appender-ref ref="STDOUT" />
     </logger>
-
+-->
     <root level="info,debug">
         <appender-ref ref="STDOUT" />
     </root>
