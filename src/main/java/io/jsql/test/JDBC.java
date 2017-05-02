@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 /**
  * Created by 长宏 on 2017/4/30 0030.
- * 数据库测试
+ * test
  */
 public class JDBC {
     public static void main(String[] args) {
