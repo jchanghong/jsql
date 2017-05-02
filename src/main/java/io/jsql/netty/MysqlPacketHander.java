@@ -4,12 +4,17 @@ import io.jsql.mysql.mysql.AuthPacket;
 import io.jsql.mysql.mysql.CommandPacket;
 import io.jsql.mysql.mysql.MySQLPacket;
 import io.jsql.orientserver.OConnection;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 /**
  * Created by 长宏 on 2017/4/29 0029.
  */
+@Component
+@Scope("prototype")
 public class MysqlPacketHander extends ChannelInboundHandlerAdapter {
     OConnection connection;
 

@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @Scope("prototype")
 @PropertySource("file:./config/config.properties")
 public class Bean1 {
-    @Value("${port}")
+//    @Value("${port}")
     String port ;
 
     Bean1() {

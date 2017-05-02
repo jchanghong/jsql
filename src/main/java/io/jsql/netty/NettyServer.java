@@ -16,7 +16,6 @@
 package io.jsql.netty;
 
 import io.jsql.my_config.MyProperties;
-import io.jsql.orientstorage.Log;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -27,20 +26,28 @@ import io.netty.util.concurrent.DefaultEventExecutorGroup;
 import io.netty.util.concurrent.EventExecutorGroup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.PostConstruct;
 
 /**
  * .
  * 服务器
  */
-public final class MServer {
-
-    static final int PORT = MyProperties.getInt("port");
-
-    static Logger logger = LoggerFactory.getLogger(MServer.class.getName());
-    public static void main(String[] args) throws Exception {
+@Service
+public final class NettyServer {
+    @Value("${server.port}")
+    private int PORT;
+    @Autowired
+    ApplicationContext applicationContext;
+    Logger logger = LoggerFactory.getLogger(NettyServer.class.getName());
+    public  void start() throws Exception {
         logger.info("port is " + PORT);
-        final EventExecutorGroup group = new DefaultEventExecutorGroup(Runtime.getRuntime().availableProcessors());
         // Configure the server.
+        final  EventExecutorGroup group = new DefaultEventExecutorGroup(Runtime.getRuntime().availableProcessors());
         EventLoopGroup bossGroup = new NioEventLoopGroup(1);
         EventLoopGroup workerGroup = new NioEventLoopGroup();
         try {
@@ -55,14 +62,13 @@ public final class MServer {
                             ChannelPipeline p = ch.pipeline();
                             //p.addLast(new LoggingHandler(LogLevel.INFO));
                             p.addLast("idle", new IdleStateHandler(10, 5, 0));
-                            p.addLast("decoder", new ByteToMysqlDecoder());
-                            p.addLast("packet", new ByteToMysqlPacket());
-                            p.addLast(group, "hander", new MysqlPacketHander());
+                            p.addLast("decoder",  getByteToMysqlDecoder());
+                            p.addLast("packet",  getByteToMysqlPacket());
+                            p.addLast(group, "hander",getMysqlPacketHander());
                         }
                     });
             // Start the server.
             ChannelFuture f = b.bind(PORT).sync();
-
             // Wait until the server socket is closed.
             f.channel().closeFuture().sync();
         } finally {
@@ -71,4 +77,17 @@ public final class MServer {
             workerGroup.shutdownGracefully();
         }
     }
+
+    private ChannelHandler getByteToMysqlDecoder() {
+        return applicationContext.getBean(ByteToMysqlDecoder.class);
+    }
+
+    private ChannelHandler getByteToMysqlPacket() {
+        return applicationContext.getBean(ByteToMysqlPacket.class);
+    }
+
+    private ChannelHandler getMysqlPacketHander() {
+        return applicationContext.getBean(MysqlPacketHander.class);
+    }
+
 }

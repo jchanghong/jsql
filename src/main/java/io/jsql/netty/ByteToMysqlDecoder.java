@@ -3,15 +3,18 @@ package io.jsql.netty;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 /**
  * Created by 长宏 on 2017/4/30 0030.
  * byte到完整的byte包
  */
+@Component
+@Scope("prototype")
 public class ByteToMysqlDecoder extends ChannelInboundHandlerAdapter {
     private final static int BUFF_SIZE = 1024;
     private ByteBuf buf;
-
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         ByteBuf m = (ByteBuf) msg; // (1)

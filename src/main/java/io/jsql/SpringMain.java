@@ -1,9 +1,12 @@
 package io.jsql;
 
+import io.jsql.netty.NettyServer;
+import io.jsql.orientserver.OrientServer;
 import io.jsql.springutil.MyLogger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -18,12 +21,22 @@ import org.springframework.core.annotation.Order;
 @Order(1)
 public class SpringMain implements CommandLineRunner {
   private   Logger logger = LoggerFactory.getLogger(SpringMain.class.getName());
+    @Autowired
+    private NettyServer nettyServer;
+    @Autowired
+    private OrientServer orientServer;
     public static void main(String[] args) {
         SpringApplication.run(SpringMain.class, args);
     }
     @Override
     public void run(String... strings) throws Exception {
         logger.info("begin start....................................");
-        Main.main(strings);
+        try {
+            orientServer.start();
+            nettyServer.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.exit(-1);
+        }
     }
 }

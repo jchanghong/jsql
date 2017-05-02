@@ -567,7 +567,7 @@ public class StringUtil {
 //		System.out.println(getTableName("  insert  into    ssd(id) values (s)"));
 //		System.out.println(getTableName("  insert  into    isd(id) values (s)"));
 //		System.out.println(getTableName("INSERT INTO test_activity_input  (id,vip_no"));
-//		System.out.println(getTableName("/* ApplicationName=DBeaver 3.3.1 - Main connection */ insert into employee(id,name,sharding_id) values(4,’myhome’,10011)"));
+//		System.out.println(getTableName("/* ApplicationName=DBeaver 3.3.1 - OrientServer connection */ insert into employee(id,name,sharding_id) values(4,’myhome’,10011)"));
 //        System.out.println(countChar("insert into ssd  (id) values (s) ,(s),(7);",'('));
     }
 
