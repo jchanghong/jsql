@@ -2,11 +2,9 @@ package io.jsql;
 
 import io.jsql.netty.NettyServer;
 import io.jsql.orientserver.OrientServer;
-import io.jsql.springutil.MyLogger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

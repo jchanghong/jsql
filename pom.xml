@@ -92,7 +92,7 @@
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-maven-plugin</artifactId>
                     <configuration>
-                        <mainClass>io.jsql.orientserver.OrientServer</mainClass>
+                        <mainClass>io.jsql.SpringMain</mainClass>
                         <layout>ZIP</layout>
                     </configuration>
                 </plugin>

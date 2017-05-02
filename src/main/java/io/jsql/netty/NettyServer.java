@@ -70,6 +70,7 @@ public final class NettyServer {
             // Start the server.
             ChannelFuture f = b.bind(PORT).sync();
             // Wait until the server socket is closed.
+            logger.info("server start  complete.................... " );
             f.channel().closeFuture().sync();
         } finally {
             // Shut down all event loops to terminate all threads.

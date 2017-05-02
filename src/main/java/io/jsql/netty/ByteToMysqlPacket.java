@@ -18,7 +18,7 @@ public class ByteToMysqlPacket extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         byte[] data = (byte[]) msg;
-        MySQLPacket mySQLPacket = null;
+        MySQLPacket mySQLPacket;
         if (data[4] >= MySQLPacket.MIN_COMP_NUMBER && data[4] <= MySQLPacket.MAX_COMP_NUMBER) {
             mySQLPacket = new CommandPacket();
             mySQLPacket.read(data);
