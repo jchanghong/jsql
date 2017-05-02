@@ -1,5 +1,6 @@
-package io.jsql.springutil;
+package io.jsql.springutil.test;
 
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 

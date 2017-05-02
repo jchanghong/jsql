@@ -1,5 +1,6 @@
 package io.jsql;
 
+import com.hazelcast.core.HazelcastInstance;
 import io.jsql.netty.NettyServer;
 import io.jsql.orientserver.OrientServer;
 import org.slf4j.Logger;
@@ -26,6 +27,9 @@ public class SpringMain implements CommandLineRunner {
     public static void main(String[] args) {
         SpringApplication.run(SpringMain.class, args);
     }
+
+    @Autowired
+    HazelcastInstance hazelcastInstance;
     @Override
     public void run(String... strings) throws Exception {
         logger.info("begin start....................................");
