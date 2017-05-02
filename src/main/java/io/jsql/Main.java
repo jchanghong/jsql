@@ -4,18 +4,22 @@ import com.orientechnologies.common.parser.OSystemVariableResolver;
 import com.orientechnologies.orient.server.OServer;
 import com.orientechnologies.orient.server.OServerMain;
 import io.jsql.my_config.MyProperties;
-import io.jsql.orientstorage.constant.Minformation_schama;
 import io.jsql.netty.MServer;
+import io.jsql.orientstorage.constant.Minformation_schama;
 import io.jsql.storage.MException;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 
 /**
  * Created by 长宏 on 2017/4/29 0029.
  * 启动类
  */
+@EnableAutoConfiguration
 public class Main {
     public static void main(String[] args) {
         try {
             checkconfig();
+            SpringApplication.run(Main.class, args);
         } catch (MException e) {
             e.printStackTrace();
             System.exit(-1);
