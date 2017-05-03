@@ -10,6 +10,9 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * Created by 长宏 on 2017/5/2 0002.
  */
@@ -25,6 +28,8 @@ public class Maintest implements CommandLineRunner {
     @Autowired
     Bean2 bean2;
 
+    @Autowired
+    List<Testi> list;
     Maintest() {
         System.out.println("maintest()");
     }
@@ -42,12 +47,13 @@ public class Maintest implements CommandLineRunner {
     Environment environment;
     @Autowired
     CacheManager cacheManager;
-
     @Override
     public void run(String... strings) throws Exception {
         logger.info(environment.getProperty("server.port"));
         bean2.getBean1();
         bean2.getBean1();
         bean2.getBean1();
+        logger.info(list.contains(bean1));
+        logger.info(list.contains(bean2));
     }
 }

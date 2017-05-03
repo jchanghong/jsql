@@ -1,7 +1,14 @@
 package io.jsql.test;
 
-import com.orientechnologies.orient.core.db.OPartitionedDatabasePool;
+import com.orientechnologies.orient.core.db.*;
+import com.orientechnologies.orient.core.db.document.ODatabaseDocument;
 import com.orientechnologies.orient.core.db.document.ODatabaseDocumentTx;
+import com.orientechnologies.orient.core.metadata.schema.OClass;
+import com.orientechnologies.orient.core.metadata.schema.OType;
+import com.orientechnologies.orient.core.record.OElement;
+import com.orientechnologies.orient.core.record.impl.ODocument;
+import com.orientechnologies.orient.core.sql.executor.OResult;
+import com.orientechnologies.orient.core.sql.executor.OResultSet;
 import io.jsql.my_config.MyProperties;
 
 import java.io.FileInputStream;
@@ -13,7 +20,7 @@ import java.util.Properties;
  */
 public class Orientdb {
     public static void main(String[] args) throws IOException {
-//        String url = MDBadapter.getRemoteUrl("db3");
+//        String url = ODB.getRemoteUrl("db3");
 //        System.out.println(url);
 //        ODatabaseDocumentTx oDatabaseDocumentTx;
 //        OServer server;
@@ -27,7 +34,37 @@ public class Orientdb {
 //        documentTx.close();
 //        pool.close();
 
-        System.out.println(MyProperties.getInt("port"));
+        OrientDBConfig confi = OrientDBConfig.defaultConfig();
+        OrientDB orientDb = new OrientDB("embedded:./databases/", null, null, confi);
+//        orientDb.create("test",ODatabaseType.PLOCAL);
+        ODatabaseDocument session = orientDb.open("test","admin","admin");
+        System.out.println(session.isPooled());
+
+//        OElement element = session.newElement("table");
+//        element.setProperty("name", "changhong");
+//        element.save();
+        OResultSet set = session.query("select * from table", (Object[]) null);
+        set.stream().forEach(a->{
+            System.out.println(a.getMetadata("name"));
+            System.out.println(a.getElement().get().getProperty("name")+"");
+        });
+//        OClass customer = session.createClass("Customer");
+//        customer.createProperty("name", OType.STRING);
+
+//        OClass invoice = session.createClass("Invoice");
+//        invoice.createProperty("id", OType.INTEGER);
+//        invoice.createProperty("date", OType.DATE);
+//        invoice.createProperty("customer", OType.LINK, customer);
+//        OElement c = session.newElement("Customer");
+//        OElement i = session.newElement("Invoice");
+//        i.setProperty("customer", c);
+//        c.save();
+//        i.save();
+        OResultSet resultSet = session.command("insert into table(id) values(1);");
+        OResult next = resultSet.next();
+        System.out.println(next.getClass().getName());
+        session.close();
+        orientDb.close();
 
 
 

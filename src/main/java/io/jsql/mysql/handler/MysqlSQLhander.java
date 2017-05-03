@@ -4,13 +4,16 @@ import com.alibaba.druid.sql.ast.SQLStatement;
 import com.alibaba.druid.sql.dialect.mysql.parser.MySqlStatementParser;
 import com.alibaba.druid.sql.dialect.mysql.visitor.MySqlASTVisitor;
 import io.jsql.config.ErrorCode;
-import io.jsql.orientserver.OConnection;
-import io.jsql.orientserver.handler.data_define.*;
-import io.jsql.orientserver.handler.data_mannipulation.Mdo;
-import io.jsql.orientserver.handler.data_mannipulation.Mhandler;
-import io.jsql.orientserver.handler.data_mannipulation.Msubquery;
-import io.jsql.orientserver.handler.utilstatement.ExplainStatement;
-import io.jsql.orientserver.parser.MSQLvisitor;
+import io.jsql.sql.OConnection;
+import io.jsql.sql.handler.AllHanders;
+import io.jsql.sql.handler.SqlStatementHander;
+import io.jsql.sql.handler.adminstatement.ShowHandler;
+import io.jsql.sql.handler.data_define.*;
+import io.jsql.sql.handler.data_mannipulation.Mdo;
+import io.jsql.sql.handler.data_mannipulation.Mhandler;
+import io.jsql.sql.handler.data_mannipulation.Msubquery;
+import io.jsql.sql.handler.utilstatement.ExplainStatement;
+import io.jsql.sql.parser.MSQLvisitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,17 +23,18 @@ import java.util.List;
  * Created by 长宏 on 2017/4/30 0030.
  */
 public class MysqlSQLhander implements SQLHander {
-    private static final Logger LOGGER = LoggerFactory
+    private static final Logger logger = LoggerFactory
             .getLogger(MysqlSQLhander.class);
 
     private final OConnection source;
-    private final MySqlASTVisitor mySqlASTVisitor;
+//    private final MySqlASTVisitor mySqlASTVisitor;
     protected Boolean readOnly;
     private Exception exception;
-
-    public MysqlSQLhander(OConnection source) {
+    private AllHanders allHanders;
+    public MysqlSQLhander(OConnection source, AllHanders allHanders) {
+        this.allHanders = allHanders;
         this.source = source;
-        mySqlASTVisitor = new MSQLvisitor(source);
+//        mySqlASTVisitor = new MSQLvisitor(source);
     }
 
     public void setReadOnly(Boolean readOnly) {
@@ -39,19 +43,22 @@ public class MysqlSQLhander implements SQLHander {
 
     @Override
     public void handle(String sql) {
-        System.out.println(sql);
-//        System.out.println(Thread.currentThread().getName());
+        logger.info(sql);
         OConnection c = this.source;
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug(String.valueOf(c) + sql);
+        if (logger.isDebugEnabled()) {
+            logger.debug(sql);
         }
-        List<SQLStatement> lists;
+        SQLStatement sqlStatement;
         try {
             MySqlStatementParser parser = new MySqlStatementParser(sql);
-            lists = parser.parseStatementList();
-            lists.forEach(statement -> statement.accept(mySqlASTVisitor));
-            if (lists != null && lists.size() > 0) {
-                exception = null;
+            sqlStatement = parser.parseStatement();
+//            if (sqlStatement.toString().startsWith("show")) {
+//                return;
+////            lists.forEach(statement -> statement.accept(mySqlASTVisitor));
+//            }
+            SqlStatementHander hander = allHanders.handerMap.get(sqlStatement.getClass());
+            if (hander != null) {
+                hander.handle(sqlStatement, c);
                 return;
             }
         } catch (Exception e) {//如果不是合法的mysql语句，就报错

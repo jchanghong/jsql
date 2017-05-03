@@ -1,17 +1,14 @@
 package io.jsql.netty;
 
-import io.jsql.config.ErrorCode;
 import io.jsql.mysql.mysql.AuthPacket;
 import io.jsql.mysql.mysql.CommandPacket;
-import io.jsql.mysql.mysql.ErrorPacket;
 import io.jsql.mysql.mysql.MySQLPacket;
-import io.jsql.orientserver.OConnection;
-import io.jsql.orientserver.OconnectionPool;
-import io.netty.channel.ChannelHandler;
+import io.jsql.sql.OConnection;
+import io.jsql.sql.OconnectionPool;
+import io.jsql.sql.handler.AllHanders;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -21,6 +18,9 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("prototype")
 public class MysqlPacketHander extends ChannelInboundHandlerAdapter {
+    @Autowired
+    AllHanders allHanders;
+
     OConnection connection;
     @Autowired
    private OconnectionPool pool;
@@ -58,7 +58,7 @@ public class MysqlPacketHander extends ChannelInboundHandlerAdapter {
     }
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        connection = new OConnection();
+        connection = new OConnection(allHanders);
         connection.channelHandlerContext = (ctx);
         //发送握手包
         connection.register();

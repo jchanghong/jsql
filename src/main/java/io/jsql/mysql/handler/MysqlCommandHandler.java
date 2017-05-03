@@ -28,8 +28,9 @@ import io.jsql.config.ErrorCode;
 import io.jsql.mysql.MySQLMessage;
 import io.jsql.mysql.mysql.CommandPacket;
 import io.jsql.mysql.mysql.MySQLPacket;
-import io.jsql.orientserver.OConnection;
-import io.jsql.storage.DBAdmin;
+import io.jsql.sql.OConnection;
+import io.jsql.storage.DB;
+import io.jsql.storage.StorageException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -163,12 +164,17 @@ public class MysqlCommandHandler implements MysqlPacketHander {
         mm.position(0);
         String db = mm.readString();
         // 检查schema的有效性
-        if (!OConnection.DB_ADMIN.getallDBs().contains(db)) {
-            source.writeErrMessage(ErrorCode.ER_BAD_DB_ERROR, "Unknown database '" + db + "'");
+        try {
+            if (!OConnection.DB_ADMIN.getallDBs().contains(db)) {
+                source.writeErrMessage(ErrorCode.ER_BAD_DB_ERROR, "Unknown database '" + db + "'");
+                return;
+            }
+        } catch (StorageException e) {
+            e.printStackTrace();
+            source.writeErrMessage(e.getMessage());
             return;
         }
         source.schema = db;
-        DBAdmin.currentDB = db;
         source.writeok();
     }
 

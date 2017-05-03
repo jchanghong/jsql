@@ -1,10 +1,11 @@
 package io.jsql.orientstorage.constant;
 
-import com.orientechnologies.orient.core.db.document.ODatabaseDocumentTx;
+import com.orientechnologies.orient.core.db.document.ODatabaseDocument;
 import com.orientechnologies.orient.core.metadata.schema.OClass;
 import com.orientechnologies.orient.core.metadata.schema.OType;
 import com.orientechnologies.orient.core.record.impl.ODocument;
-import io.jsql.orientstorage.adapter.MDBadapter;
+import io.jsql.sql.OConnection;
+import io.jsql.storage.StorageException;
 
 /**
  * Created by 长宏 on 2017/3/23 0023.
@@ -15,7 +16,18 @@ public class MvariableTable {
     public final static String tablenamestatus = "status";
 
     public static void init_if_notexits() {
-        ODatabaseDocumentTx documentTx = MDBadapter.getCurrentDB(Minformation_schama.dbname);
+        try {
+            OConnection.DB_ADMIN.createdbSyn(Minformation_schama.dbname);
+        } catch (StorageException e) {
+            e.printStackTrace();
+            System.exit(-1);
+        }
+        ODatabaseDocument documentTx = null;
+        try {
+            documentTx = OConnection.DB_ADMIN.getdb(Minformation_schama.dbname);
+        } catch (StorageException e) {
+            e.printStackTrace();
+        }
         if (documentTx.getMetadata().getSchema().existsClass(tablename)) {
             documentTx.close();
         } else {

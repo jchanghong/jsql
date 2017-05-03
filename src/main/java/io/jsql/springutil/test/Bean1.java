@@ -14,7 +14,7 @@ import java.io.Serializable;
 @Scope("prototype")
 @Profile("dev")
 @PropertySource("file:./config/config.properties")
-public class Bean1 implements Serializable{
+public class Bean1 implements Serializable,Testi{
 //    @Value("${port}")
     String port ;
 

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Profile("dev")
-public class Bean2 {
+public class Bean2 implements Testi{
     @Autowired
     ApplicationContext context;
     @Autowired

@@ -29,6 +29,7 @@ import io.jsql.mysql.mysql.ErrorPacket;
 import io.jsql.mysql.mysql.FieldPacket;
 import io.jsql.mysql.mysql.ResultSetHeaderPacket;
 
+import java.io.FilePermission;
 import java.io.UnsupportedEncodingException;
 
 /**
@@ -70,6 +71,10 @@ public class PacketUtil {
         packet.name = encode(name, CODE_PAGE_1252);
         packet.type = (byte) type;
         return packet;
+    }
+
+    public static void setFieldName(FieldPacket fieldName, String newname) {
+        fieldName.name = encode(newname, CODE_PAGE_1252);
     }
 
     public static ErrorPacket getShutdown() {

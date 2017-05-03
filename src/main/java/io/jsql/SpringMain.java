@@ -1,7 +1,6 @@
 package io.jsql;
 
 import io.jsql.netty.NettyServer;
-import io.jsql.orientserver.OrientServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +20,6 @@ public class SpringMain implements CommandLineRunner {
   private   Logger logger = LoggerFactory.getLogger(SpringMain.class.getName());
     @Autowired
     private NettyServer nettyServer;
-    @Autowired
-    private OrientServer orientServer;
     public static void main(String[] args) {
         SpringApplication.run(SpringMain.class, args);
     }
@@ -31,7 +28,6 @@ public class SpringMain implements CommandLineRunner {
     public void run(String... strings) throws Exception {
         logger.info("begin start....................................");
         try {
-            orientServer.start();
             nettyServer.start();
         } catch (Exception e) {
             e.printStackTrace();

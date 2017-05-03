@@ -27,8 +27,8 @@ import io.jsql.config.ErrorCode;
 import io.jsql.mysql.CharsetUtil;
 import io.jsql.mysql.mysql.AuthPacket;
 import io.jsql.mysql.mysql.MySQLPacket;
-import io.jsql.orientserver.OConnection;
-import io.jsql.storage.DBAdmin;
+import io.jsql.sql.OConnection;
+import io.jsql.storage.DB;
 import io.netty.buffer.Unpooled;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,7 +54,6 @@ public class MysqlAuthHander implements MysqlPacketHander {
 ////            source.close("quit packet");
 //            return;
 //        }
-        DBAdmin.currentDB = auth.database;
         source.schema = (auth.database);
 
         // check user
@@ -77,7 +76,7 @@ public class MysqlAuthHander implements MysqlPacketHander {
 //             return;
 //        }
 
-//            DBAdmin.currentDB = auth.database;
+//            DB.currentDB = auth.database;
 //        source.setSchema(auth.database);
         // check schema
 //        switch (checkSchema(auth.database, auth.user)) {
