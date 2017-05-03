@@ -1,6 +1,5 @@
 package io.jsql;
 
-import com.hazelcast.core.HazelcastInstance;
 import io.jsql.netty.NettyServer;
 import io.jsql.orientserver.OrientServer;
 import org.slf4j.Logger;
