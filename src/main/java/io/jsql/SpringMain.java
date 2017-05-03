@@ -28,8 +28,6 @@ public class SpringMain implements CommandLineRunner {
         SpringApplication.run(SpringMain.class, args);
     }
 
-    @Autowired
-    HazelcastInstance hazelcastInstance;
     @Override
     public void run(String... strings) throws Exception {
         logger.info("begin start....................................");
