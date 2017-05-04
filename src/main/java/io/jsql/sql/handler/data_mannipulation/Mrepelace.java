@@ -48,7 +48,8 @@ public class Mrepelace extends SqlStatementHander{
             builder.deleteCharAt(builder.length() - 1);
             String sql = x.toString().replace(table, builder.toString());
             Object o = OConnection.DB_ADMIN.exesqlforResult(sql, connection.schema);
-            getdbtx.close();
+//            getdbtx.close();
+            OConnection.DB_ADMIN.close(getdbtx);
             if (o instanceof Number) {
                 OkPacket okPacket = new OkPacket();
                 okPacket.read(OkPacket.OK);

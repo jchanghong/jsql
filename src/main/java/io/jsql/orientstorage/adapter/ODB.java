@@ -8,6 +8,7 @@ import com.orientechnologies.orient.core.db.document.ODatabaseDocument;
 import com.orientechnologies.orient.core.record.OElement;
 import com.orientechnologies.orient.core.sql.executor.OResult;
 import com.orientechnologies.orient.core.sql.executor.OResultSet;
+import io.jsql.orientstorage.MdatabasePool;
 import io.jsql.sql.OConnection;
 import io.jsql.storage.DB;
 import io.jsql.storage.StorageException;
@@ -29,6 +30,7 @@ public class ODB implements DB {
 
     @Value("${db.dir}")
     private String dbDIR="databases";
+    private MdatabasePool pool;
  public    ODB() {
         StringBuilder builder = new StringBuilder("embedded:");
         builder.append("./");
@@ -36,6 +38,8 @@ public class ODB implements DB {
         builder.append("/");
         OrientDBConfig confi = OrientDBConfig.defaultConfig();
         orientDB = new OrientDB(builder.toString(), null, null, confi);
+     pool = new MdatabasePool(orientDB);
+
     }
 
     @PostConstruct
@@ -52,7 +56,7 @@ public class ODB implements DB {
         this.dbDIR = dbDIR;
     }
 
-    private Map<String, ODatabasePool> dbpoolmap = new HashMap<>();
+//    private Map<String, ODatabasePool> dbpoolmap = new HashMap<>();
 
     @Override
     public void deletedbSyn(String dbname) throws StorageException {
@@ -105,7 +109,7 @@ public class ODB implements DB {
         ODatabaseDocument document = getdb(dbname);
         document.activateOnCurrentThread();
         OResultSet command = document.command(sql, (Object[]) null);
-        document.close();
+        pool.close(document);
         return command.stream().findAny();
     }
 
@@ -126,7 +130,7 @@ public class ODB implements DB {
         document.activateOnCurrentThread();
      OResultSet resultSet= document.query(sqlquery, (Object[]) null);
         Stream<OElement> oElementStream = resultSet.stream().map(a -> a.toElement());
-        document.close();
+        pool.close(document);
         return oElementStream;
 
     }
@@ -136,20 +140,19 @@ public class ODB implements DB {
         if (!orientDB.exists(dbname)) {
             throw  new StorageException("db not exists");
         }
-        if (dbpoolmap.containsKey(dbname)) {
-            return dbpoolmap.get(dbname).acquire();
-        }
-        else {
-            ODatabasePool pool = new ODatabasePool(orientDB, dbname, "admin", "admin");
-            dbpoolmap.put(dbname, pool);
-            return pool.acquire();
-        }
+        return pool.get(dbname);
     }
 
     @Override
     public void close() {
-        dbpoolmap.values().forEach(e -> e.close());
+        pool.close();
         orientDB.close();
         executorService.shutdown();
+    }
+
+    @Override
+    public void close(ODatabaseDocument databaseDocument) {
+        pool.close(databaseDocument);
+
     }
 }

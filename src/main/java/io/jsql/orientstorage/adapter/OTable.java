@@ -42,7 +42,7 @@ public class OTable implements Table{
             throw new StorageException("table exist");
         }
         schema.dropClass(table);
-        document.close();
+        dbadmin.close(document);
     }
 
     @Override
@@ -56,7 +56,7 @@ public class OTable implements Table{
         OSchema oSchema = db.getMetadata().getSchema();
         String table = createTableStatement.getTableSource().toString();
         if (oSchema.existsClass(table)) {
-            dbadmin.close();
+            dbadmin.close(db);
             throw new StorageException("table已经存在");
         }
                 OClass oClass = db
@@ -100,7 +100,7 @@ public class OTable implements Table{
                         }
                     }
                 });
-        dbadmin.close();
+        dbadmin.close(db);
     }
 
     @Override
@@ -108,7 +108,7 @@ public class OTable implements Table{
         ODatabaseDocument document = dbadmin.getdb(dbname);
         List<String> strings = new ArrayList<>();
         document.getMetadata().getSchema().getClasses().forEach(a -> strings.add(a.getName()));
-        document.close();
+        dbadmin.close(document);
         return strings;
     }
 
@@ -117,9 +117,12 @@ public class OTable implements Table{
         ODatabaseDocument document = dbadmin.getdb(db);
         boolean b = document.getMetadata().getSchema().existsClass(tablename);
         if (!b) {
+            dbadmin.close(document);
             throw new StorageException("not exits");
         }
-       return document.getClass(tablename);
+        OClass aClass = document.getClass(tablename);
+        dbadmin.close(document);
+        return aClass;
     }
 
     @Override

@@ -90,7 +90,8 @@ public class MorientSelectResponse {
         OClass oClass = documentTx.getMetadata().getSchema().getClass(MSQLutil.gettablename(statement));
         if (oClass == null) {
             c.writeErrMessage(ErrorCode.ERR_HANDLE_DATA, "error");
-            documentTx.close();
+//            documentTx.close();
+            OConnection.DB_ADMIN.close(documentTx);
             return;
         }
         List<String> selectall = new ArrayList<>();
@@ -144,7 +145,7 @@ public class MorientSelectResponse {
 //        buffer = lastEof.write(buffer, c, true);
 //        // post write
 //        c.write(buffer);
-        documentTx.close();
+        OConnection.DB_ADMIN.close(documentTx);
         c.writeResultSet(header, fields, eof, rows, lastEof);
     }
 
@@ -171,7 +172,8 @@ public class MorientSelectResponse {
             documentTx.activateOnCurrentThread();
             OClass oClass = documentTx.getClass(MSQLutil.gettablename(selectStatement));
             if (oClass == null) {
-                documentTx.close();
+//                documentTx.close();
+                OConnection.DB_ADMIN.close(documentTx);
                 return "table  error";
             }
             List<String> selectall = new ArrayList<>();
@@ -182,7 +184,9 @@ public class MorientSelectResponse {
             }
 
         List<OElement> datas = data.collect(Collectors.toList());
-            documentTx.close();
+//            documentTx.close();
+        OConnection.DB_ADMIN.close(documentTx);
+
         return new MyResultSet(datas, selects);
     }
 }

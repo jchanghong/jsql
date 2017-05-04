@@ -84,8 +84,9 @@ public class MShowTables {
         // write last eof
         EOFPacket lastEof = new EOFPacket();
         lastEof.packetId = ++packetId;
+        OConnection.DB_ADMIN.close(documentTx);
         c.writeResultSet(header, fields, eof, rowss, lastEof);
-        documentTx.close();
+//        documentTx.close();
 
     }
 
@@ -110,6 +111,7 @@ public class MShowTables {
         getalltable.forEach(a->{
             OElement element = new ODocument();
             element.setProperty("table", a);
+            elements.add(element);
         });
         return new MyResultSet(elements, Collections.singletonList("table"));
     }

@@ -27,14 +27,14 @@ public class MysqlSQLhander implements SQLHander {
             .getLogger(MysqlSQLhander.class);
 
     private final OConnection source;
-//    private final MySqlASTVisitor mySqlASTVisitor;
+    private final MySqlASTVisitor mySqlASTVisitor;
     protected Boolean readOnly;
     private Exception exception;
     private AllHanders allHanders;
     public MysqlSQLhander(OConnection source, AllHanders allHanders) {
         this.allHanders = allHanders;
         this.source = source;
-//        mySqlASTVisitor = new MSQLvisitor(source);
+        mySqlASTVisitor = new MSQLvisitor(source);
     }
 
     public void setReadOnly(Boolean readOnly) {
@@ -52,14 +52,13 @@ public class MysqlSQLhander implements SQLHander {
         try {
             MySqlStatementParser parser = new MySqlStatementParser(sql);
             sqlStatement = parser.parseStatement();
-//            if (sqlStatement.toString().startsWith("show")) {
-//                return;
-////            lists.forEach(statement -> statement.accept(mySqlASTVisitor));
-//            }
             SqlStatementHander hander = allHanders.handerMap.get(sqlStatement.getClass());
             if (hander != null) {
                 hander.handle(sqlStatement, c);
                 return;
+            }
+            else {
+                sqlStatement.accept(mySqlASTVisitor);
             }
         } catch (Exception e) {//如果不是合法的mysql语句，就报错
 //            e.printStackTrace();

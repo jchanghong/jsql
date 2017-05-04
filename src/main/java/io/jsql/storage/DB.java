@@ -31,4 +31,6 @@ public interface  DB {
     abstract public ODatabaseDocument getdb(String dbname) throws StorageException;
 
     abstract public void close();
+
+    void close(ODatabaseDocument databaseDocument);
 }
