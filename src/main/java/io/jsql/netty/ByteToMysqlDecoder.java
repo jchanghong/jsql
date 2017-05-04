@@ -3,6 +3,8 @@ package io.jsql.netty;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -31,10 +33,14 @@ public class ByteToMysqlDecoder extends ChannelInboundHandlerAdapter {
         }
     }
 
+    static Logger logger = LoggerFactory.getLogger(ByteToMysqlDecoder.class.getName());
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
         if (buf != null) {
             byte[] bytes = new byte[buf.readableBytes()];
+            if (bytes.length == 1) {
+                System.exit(0);
+            }
             buf.readBytes(bytes);
             ctx.fireChannelRead(bytes);
             buf.release();

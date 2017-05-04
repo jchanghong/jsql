@@ -3,16 +3,11 @@ package io.jsql.sql.handler.data_define;
 import com.alibaba.druid.sql.ast.SQLStatement;
 import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlRenameTableStatement;
 import com.orientechnologies.orient.core.db.document.ODatabaseDocument;
-import com.orientechnologies.orient.core.db.document.ODatabaseDocumentTx;
-import io.jsql.mysql.handler.SQLHander;
 import io.jsql.sql.OConnection;
 import io.jsql.sql.handler.SqlStatementHander;
-import io.jsql.storage.DB;
 import io.jsql.storage.StorageException;
-import javafx.scene.control.ChoiceBox;
 import org.springframework.stereotype.Component;
 
-import javax.swing.text.rtf.RTFEditorKit;
 import java.util.HashMap;
 import java.util.Map;
 

@@ -145,9 +145,13 @@ public class ODB implements DB {
 
     @Override
     public void close() {
-        pool.close();
-        orientDB.close();
-        executorService.shutdown();
+        try {
+            pool.close();
+            orientDB.close();
+            executorService.shutdown();
+        } catch (Exception e) {
+//            e.printStackTrace();
+        }
     }
 
     @Override
