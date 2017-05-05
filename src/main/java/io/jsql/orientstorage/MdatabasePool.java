@@ -5,6 +5,7 @@ import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
 import com.orientechnologies.orient.core.db.OrientDB;
 import com.orientechnologies.orient.core.db.document.ODatabaseDocument;
+import org.springframework.stereotype.Component;
 
 import java.util.concurrent.CountDownLatch;
 
@@ -12,16 +13,21 @@ import java.util.concurrent.CountDownLatch;
  * Created by 长宏 on 2017/5/4 0004.
  * 必须线程安全
  */
+@Component
 public class MdatabasePool {
     private OrientDB orientDB;
     private Multimap<String, ODatabaseDocument> multimap;
+
+    public void setOrientDB(OrientDB orientDB) {
+        this.orientDB = orientDB;
+    }
 
     /**
      * Instantiates a new Mdatabase pool.
      *
      * @param orientDB the orient db
      */
-    public MdatabasePool(OrientDB orientDB) {
+    public MdatabasePool() {
         this.orientDB = orientDB;
         Multimap<String, ODatabaseDocument> tem = HashMultimap.create();
         multimap = Multimaps.synchronizedMultimap(tem);

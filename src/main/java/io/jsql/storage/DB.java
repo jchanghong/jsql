@@ -32,5 +32,7 @@ public interface  DB {
 
     abstract public void close();
 
+    void exesqls(List<String> sqls);
+
     void close(ODatabaseDocument databaseDocument);
 }

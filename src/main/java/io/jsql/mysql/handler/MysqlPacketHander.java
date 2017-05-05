@@ -1,6 +1,7 @@
 package io.jsql.mysql.handler;
 
 import io.jsql.mysql.mysql.MySQLPacket;
+import io.jsql.sql.OConnection;
 
 /**
  * Created by 长宏 on 2017/4/30 0030.
@@ -8,4 +9,5 @@ import io.jsql.mysql.mysql.MySQLPacket;
  */
 public interface MysqlPacketHander {
     void hander(MySQLPacket mySQLPacket);
+    void setConnection(OConnection connection);
 }

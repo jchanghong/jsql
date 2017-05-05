@@ -28,8 +28,6 @@ import io.jsql.config.ErrorCode;
 import io.jsql.config.Versions;
 import io.jsql.mysql.handler.*;
 import io.jsql.mysql.mysql.*;
-import io.jsql.orientstorage.adapter.ODB;
-import io.jsql.orientstorage.adapter.OTable;
 import io.jsql.sql.handler.AllHanders;
 import io.jsql.sql.handler.SqlStatementHander;
 import io.jsql.storage.DB;
@@ -40,7 +38,12 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.io.UnsupportedEncodingException;
 
 /**
@@ -48,16 +51,17 @@ import java.io.UnsupportedEncodingException;
  *
  * @author changhong.基于orientdb的服务器 ，9999端口连接
  */
+@Component
+@Scope("prototype")
 public class OConnection {
     public static DB DB_ADMIN;
     public static Table TABLE_ADMIN;
-    public static SqlStatementHander sqlStatementHander;
     private static final Logger LOGGER = LoggerFactory
             .getLogger(OConnection.class);
     public final boolean txInterrupted;
-    public final MysqlPacketHander authhander;
-    public final MysqlPacketHander comhander;
-    public final SQLHander sqlHander;
+    public MysqlPacketHander authhander;
+    public MysqlPacketHander comhander;
+    public SQLHander sqlHander;
     public volatile int charsetIndex;
     public volatile int txIsolation;
     public volatile boolean autocommit;
@@ -73,14 +77,23 @@ public class OConnection {
     public byte[] seed;
     public boolean authenticated;
     public String user;
+    @Autowired
     private AllHanders allHanders;
-    public OConnection(AllHanders allHanders) {
-        this.allHanders = allHanders;
+    @Autowired
+    ApplicationContext applicationContext;
+
+    @PostConstruct
+    void init() {
+        authhander = applicationContext.getBean(MysqlAuthHander.class);
+        comhander = applicationContext.getBean(MysqlCommandHandler.class);
+        sqlHander = applicationContext.getBean(MysqlSQLhander.class);
+        authhander.setConnection(this);
+        comhander.setConnection(this);
+        sqlHander.setConnection(this);
+    }
+    public OConnection( ) {
         this.txInterrupted = false;
         this.autocommit = true;
-        authhander = new MysqlAuthHander(this);
-        comhander = new MysqlCommandHandler(this);
-        sqlHander = new MysqlSQLhander(this,allHanders);
     }
 
     //    public boolean setCharset(String charset) {

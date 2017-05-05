@@ -32,22 +32,25 @@ import io.jsql.storage.DB;
 import io.netty.buffer.Unpooled;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 /**
  * 前端认证处理器
  * 处理auth包
  */
+@Component
+@Scope("prototype")
 public class MysqlAuthHander implements MysqlPacketHander {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MysqlAuthHander.class);
     private static final byte[] AUTH_OK = new byte[]{7, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0};
-
-    private final OConnection source;
-
-    public MysqlAuthHander(OConnection connection) {
-        this.source = connection;
+    private  OConnection source;
+    public MysqlAuthHander( ) {
     }
-
+    public void setSource(OConnection source) {
+        this.source = source;
+    }
     public void handle(AuthPacket auth) {
         // check quit packet
 //        if (data.length == QuitPacket.QUIT.length && data[4] == MySQLPacket.COM_QUIT) {
@@ -209,5 +212,10 @@ public class MysqlAuthHander implements MysqlPacketHander {
     public void hander(MySQLPacket mySQLPacket) {
         System.out.println(mySQLPacket.toString());
         handle((AuthPacket) mySQLPacket);
+    }
+
+    @Override
+    public void setConnection(OConnection connection) {
+        source = connection;
     }
 }

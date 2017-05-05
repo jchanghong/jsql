@@ -9,6 +9,7 @@ import io.jsql.sql.handler.AllHanders;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -20,10 +21,11 @@ import org.springframework.stereotype.Component;
 public class MysqlPacketHander extends ChannelInboundHandlerAdapter {
     @Autowired
     AllHanders allHanders;
-
     OConnection connection;
     @Autowired
    private OconnectionPool pool;
+    @Autowired
+    ApplicationContext applicationContext;
     MysqlPacketHander() {
     }
     @Override
@@ -58,7 +60,7 @@ public class MysqlPacketHander extends ChannelInboundHandlerAdapter {
     }
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        connection = new OConnection(allHanders);
+        connection = applicationContext.getBean(OConnection.class);
         connection.channelHandlerContext = (ctx);
         //发送握手包
         connection.register();

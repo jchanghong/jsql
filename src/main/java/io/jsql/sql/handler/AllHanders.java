@@ -16,7 +16,6 @@ import java.util.Map;
  * Created by 长宏 on 2017/5/3 0003.
  */
 @Component
-@Order(1)
 public class AllHanders {
     @Autowired
     private List<SqlStatementHander> handerList;

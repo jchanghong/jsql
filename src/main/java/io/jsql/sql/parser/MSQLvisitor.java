@@ -14,15 +14,23 @@ import io.jsql.sql.handler.data_define.*;
 import io.jsql.sql.handler.data_mannipulation.*;
 import io.jsql.sql.handler.utilstatement.HelpStatement;
 import io.jsql.sql.handler.utilstatement.Usedatabase;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 /**
  * Created by 长宏 on 2017/3/19 0019.
  * 不再使用
  */
+@Component
+@Scope("prototype")
 public class MSQLvisitor extends MySqlASTVisitorAdapter {
-    private final OConnection connection;
+    private  OConnection connection;
 
-    public MSQLvisitor(OConnection connection) {
+    public void setConnection(OConnection connection) {
+        this.connection = connection;
+    }
+
+    public MSQLvisitor() {
         this.connection = connection;
     }
 
@@ -723,8 +731,10 @@ OR Variable_name = 'init_connect'*/
 
     @Override
     public boolean visit(SQLSelectStatement astNode) {
-        OConnection.sqlStatementHander = new MSelectHandler();
-        OConnection.sqlStatementHander.handle(astNode, connection);
+//        OConnection.sqlStatementHander = new MSelectHandler();
+//        OConnection.sqlStatementHander.handle(astNode, connection);
+        connection.writeok();
+
         return false;
     }
 

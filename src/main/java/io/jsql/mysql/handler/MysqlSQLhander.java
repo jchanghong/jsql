@@ -16,27 +16,36 @@ import io.jsql.sql.handler.utilstatement.ExplainStatement;
 import io.jsql.sql.parser.MSQLvisitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 
 /**
  * Created by 长宏 on 2017/4/30 0030.
  */
+@Component
+@Scope("prototype")
 public class MysqlSQLhander implements SQLHander {
     private static final Logger logger = LoggerFactory
             .getLogger(MysqlSQLhander.class);
-
-    private final OConnection source;
-    private final MySqlASTVisitor mySqlASTVisitor;
+    private  OConnection source;
+    @Autowired
+    ApplicationContext applicationContext;
+    private  MSQLvisitor mySqlASTVisitor;
     protected Boolean readOnly;
     private Exception exception;
+    @Autowired
     private AllHanders allHanders;
-    public MysqlSQLhander(OConnection source, AllHanders allHanders) {
-        this.allHanders = allHanders;
-        this.source = source;
-        mySqlASTVisitor = new MSQLvisitor(source);
+    public MysqlSQLhander( ) {
     }
-
+    @PostConstruct
+    void init() {
+        mySqlASTVisitor = applicationContext.getBean(MSQLvisitor.class);
+    }
     public void setReadOnly(Boolean readOnly) {
         this.readOnly = readOnly;
     }
@@ -68,6 +77,12 @@ public class MysqlSQLhander implements SQLHander {
         //druid支持的语句就用上面的方法语句处理，如果不支持，就会有异常，就自己写代码解析sql语句，处理。
         //下面是drop event语句的例子，这个例子druid不支持，所以自己写
         handleotherStatement(sql, c);
+    }
+
+    @Override
+    public void setConnection(OConnection connection) {
+        source = connection;
+        mySqlASTVisitor.setConnection(source);
     }
 
     private void handleotherStatement(String sql, OConnection c) {

@@ -6,6 +6,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
@@ -34,6 +35,8 @@ public class Maintest implements CommandLineRunner {
         System.out.println("maintest()");
     }
 
+    @Autowired
+    Environment environment;
     public static void main(String[] args) {
         try {
             SpringApplication.run(Maintest.class, args);
@@ -42,18 +45,22 @@ public class Maintest implements CommandLineRunner {
         }
 
     }
-
     @Autowired
-    Environment environment;
+    ApplicationContext applicationContext;
     @Autowired
     CacheManager cacheManager;
     @Override
     public void run(String... strings) throws Exception {
         logger.info(environment.getProperty("server.port"));
+        for (int i = 0; i < 100; i++) {
+            applicationContext.getBean(bean3.class);
+        }
         bean2.getBean1();
         bean2.getBean1();
         bean2.getBean1();
         logger.info(list.contains(bean1));
         logger.info(list.contains(bean2));
+        logger.info(applicationContext.getBeanDefinitionNames().length);
+
     }
 }

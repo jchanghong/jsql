@@ -106,6 +106,7 @@ public class OTable implements Table{
     @Override
     public List<String> getalltable(String dbname) throws StorageException {
         ODatabaseDocument document = dbadmin.getdb(dbname);
+        document.activateOnCurrentThread();
         List<String> strings = new ArrayList<>();
         document.getMetadata().getSchema().getClasses().forEach(a -> strings.add(a.getName()));
         dbadmin.close(document);

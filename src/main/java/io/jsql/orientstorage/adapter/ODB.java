@@ -12,6 +12,7 @@ import io.jsql.orientstorage.MdatabasePool;
 import io.jsql.sql.OConnection;
 import io.jsql.storage.DB;
 import io.jsql.storage.StorageException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +31,7 @@ public class ODB implements DB {
 
     @Value("${db.dir}")
     private String dbDIR="databases";
+    @Autowired
     private MdatabasePool pool;
  public    ODB() {
         StringBuilder builder = new StringBuilder("embedded:");
@@ -38,13 +40,14 @@ public class ODB implements DB {
         builder.append("/");
         OrientDBConfig confi = OrientDBConfig.defaultConfig();
         orientDB = new OrientDB(builder.toString(), null, null, confi);
-     pool = new MdatabasePool(orientDB);
+//     pool = new MdatabasePool(orientDB);
 
     }
 
     @PostConstruct
     void post() {
         OConnection.DB_ADMIN = this;
+        pool.setOrientDB(orientDB);
     }
 
   private   ExecutorService executorService = Executors.newFixedThreadPool(2);
@@ -152,6 +155,20 @@ public class ODB implements DB {
         } catch (Exception e) {
 //            e.printStackTrace();
         }
+    }
+
+    @Override
+    public void exesqls(List<String> sqls) {
+        executorService.execute(()->{
+          sqls.forEach(sql->{
+//              try {
+////                  exesqlforResult(sql, "null");
+//              } catch (StorageException e) {
+//                  e.printStackTrace();
+//              }
+              System.out.println("exe sql:" + sql);
+          });
+        });
     }
 
     @Override

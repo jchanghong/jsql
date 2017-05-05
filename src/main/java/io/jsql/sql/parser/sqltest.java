@@ -12,7 +12,7 @@ public class sqltest {
         String sql = "show tables;";
         MySqlStatementParser parser = new MySqlStatementParser(sql);
         SQLStatement mySqlStatement = parser.parseStatement();
-        MSQLvisitor visitor = new MSQLvisitor(null);
+        MSQLvisitor visitor = new MSQLvisitor();
         mySqlStatement.accept(visitor);
 
     }

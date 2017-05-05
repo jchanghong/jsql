@@ -33,6 +33,8 @@ import io.jsql.storage.DB;
 import io.jsql.storage.StorageException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import java.io.UnsupportedEncodingException;
 
@@ -40,18 +42,28 @@ import java.io.UnsupportedEncodingException;
  * 前端命令处理器
  * 处理命令包
  */
+@Component
+@Scope("prototype")
 public class MysqlCommandHandler implements MysqlPacketHander {
     public static Logger logger = LoggerFactory.getLogger(MysqlCommandHandler.class.getSimpleName());
 
-    protected final OConnection source;
+    private   OConnection source;
 
-    public MysqlCommandHandler(OConnection connection) {
-        this.source = connection;
+    public MysqlCommandHandler( ) {
+    }
+
+    public void setSource(OConnection source) {
+        this.source = source;
     }
 
     @Override
     public void hander(MySQLPacket mySQLPacket) {
         handle((CommandPacket) mySQLPacket);
+    }
+
+    @Override
+    public void setConnection(OConnection connection) {
+        source = connection;
     }
 
     public void handle(CommandPacket data) {
