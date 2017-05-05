@@ -3,6 +3,7 @@ package io.jsql.storage;
 import com.orientechnologies.orient.core.db.document.ODatabaseDocument;
 import com.orientechnologies.orient.core.record.OElement;
 import com.orientechnologies.orient.core.sql.executor.OResult;
+import io.jsql.hazelcast.SqlUpdateLog;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,7 +33,6 @@ public interface  DB {
 
     abstract public void close();
 
-    void exesqls(List<String> sqls);
-
+    void exe(String sql, String db);
     void close(ODatabaseDocument databaseDocument);
 }

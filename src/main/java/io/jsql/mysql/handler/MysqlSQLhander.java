@@ -3,7 +3,10 @@ package io.jsql.mysql.handler;
 import com.alibaba.druid.sql.ast.SQLStatement;
 import com.alibaba.druid.sql.dialect.mysql.parser.MySqlStatementParser;
 import com.alibaba.druid.sql.dialect.mysql.visitor.MySqlASTVisitor;
+import com.google.common.collect.Lists;
 import io.jsql.config.ErrorCode;
+import io.jsql.hazelcast.MyHazelcast;
+import io.jsql.hazelcast.SqlUpdateLog;
 import io.jsql.sql.OConnection;
 import io.jsql.sql.handler.AllHanders;
 import io.jsql.sql.handler.SqlStatementHander;
@@ -50,6 +53,8 @@ public class MysqlSQLhander implements SQLHander {
         this.readOnly = readOnly;
     }
 
+    @Autowired
+    MyHazelcast myHazelcast;
     @Override
     public void handle(String sql) {
         logger.info(sql);
@@ -62,6 +67,9 @@ public class MysqlSQLhander implements SQLHander {
             MySqlStatementParser parser = new MySqlStatementParser(sql);
             sqlStatement = parser.parseStatement();
             SqlStatementHander hander = allHanders.handerMap.get(sqlStatement.getClass());
+            if (isupdatesql(sql)) {
+                myHazelcast.exeSql(sql, source.schema==null?"":source.schema);
+            }
             if (hander != null) {
                 hander.handle(sqlStatement, c);
                 return;
@@ -69,6 +77,43 @@ public class MysqlSQLhander implements SQLHander {
             else {
                 sqlStatement.accept(mySqlASTVisitor);
             }
+
+            exception = null;
+        } catch (Exception e) {//如果不是合法的mysql语句，就报错
+//            e.printStackTrace();
+            exception = e;
+//            return;
+        }
+        if (exception == null) {
+            if (isupdatesql(sql)) {
+                myHazelcast.exeSql(sql, source.schema==null?"":source.schema);
+            }
+        }
+        //druid支持的语句就用上面的方法语句处理，如果不支持，就会有异常，就自己写代码解析sql语句，处理。
+        //下面是drop event语句的例子，这个例子druid不支持，所以自己写
+        handleotherStatement(sql, c);
+    }
+
+    public void handle(SqlUpdateLog sql) {
+        logger.info(sql.toString());
+        OConnection c = this.source;
+        if (logger.isDebugEnabled()) {
+            logger.debug(sql.toString());
+        }
+        SQLStatement sqlStatement;
+        try {
+            MySqlStatementParser parser = new MySqlStatementParser(sql.sql);
+            sqlStatement = parser.parseStatement();
+            SqlStatementHander hander = allHanders.handerMap.get(sqlStatement.getClass());
+            if (hander != null) {
+                hander.handle(sqlStatement, c);
+                return;
+            }
+            else {
+                sqlStatement.accept(mySqlASTVisitor);
+            }
+
+            exception = null;
         } catch (Exception e) {//如果不是合法的mysql语句，就报错
 //            e.printStackTrace();
             exception = e;
@@ -76,9 +121,18 @@ public class MysqlSQLhander implements SQLHander {
         }
         //druid支持的语句就用上面的方法语句处理，如果不支持，就会有异常，就自己写代码解析sql语句，处理。
         //下面是drop event语句的例子，这个例子druid不支持，所以自己写
-        handleotherStatement(sql, c);
+        handleotherStatement(sql.sql, c);
     }
-
+    private boolean isupdatesql(String sql) {
+        String sqll = sql.toLowerCase();
+        List<String> list = Lists.newArrayList("delete", "drop", "create", "insert", "update");
+        for (String s : list) {
+            if (sqll.contains(s)) {
+                return true;
+            }
+        }
+        return false;
+    }
     @Override
     public void setConnection(OConnection connection) {
         source = connection;

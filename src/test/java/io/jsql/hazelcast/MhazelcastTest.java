@@ -9,11 +9,11 @@ import static org.junit.Assert.*;
  * Created by 长宏 on 2017/5/5 0005.
  */
 public class MhazelcastTest {
-    @Before
+//    @Before
     public void setUp() throws Exception {
     }
 
-    @After
+//    @After
     public void tearDown() throws Exception {
     }
 

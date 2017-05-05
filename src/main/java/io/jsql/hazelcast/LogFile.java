@@ -43,6 +43,7 @@ public class LogFile {
             randomAccessFile.seek(randomAccessFile.length() == 0 ? 8 : randomAccessFile.length());
             randomAccessFile.writeLong(updateLog.LSN);
             randomAccessFile.writeUTF(updateLog.sql);
+            randomAccessFile.writeUTF(updateLog.db);
             randomAccessFile.seek(0);
             randomAccessFile.writeLong(updateLog.LSN);
         } catch (IOException e) {
@@ -71,7 +72,8 @@ public class LogFile {
             try {
                 long lsn = randomAccessFile.readLong();
                 String sql = randomAccessFile.readUTF();
-                logs.add(new SqlUpdateLog(lsn, sql));
+                String db = randomAccessFile.readUTF();
+                logs.add(new SqlUpdateLog(lsn, sql,db));
             } catch (IOException e) {
 //                e.printStackTrace();
                 break;
@@ -91,11 +93,11 @@ public class LogFile {
     public static void main(String[] args) throws IOException {
 
         LogFile logFile = new LogFile();
-        logFile.write(new SqlUpdateLog(1, "sql"));
+        logFile.write(new SqlUpdateLog(1, "sql","d1"));
         System.out.println(logFile.maxLSN());
-        logFile.write(new SqlUpdateLog(2, "sql2"));
+        logFile.write(new SqlUpdateLog(2, "sql2","d2"));
         System.out.println(logFile.maxLSN());
-        logFile.write(new SqlUpdateLog(3, "sql3"));
+        logFile.write(new SqlUpdateLog(3, "sql3","d3"));
         System.out.println(logFile.maxLSN());
         logFile.getall().forEach(a->System.out.println(a.toString()));
         logFile.close();

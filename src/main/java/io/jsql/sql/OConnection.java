@@ -29,7 +29,6 @@ import io.jsql.config.Versions;
 import io.jsql.mysql.handler.*;
 import io.jsql.mysql.mysql.*;
 import io.jsql.sql.handler.AllHanders;
-import io.jsql.sql.handler.SqlStatementHander;
 import io.jsql.storage.DB;
 import io.jsql.storage.Table;
 import io.jsql.util.RandomUtil;
@@ -39,6 +38,7 @@ import io.netty.channel.ChannelHandlerContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -52,6 +52,7 @@ import java.io.UnsupportedEncodingException;
  * @author changhong.基于orientdb的服务器 ，9999端口连接
  */
 @Component
+@Qualifier("OConnection")
 @Scope("prototype")
 public class OConnection {
     public static DB DB_ADMIN;

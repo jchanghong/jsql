@@ -21,28 +21,35 @@ import java.io.Serializable;
 public class SqlUpdateLog implements Comparable<SqlUpdateLog>,Mlogger,Serializable{
     public long LSN;
     public String sql;
+    public String db;
 
-    public SqlUpdateLog(long LSN, String sql) {
+    public SqlUpdateLog(long LSN, String sql,String db) {
         this.LSN = LSN;
         this.sql = sql;
+        this.db = db;
     }
     @Override
     public int compareTo(SqlUpdateLog o) {
-        return ComparisonChain.start().compare(o.LSN, this.LSN).compare(sql, o.sql).result();
+        return ComparisonChain.start().compare(LSN, o.LSN).result();
     }
     @Override
     public boolean equals(Object obj) {
         SqlUpdateLog updateLog = (SqlUpdateLog) obj;
-        return Objects.equal(obj != null, true) && Objects.equal(updateLog.LSN, LSN) && Objects.equal(updateLog.sql, sql);
+        return Objects.equal(obj != null, true)
+                && Objects.equal(updateLog.LSN, LSN)
+                && Objects.equal(updateLog.sql, sql)
+                && java.util.Objects.equals(updateLog.db, db);
     }
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this).add("LSN", LSN).add("sql", sql).toString();
+        return MoreObjects.toStringHelper(this).
+                add("LSN", LSN).add("sql", sql).add("db",db).
+                toString();
     }
 
     public static void main(String[] args) {
-        SqlUpdateLog sqlUpdateLog = new SqlUpdateLog(1, "ddd");
+        SqlUpdateLog sqlUpdateLog = new SqlUpdateLog(1, "ddd","db");
         System.out.println(sqlUpdateLog.toString());
 
 

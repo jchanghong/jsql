@@ -1,6 +1,7 @@
 package io.jsql;
 
 import com.hazelcast.map.impl.client.MapPortableHook;
+import io.jsql.hazelcast.MyHazelcast;
 import io.jsql.netty.NettyServer;
 import io.jsql.sql.OConnection;
 import org.slf4j.Logger;
@@ -23,7 +24,6 @@ public class SpringMain implements CommandLineRunner {
     @Autowired
     private NettyServer nettyServer;
     private Thread hook;
-
     public static void main(String[] args) {
         SpringApplication.run(SpringMain.class, args);
     }

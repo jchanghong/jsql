@@ -15,6 +15,7 @@
  */
 package io.jsql.netty;
 
+import io.jsql.hazelcast.MyHazelcast;
 import io.jsql.my_config.MyProperties;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
@@ -44,6 +45,8 @@ public final class NettyServer {
     @Autowired
     ApplicationContext applicationContext;
     Logger logger = LoggerFactory.getLogger(NettyServer.class.getName());
+    @Autowired
+    MyHazelcast myHazelcast;
     public  void start() throws Exception {
         logger.info("port is " + PORT);
         // Configure the server.
@@ -71,6 +74,7 @@ public final class NettyServer {
             ChannelFuture f = b.bind(PORT).sync();
             // Wait until the server socket is closed.
             logger.info("server start  complete.................... " );
+            myHazelcast.inits();
             f.channel().closeFuture().sync();
         } finally {
             // Shut down all event loops to terminate all threads.

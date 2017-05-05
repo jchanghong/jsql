@@ -60,7 +60,7 @@ public class MysqlPacketHander extends ChannelInboundHandlerAdapter {
     }
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        connection = applicationContext.getBean(OConnection.class);
+        connection = (OConnection) applicationContext.getBean("OConnection");
         connection.channelHandlerContext = (ctx);
         //发送握手包
         connection.register();

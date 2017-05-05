@@ -1,6 +1,5 @@
 package io.jsql.orientstorage.adapter;
 
-import com.orientechnologies.orient.core.db.ODatabasePool;
 import com.orientechnologies.orient.core.db.ODatabaseType;
 import com.orientechnologies.orient.core.db.OrientDB;
 import com.orientechnologies.orient.core.db.OrientDBConfig;
@@ -17,7 +16,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Stream;
@@ -158,17 +158,8 @@ public class ODB implements DB {
     }
 
     @Override
-    public void exesqls(List<String> sqls) {
-        executorService.execute(()->{
-          sqls.forEach(sql->{
-//              try {
-////                  exesqlforResult(sql, "null");
-//              } catch (StorageException e) {
-//                  e.printStackTrace();
-//              }
-              System.out.println("exe sql:" + sql);
-          });
-        });
+    public void exe(String sql, String db) {
+
     }
 
     @Override
