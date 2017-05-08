@@ -30,6 +30,19 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 
 /**
+ * EOF_Packet
+ If CLIENT_PROTOCOL_41 is enabled, the EOF packet contains a warning count and status flags.
+
+ Note
+ In the MySQL client/server protocol, the EOF_Packet and OK_Packet packets serve the same purpose, to mark the end of a query execution result. Due to changes in MySQL 5.7 in the OK_Packet packets (such as session state tracking), and to avoid repeating the changes in the EOF_Packet packet, the OK_Packet is deprecated as of MySQL 5.7.5.
+ Warning
+ The EOF_Packet packet may appear in places where a Protocol::LengthEncodedInteger may appear. You must check whether the packet length is less than 9 to make sure that it is a EOF_Packet packet.
+ The Payload of an EOF Packet
+ Type	Name	Description
+ int<1>	header	0xFE EOF packet header
+ if capabilities & CLIENT_PROTOCOL_41 {
+ int<2>	warnings	number of warnings
+ int<2>	status_flags	SERVER_STATUS_flags_enum
  * From Server To Client, at the end of a series of Field Packets, and at the
  * end of a series of Data Packets.With prepared statements, EOF Packet can also
  * end parameter information, which we'll describe later.

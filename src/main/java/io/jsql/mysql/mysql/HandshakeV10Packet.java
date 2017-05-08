@@ -30,6 +30,21 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 
 /**
+ * Connection Phase
+ The Connection Phase performs these tasks:
+
+ exchange the capabilities of client and server
+ setup SSL communication channel if requested
+ authenticate the client against the server
+ It starts with the client connect()ing to the server which may send a ERR packet and finish the handshake or
+ send a Initial Handshake Packet which the client answers with a Handshake Response Packet. At this stage
+ client can request SSL connection, in which case an SSL communication channel
+ is established before client sends its authentication response.
+
+ Note
+ In case the server sent a ERR packet as first packet it will happen before the
+ client and server negotiated any capabilities. Therefore the ERR packet will not contain the SQL-state.
+
  * From jsql server to client during initial handshake.
  * <p>
  * <pre>
