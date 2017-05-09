@@ -85,6 +85,7 @@ public class OConnection {
     private AllHanders allHanders;
     @Autowired
     ApplicationContext applicationContext;
+    public String id;
 
     @PostConstruct
     void init() {
@@ -228,10 +229,8 @@ public class OConnection {
 
     @Override
     public String toString() {
-//        return "OConnection [id=" + id + ", schema=" + schema + ", host="
-//                + host + ", user=" + user + ",txIsolation=" + txIsolation
-//                + ", autocommit=" + autocommit + ", schema=" + schema + "]";
-        return super.toString();
+        return "OConnection [id=" + id + ", schema=" + schema + ", user=" + user + ",txIsolation=" + txIsolation
+                + ", autocommit=" + autocommit + ", schema=" + schema + "]";
     }
 
     public void writeok() {
@@ -286,11 +285,6 @@ public class OConnection {
 
     public ByteBuf allocate() {
         return Unpooled.buffer(256);
-    }
-
-    public void removebuff(ByteBuf buf) {
-        buf.release();
-        buf = null;
     }
 
     private int getServerCapabilities() {
