@@ -16,12 +16,7 @@ public class OconnectionPool {
     private Set<OConnection> oConnections = new HashSet<>();
 
     public boolean checkMax() {
-        if (max == 0) {
-            return true;
-        }
-        else {
             return oConnections.size() <= max;
-        }
     }
 
     public void add(OConnection connection) {
