@@ -25,8 +25,8 @@ public class HelpStatement {
             MSelect1Response.response(c, "help use", Collections.singletonList("use database ,比如use db;"));
             return;
         }
-        if (helpstatment.contains("show")) {
-            MSelect1Response.response(c, "help show", Collections.singletonList("SHOW DATABASES [LIKE wild]\n" +
+        if (helpstatment.contains("showdb")) {
+            MSelect1Response.response(c, "help showdb", Collections.singletonList("SHOW DATABASES [LIKE wild]\n" +
                     "or SHOW TABLES [FROM db_name] [LIKE wild]\n" +
                     "or SHOW COLUMNS FROM tbl_name [FROM db_name] [LIKE wild]\n" +
                     "or SHOW INDEX FROM tbl_name [FROM db_name]\n" +

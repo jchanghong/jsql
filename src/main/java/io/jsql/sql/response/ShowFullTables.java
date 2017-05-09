@@ -16,7 +16,7 @@
 //import java.util.regex.Pattern;
 //
 ///**
-// * show tables impl
+// * showdb tables impl
 // *
 // * @author yanglixue
 // */
@@ -41,7 +41,7 @@
 ////        String cSchema = showSchemal == null ? c.getSchema() : showSchemal;
 ////        SchemaConfig schema = MycatServer.config.getSchemas().get(cSchema);
 ////        if (schema != null) {
-////            //不分库的schema，show tables从后端 mysql中查
+////            //不分库的schema，showdb tables从后端 mysql中查
 ////            String node = schema.getDataNode();
 ////            if (!Strings.isNullOrEmpty(node)) {
 //////                c.execute(stmt, ServerParse.SHOW);

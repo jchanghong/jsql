@@ -18,7 +18,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * show tables impl
+ * showdb tables impl
  *
  * @author yanglixue
  */

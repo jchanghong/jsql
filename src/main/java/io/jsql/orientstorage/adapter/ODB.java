@@ -7,6 +7,7 @@ import com.orientechnologies.orient.core.db.document.ODatabaseDocument;
 import com.orientechnologies.orient.core.record.OElement;
 import com.orientechnologies.orient.core.sql.executor.OResult;
 import com.orientechnologies.orient.core.sql.executor.OResultSet;
+import io.jsql.cache.MCache;
 import io.jsql.orientstorage.MdatabasePool;
 import io.jsql.sql.OConnection;
 import io.jsql.storage.DB;
@@ -66,6 +67,7 @@ public class ODB implements DB {
         if (!orientDB.exists(dbname)) {
             throw new StorageException("db not exits");
         }
+        MCache.showdb().clear();
         orientDB.drop(dbname);
     }
 
@@ -87,6 +89,7 @@ public class ODB implements DB {
         if (orientDB.exists(dbname)) {
             throw new StorageException("db exits");
         }
+        MCache.showdb().clear();
         orientDB.create(dbname, ODatabaseType.PLOCAL);
     }
 

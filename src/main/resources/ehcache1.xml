@@ -21,6 +21,14 @@
     <cache alias="db" uses-template="myDefaults">
         <heap unit="entries">100</heap>
     </cache>
+    <cache alias="select" uses-template="myDefaults">
+        <value-type>io.jsql.sql.handler.MyResultSet</value-type>
+        <heap unit="entries">1000</heap>
+    </cache>
+    <cache alias="showdb" uses-template="myDefaults">
+        <value-type>io.jsql.sql.handler.MyResultSet</value-type>
+        <heap unit="entries">1000</heap>
+    </cache>
     <cache alias="table" uses-template="myDefaults">
         <heap unit="entries">100</heap>
     </cache>

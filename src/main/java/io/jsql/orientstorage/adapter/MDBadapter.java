@@ -191,7 +191,7 @@
 //    /**
 //     * Exesql string.
 //     *
-//     * @param sql the sql 不是select语句或者show语句 ,show dddd
+//     * @param sql the sql 不是select语句或者show语句 ,showdb dddd
 //     * @return the string
 //     * @throws MException the orient exception
 //     */

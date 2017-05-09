@@ -44,7 +44,7 @@ public final class ShowHandler {
     }
 
     public static void showdatabase(MySqlShowDatabasesStatement x, OConnection c) {
-        MShowDatabases.response(c);
+//        MShowDatabases.response(c);
     }
 
     public static void showwarnings(MySqlShowWarningsStatement x, OConnection connection) {
