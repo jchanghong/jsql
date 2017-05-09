@@ -57,7 +57,11 @@ public class MyHazelcast implements ItemListener<SqlUpdateLog>{
     public MyHazelcast() {
     }
 
-  public   void inits() {
+    public HazelcastInstance getHazelcastInstance() {
+        return hazelcastInstance;
+    }
+
+    public   void inits() {
         Config config = new Config();
         hazelcastInstance = Hazelcast.newHazelcastInstance(config);
         localmember = hazelcastInstance.getCluster().getLocalMember();

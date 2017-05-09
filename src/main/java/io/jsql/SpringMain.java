@@ -40,11 +40,13 @@ public class SpringMain implements CommandLineRunner {
             System.exit(-1);
         }
     }
-
+    @Autowired
+    MyHazelcast myHazelcast;
    private  class Mhook extends Thread {
         @Override
         public void run() {
-           logger.info("in shutdow hook.........");
+            myHazelcast.getHazelcastInstance().shutdown();
+            logger.info("in shutdow hook.........");
             OConnection.DB_ADMIN.close();
         }
     }

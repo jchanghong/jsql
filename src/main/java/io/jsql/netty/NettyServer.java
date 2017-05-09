@@ -47,6 +47,7 @@ public final class NettyServer {
     Logger logger = LoggerFactory.getLogger(NettyServer.class.getName());
     @Autowired
     MyHazelcast myHazelcast;
+
     public  void start() throws Exception {
         logger.info("port is " + PORT);
         // Configure the server.

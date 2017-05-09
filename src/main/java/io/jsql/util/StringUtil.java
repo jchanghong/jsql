@@ -23,18 +23,19 @@
  */
 package io.jsql.util;
 
+import com.google.common.base.MoreObjects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
+import java.util.Objects;
 import java.util.Random;
 
 /**
  * @author jsql
  */
 public class StringUtil {
-    public static final String TABLE_COLUMN_SEPARATOR = ".";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(StringUtil.class);
     private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
@@ -45,28 +46,6 @@ public class StringUtil {
             'b', 'n', 'm', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P',
             'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'Z', 'X', 'C', 'V',
             'B', 'N', 'M'};
-
-    /**
-     * 字符串hash算法：s[0]*31^(n-1) + s[1]*31^(n-2) + ... + s[n-1] <br>
-     * 其中s[]为字符串的字符数组，换算成程序的表达式为：<br>
-     * h = 31*h + s.charAt(i); => h = (h << 5) - h + s.charAt(i); <br>
-     *
-     * @param start hash for s.substring(start, end)
-     * @param end   hash for s.substring(start, end)
-     */
-    public static long hash(String s, int start, int end) {
-        if (start < 0) {
-            start = 0;
-        }
-        if (end > s.length()) {
-            end = s.length();
-        }
-        long h = 0;
-        for (int i = start; i < end; ++i) {
-            h = (h << 5) - h + s.charAt(i);
-        }
-        return h;
-    }
 
     public static byte[] encode(String src, String charset) {
         if (src == null) {
