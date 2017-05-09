@@ -38,10 +38,8 @@ import io.jsql.sql.handler.MyResultSet;
 import io.jsql.sql.handler.SqlStatementHander;
 import io.jsql.sql.response.*;
 import io.jsql.sql.util.Mcomputer;
-import io.jsql.storage.StorageException;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -153,106 +151,106 @@ public final class MSelectHandler extends SqlStatementHander{
         }
         return null;
     }
-     private void handle(SQLSelectStatement selectStatement, OConnection c) {
-
-        MySqlSelectQueryBlock queryBlock = (MySqlSelectQueryBlock) selectStatement.getSelect().getQuery();
-        if (queryBlock.getFrom() != null) {
-            MorientSelectResponse.responseselect(c, selectStatement.toString(), selectStatement);
-            return;
-        }
-        SQLSelectItem selectItem = queryBlock.getSelectList().get(0);
-        boolean number = true;
-        try {
-            Double.parseDouble(selectItem.toString());
-        } catch (Exception e) {
-//            e.printStackTrace();
-            number = false;
-        }
-        if (number) {
-            MSelect1Response.response(c, selectItem.toString(), Collections.singletonList(selectItem.toString()));
-            return;
-        }
-        if (selectItem.getExpr() instanceof SQLBinaryOpExpr) {
-//            return
-//            handleopexpr((SQLBinaryOpExpr) selectItem.getExpr());
-
-        }
-
-        SQLExpr sqlExpr = selectItem.getExpr();
-//        if (selectStatement.toString().contains("@") && selectStatement.toString().contains("AS")) {
-//            List<String> column = selectVariables.getcolumn(selectStatement);
-//            List<String> value = selectVariables.getbs(selectStatement, column);
-//            MselectNResponse.response(c, column, value);
+//     private void handle(SQLSelectStatement selectStatement, OConnection c) {
+//
+//        MySqlSelectQueryBlock queryBlock = (MySqlSelectQueryBlock) selectStatement.getSelect().getQuery();
+//        if (queryBlock.getFrom() != null) {
+//            MorientSelectResponse.responseselect(c, selectStatement.toString(), selectStatement);
 //            return;
 //        }
-        String what = sqlExpr.toString().toUpperCase();
-        if (what.contains("VERSION_COMMENT")) {
-            MSelectVersionComment.response(c);
-            return;
-        }
-        if (what.contains("DATABASE")) {
-            MSelectDatabase.response(c);
-            return;
-        }
-        if (what.contains("CONNECTION_ID")) {
-            MSelectConnnectID.response(c);
-            return;
-        }
-        if (what.contains("USER")) {
-            MSelectUser.response(c);
-            return;
-        }
-        if (what.contains("VERSION")) {
-            MSelectVersion.response(c);
-            return;
-        }
-        //SESSION_INCREMENT
-        if (what.contains("INCREMENT")) {
-            MSessionIncrement.response(c);
-            return;
-        }
-        //SESSION_ISOLATION
-        if (what.contains("ISOLATION")) {
-            SessionIsolation.response(c);
-            return;
-        }
-        if (what.contains("LAST_INSERT_ID")) {
-            MSelectLastInsertId.response(c, selectStatement.toString(), 1);
-            return;
-        }
-        if (what.contains("IDENTITY")) {
-            MSelectIdentity.response(c, selectStatement.toString(), 1, "mysql");
-            return;
-        }
-        if (what.contains("SELECT_VAR_ALL")) {
-            ShowVariables.response(c);
-            return;
-
-        }
-        //SESSION_TX_READ_ONLY
-        if (what.contains("TX_READ_ONLY")) {
-            MSelectTxReadOnly.response(c);
-            return;
-        }
-        what = sqlExpr.toString();
-        if (what.contains("@@")) {
-            int index = what.indexOf(".");
-            if (index != -1) {
-                what = what.substring(index + 1);
-                what = "select value from " + MvariableTable.tablename + "  where Variable_name='" + what + "';";
-                try {
-                    Stream<OElement> documents = OConnection.DB_ADMIN.query(what, Minformation_schama.dbname);
-                    MSelect1Response.response(c, what, Arrays.asList(documents.findAny().get().getProperty("value")));
-                    return;
-                } catch (StorageException e) {
-                    e.printStackTrace();
-                    c.writeErrMessage(e.getMessage());
-                    return;
-                }
-            }
-        }
-        c.writeNotSurrport();
-    }
+//        SQLSelectItem selectItem = queryBlock.getSelectList().get(0);
+//        boolean number = true;
+//        try {
+//            Double.parseDouble(selectItem.toString());
+//        } catch (Exception e) {
+////            e.printStackTrace();
+//            number = false;
+//        }
+//        if (number) {
+//            MSelect1Response.response(c, selectItem.toString(), Collections.singletonList(selectItem.toString()));
+//            return;
+//        }
+//        if (selectItem.getExpr() instanceof SQLBinaryOpExpr) {
+////            return
+////            handleopexpr((SQLBinaryOpExpr) selectItem.getExpr());
+//
+//        }
+//
+//        SQLExpr sqlExpr = selectItem.getExpr();
+////        if (selectStatement.toString().contains("@") && selectStatement.toString().contains("AS")) {
+////            List<String> column = selectVariables.getcolumn(selectStatement);
+////            List<String> value = selectVariables.getbs(selectStatement, column);
+////            MselectNResponse.response(c, column, value);
+////            return;
+////        }
+//        String what = sqlExpr.toString().toUpperCase();
+//        if (what.contains("VERSION_COMMENT")) {
+//            MSelectVersionComment.response(c);
+//            return;
+//        }
+//        if (what.contains("DATABASE")) {
+//            MSelectDatabase.response(c);
+//            return;
+//        }
+//        if (what.contains("CONNECTION_ID")) {
+//            MSelectConnnectID.response(c);
+//            return;
+//        }
+//        if (what.contains("USER")) {
+//            MSelectUser.response(c);
+//            return;
+//        }
+//        if (what.contains("VERSION")) {
+//            MSelectVersion.response(c);
+//            return;
+//        }
+//        //SESSION_INCREMENT
+//        if (what.contains("INCREMENT")) {
+//            MSessionIncrement.response(c);
+//            return;
+//        }
+//        //SESSION_ISOLATION
+//        if (what.contains("ISOLATION")) {
+//            SessionIsolation.response(c);
+//            return;
+//        }
+//        if (what.contains("LAST_INSERT_ID")) {
+//            MSelectLastInsertId.response(c, selectStatement.toString(), 1);
+//            return;
+//        }
+//        if (what.contains("IDENTITY")) {
+//            MSelectIdentity.response(c, selectStatement.toString(), 1, "mysql");
+//            return;
+//        }
+//        if (what.contains("SELECT_VAR_ALL")) {
+//            ShowVariables.response(c);
+//            return;
+//
+//        }
+//        //SESSION_TX_READ_ONLY
+//        if (what.contains("TX_READ_ONLY")) {
+//            MSelectTxReadOnly.response(c);
+//            return;
+//        }
+//        what = sqlExpr.toString();
+//        if (what.contains("@@")) {
+//            int index = what.indexOf(".");
+//            if (index != -1) {
+//                what = what.substring(index + 1);
+//                what = "select value from " + MvariableTable.tablename + "  where Variable_name='" + what + "';";
+//                try {
+//                    Stream<OElement> documents = OConnection.DB_ADMIN.query(what, Minformation_schama.dbname);
+//                    MSelect1Response.response(c, what, Arrays.asList(documents.findAny().get().getProperty("value")));
+//                    return;
+//                } catch (StorageException e) {
+//                    e.printStackTrace();
+//                    c.writeErrMessage(e.getMessage());
+//                    return;
+//                }
+//            }
+//        }
+//        c.writeNotSurrport();
+//    }
 
     private static Object handleopexpr(SQLBinaryOpExpr sqlBinaryOpExpr) {
         String columnname = sqlBinaryOpExpr.toString();
