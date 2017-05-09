@@ -11,25 +11,21 @@ import io.jsql.storage.StorageException;
  * Created by 长宏 on 2017/3/23 0023.
  * Variable_name  value
  */
-public class MvariableTable {
+ class MvariableTable {
     public final static String tablename = "variables";
     public final static String tablenamestatus = "status";
 
     public static void init_if_notexits() {
-        try {
-            OConnection.DB_ADMIN.createdbSyn(Minformation_schama.dbname);
-        } catch (StorageException e) {
-            e.printStackTrace();
-            System.exit(-1);
-        }
         ODatabaseDocument documentTx = null;
         try {
             documentTx = OConnection.DB_ADMIN.getdb(Minformation_schama.dbname);
         } catch (StorageException e) {
             e.printStackTrace();
+            System.exit(-1);
+
         }
         if (documentTx.getMetadata().getSchema().existsClass(tablename)) {
-            documentTx.close();
+           OConnection.DB_ADMIN.close(documentTx);
         } else {
             OClass oClass = documentTx.getMetadata().getSchema().createClass(tablename);
             OClass oClass1 = documentTx.getMetadata().getSchema().createClass(tablenamestatus);
@@ -51,7 +47,7 @@ public class MvariableTable {
                 document.field("value", e.getValue());
                 document.save();
             });
-            documentTx.close();
+            OConnection.DB_ADMIN.close(documentTx);
         }
     }
 }

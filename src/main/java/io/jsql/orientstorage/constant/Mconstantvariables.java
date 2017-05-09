@@ -54,7 +54,7 @@ import java.util.Map;
  * | tx_isolation             | REPEATABLE-READ                                                                                                                           |
  * | wait_timeout             | 28800                                                                                                                                     |
  */
-public class Mconstantvariables {
+ class Mconstantvariables {
     public static final Map<String, String> MAP = new HashMap<>();
 
     static {

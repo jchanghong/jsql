@@ -1,12 +1,14 @@
 package io.jsql.orientstorage.constant;
 
-import io.jsql.orientstorage.adapter.ODB;
 import io.jsql.sql.OConnection;
 import io.jsql.storage.StorageException;
+import org.springframework.stereotype.Component;
 
 /**
  * Created by 长宏 on 2017/3/23 0023.
  */
+@Component
+
 public class Minformation_schama {
     public static final String dbname = "information_schema";
 
