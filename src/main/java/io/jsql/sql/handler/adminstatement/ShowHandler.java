@@ -241,6 +241,6 @@ public final class ShowHandler {
     }
 
     public static void showtables(SQLShowTablesStatement x, OConnection connection) {
-        MShowTables.response(connection, x, 0);
+//        MShowTables.response(connection, x, 0);
     }
 }
