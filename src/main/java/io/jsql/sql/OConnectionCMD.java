@@ -86,9 +86,6 @@ public class OConnectionCMD extends OConnection{
         return Unpooled.buffer(12);
     }
 
-    @Override
-    public void removebuff(ByteBuf buf) {
-    }
 
     @Override
     public void handerAuth(AuthPacket authPacket) {

@@ -11,7 +11,7 @@ import io.jsql.storage.StorageException;
  * Created by 长宏 on 2017/3/23 0023.
  * Variable_name  value
  */
- class MvariableTable {
+public class MvariableTable {
     public final static String tablename = "variables";
     public final static String tablenamestatus = "status";
 
