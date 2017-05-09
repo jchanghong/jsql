@@ -26,6 +26,7 @@ package io.jsql.sql;
 import io.jsql.config.Capabilities;
 import io.jsql.config.ErrorCode;
 import io.jsql.config.Versions;
+import io.jsql.mysql.CharsetUtil;
 import io.jsql.mysql.handler.*;
 import io.jsql.mysql.mysql.*;
 import io.jsql.sql.handler.AllHanders;
@@ -34,6 +35,8 @@ import io.jsql.storage.Table;
 import io.jsql.util.RandomUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,7 +52,7 @@ import java.io.UnsupportedEncodingException;
 /**
  * The type O connection.
  *
- * @author changhong.基于orientdb的服务器 ，9999端口连接
+ * @author changhong.前端连接
  */
 @Component
 @Qualifier("OConnection")
@@ -97,22 +100,22 @@ public class OConnection {
         this.autocommit = true;
     }
 
-    //    public boolean setCharset(String charset) {
-//
-//        // 修复PHP字符集设置错误, 如： set names 'utf8'
-//        if (charset != null) {
-//            charset = charset.replace("'", "");
-//        }
-//
-//        int ci = CharsetUtil.getIndex(charset);
-//        if (ci > 0) {
-//            this.charset = charset.equalsIgnoreCase("utf8mb4") ? "utf8" : charset;
-//            this.charsetIndex = ci;
-//            return true;
-//        } else {
-//            return false;
-//        }
-//    }
+        public boolean setCharset(String charset) {
+
+        // 修复PHP字符集设置错误, 如： set names 'utf8'
+        if (charset != null) {
+            charset = charset.replace("'", "");
+        }
+
+        int ci = CharsetUtil.getIndex(charset);
+        if (ci > 0) {
+            this.charset = charset.equalsIgnoreCase("utf8mb4") ? "utf8" : charset;
+            this.charsetIndex = ci;
+            return true;
+        } else {
+            return false;
+        }
+    }
     private static byte[] encodeString(String src, String charset) {
         if (src == null) {
             return null;
@@ -134,23 +137,6 @@ public class OConnection {
     public void writeErrMessage(int errno, String msg) {
         writeErrMessage((byte) 1, errno, msg);
     }
-
-//    public boolean isIdleTimeout() {
-//        if (isAuthenticated) {
-//            return super.isIdleTimeout();
-//        } else {
-//            return TimeUtil.currentTimeMillis() > Math.max(lastWriteTime,
-//                    lastReadTime) + AUTH_TIMEOUT;
-//        }
-//    }
-
-//    public int getTxIsolation() {
-//        return txIsolation;
-//    }
-
-//    public void setTxIsolation(int txIsolation) {
-//        this.txIsolation = txIsolation;
-//    }
 
     public void writeErrMessage(byte id, int errno, String msg) {
         ErrorPacket err = new ErrorPacket();
@@ -229,10 +215,15 @@ public class OConnection {
 //            getLoadDataInfileHandler().clear();
 //        }
         if (channelHandlerContext.channel().isActive()) {
-            write(Unpooled.wrappedBuffer(reason.getBytes()));
+            ChannelFuture channelFuture = channelHandlerContext.writeAndFlush(Unpooled.wrappedBuffer(reason.getBytes()));
+            channelFuture.addListener(new ChannelFutureListener() {
+                @Override
+                public void operationComplete(ChannelFuture future) throws Exception {
+                    channelHandlerContext.close();
+                }
+            });
 
         }
-        channelHandlerContext.close();
     }
 
     @Override

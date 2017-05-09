@@ -23,6 +23,7 @@
  */
 package io.jsql.sql;
 
+import com.google.common.base.MoreObjects;
 import io.jsql.mysql.mysql.AuthPacket;
 import io.jsql.mysql.mysql.CommandPacket;
 import io.jsql.mysql.mysql.MySQLPacket;
@@ -65,7 +66,7 @@ public class OConnectionCMD extends OConnection{
 
     @Override
     public String toString() {
-        return null;
+       return MoreObjects.toStringHelper(this).toString();
     }
 
     @Override
