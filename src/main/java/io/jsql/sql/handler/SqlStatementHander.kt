@@ -104,6 +104,7 @@ abstract class SqlStatementHander {
      * @param connection the connection
      */
     private fun onsuccess(data: List<OElement>, columns: List<String>, connection: OConnection) {
+
         DefaultHander.onseccess(data, columns, connection)
     }
 }
