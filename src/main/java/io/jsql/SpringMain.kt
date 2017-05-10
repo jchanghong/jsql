@@ -22,16 +22,15 @@ import org.springframework.core.annotation.Order
 open class SpringMain : CommandLineRunner {
     private val logger = LoggerFactory.getLogger(SpringMain::class.java.name)
     @Autowired
-    private val nettyServer: NettyServer? = null
-    private var hook: Thread? = null
+   lateinit private var nettyServer: NettyServer
+    private var hook=Mhook()
 
     @Throws(Exception::class)
     override fun run(vararg strings: String) {
-        hook = Mhook()
-        Runtime.getRuntime().addShutdownHook(hook!!)
+        Runtime.getRuntime().addShutdownHook(hook)
         logger.info("begin start....................................")
         try {
-            nettyServer!!.start()
+            nettyServer.start()
         } catch (e: Exception) {
             e.printStackTrace()
             System.exit(-1)
@@ -40,13 +39,13 @@ open class SpringMain : CommandLineRunner {
     }
 
     @Autowired
-    internal var myHazelcast: MyHazelcast? = null
+  lateinit  internal var myHazelcast: MyHazelcast
 
     private inner class Mhook : Thread() {
         override fun run() {
-            myHazelcast!!.hazelcastInstance!!.shutdown()
             logger.info("in shutdow hook.........")
-            OConnection.DB_ADMIN!!.close()
+            myHazelcast.hazelcastInstance?.shutdown()
+            OConnection.DB_ADMIN?.close()
         }
     }
 
