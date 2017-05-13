@@ -36,14 +36,13 @@ object Versions {
     /**
      * 服务器版本
      */
-    var SERVER_VERSION = "5.6.29-jsql-1.6-BETA-20160929210846".toByteArray()
+    var SERVER_VERSION = "jsql 1.0".toByteArray()
 
     fun setServerVersion(version: String) {
         val mysqlVersionPart = version.toByteArray()
-        var startIndex: Int
-        startIndex = 0
+        var startIndex: Int=0
         while (startIndex < SERVER_VERSION.size) {
-            if (SERVER_VERSION[startIndex].equals('_'))
+            if (SERVER_VERSION[startIndex] == '_'.toByte())
                 break
             startIndex++
         }

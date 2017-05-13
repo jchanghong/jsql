@@ -16,8 +16,7 @@ import java.util.*
 @Component
 class LogFile {
 
-    internal var randomAccessFile: RandomAccessFile?=null
-
+   lateinit internal var randomAccessFile: RandomAccessFile
     init {
         val file = File(filename)
         if (!file.exists()) {
@@ -38,69 +37,64 @@ class LogFile {
 
     fun write(updateLog: SqlUpdateLog) {
         try {
-            randomAccessFile!!.seek(if (randomAccessFile!!.length().equals( 0)) 8 else randomAccessFile!!.length())
-            randomAccessFile!!.writeLong(updateLog.LSN)
-            randomAccessFile!!.writeUTF(updateLog.sql)
-            randomAccessFile!!.writeUTF(updateLog.db)
-            randomAccessFile!!.seek(0)
-            randomAccessFile!!.writeLong(updateLog.LSN)
+            randomAccessFile.seek(if (randomAccessFile.length()==0L) 8 else randomAccessFile.length())
+            randomAccessFile.writeLong(updateLog.LSN)
+            randomAccessFile.writeUTF(updateLog.sql)
+            randomAccessFile.writeUTF(updateLog.db)
+            randomAccessFile.seek(0)
+            randomAccessFile.writeLong(updateLog.LSN)
         } catch (e: IOException) {
             e.printStackTrace()
         }
 
     }
 
-    fun maxLSN(): Long {
+    fun maxLSN(): Long =
         try {
-            randomAccessFile!!.seek(0)
-            return randomAccessFile!!.readLong()
+            randomAccessFile.seek(0)
+            randomAccessFile.readLong()
         } catch (e: IOException) {
-            //            e.printStackTrace();
-            return 0
+            e.printStackTrace()
+             0
         }
-
-    }
 
     fun getall(): List<SqlUpdateLog> {
         val logs = ArrayList<SqlUpdateLog>()
         try {
-            randomAccessFile!!.seek(8)
+            randomAccessFile.seek(8)
         } catch (e: IOException) {
-            //            e.printStackTrace();
+                        e.printStackTrace();
             return logs
         }
 
         while (true) {
             try {
-                val lsn = randomAccessFile!!.readLong()
-                val sql = randomAccessFile!!.readUTF()
-                val db = randomAccessFile!!.readUTF()
+                val lsn = randomAccessFile.readLong()
+                val sql = randomAccessFile.readUTF()
+                val db = randomAccessFile.readUTF()
                 logs.add(SqlUpdateLog(lsn, sql, db))
             } catch (e: IOException) {
-                //                e.printStackTrace();
+                                e.printStackTrace();
                 break
             }
-
         }
         return logs
     }
 
     fun close() {
         try {
-            randomAccessFile!!.close()
+            randomAccessFile.close()
         } catch (e: IOException) {
             e.printStackTrace()
         }
 
     }
-
+    @Value("\${log.file}")
+     var filename = "./config/log/log.log"
     companion object {
-        @Value("\${log.file}")
-        internal var filename = "./config/log/log.log"
         internal var logger = LoggerFactory.getLogger(LogFile::class.java.name)
         @Throws(IOException::class)
         @JvmStatic fun main(args: Array<String>) {
-
             val logFile = LogFile()
             logFile.write(SqlUpdateLog(1, "sql", "d1"))
             println(logFile.maxLSN())

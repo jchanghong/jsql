@@ -16,11 +16,11 @@ import java.util.HashMap
 @Component
 class AllHanders {
     @Autowired
-    private val handerList: List<SqlStatementHander>? = null
+ lateinit  private var handerList: List<SqlStatementHander>
     var handerMap: MutableMap<Class<*>, SqlStatementHander> = HashMap()
     internal var logger = LoggerFactory.getLogger(AllHanders::class.java.name)
     @PostConstruct
     fun init() {
-        handerList!!.forEach { a -> handerMap.put(a.supportSQLstatement(), a) }
+        handerList.forEach {  handerMap.put(it.supportSQLstatement(), it) }
     }
 }

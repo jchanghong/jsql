@@ -30,7 +30,6 @@ package io.jsql.config
  */
 interface Fields {
     companion object {
-
         /**
          * field data type
          */
