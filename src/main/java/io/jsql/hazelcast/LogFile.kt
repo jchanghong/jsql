@@ -17,6 +17,8 @@ import java.util.*
 class LogFile {
 
    lateinit internal var randomAccessFile: RandomAccessFile
+    @Value("\${log.file}")
+    var filename = "./config/log/log.log"
     init {
         val file = File(filename)
         if (!file.exists()) {
@@ -89,8 +91,7 @@ class LogFile {
         }
 
     }
-    @Value("\${log.file}")
-     var filename = "./config/log/log.log"
+
     companion object {
         internal var logger = LoggerFactory.getLogger(LogFile::class.java.name)
         @Throws(IOException::class)
