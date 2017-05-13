@@ -3,11 +3,8 @@ package io.jsql.cache
 import io.jsql.sql.handler.MyResultSet
 import org.ehcache.Cache
 import org.ehcache.CacheManager
-import org.ehcache.config.Configuration
 import org.ehcache.config.builders.CacheManagerBuilder
 import org.ehcache.xml.XmlConfiguration
-
-import java.net.URL
 
 /**
  * Created by 长宏 on 2017/5/8 0008.
@@ -22,8 +19,7 @@ object MCache {
         cacheManager.init()
     }
 
-    fun showdb(): Cache<String, MyResultSet> {
-        val cache = cacheManager.getCache("showdb", String::class.java, MyResultSet::class.java)
-        return cache
-    }
+    fun showdb(): Cache<String, MyResultSet> =
+            cacheManager.getCache("showdb", String::class.java, MyResultSet::class.java)
+
 }
