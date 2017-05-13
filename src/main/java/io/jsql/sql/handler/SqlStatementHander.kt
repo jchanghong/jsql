@@ -11,7 +11,6 @@ import io.jsql.sql.OConnection
  * 比如Mupdate。Mselect
  */
 abstract class SqlStatementHander {
-    protected var c: OConnection?=null
     /**
      * Support sq lstatement class.
 
@@ -35,41 +34,25 @@ abstract class SqlStatementHander {
 
     /**
      * Handle.
-
      * @param sqlStatement the sql statement
      * *
      * @param connection   the connection
      */
     fun handle(sqlStatement: SQLStatement, connection: OConnection) {
-        this.c = connection
         try {
-            val `object` = handle(sqlStatement)
-            if (`object` == null) {
-                connection.writeok()
-            } else if (`object` is MyResultSet) {
-                val data = `object`
-                onsuccess(data.data, data.columns, connection)
-            } else if (`object` is Long) {
-                onsuccess(`object`, connection)
-            } else if (`object` is String) {
-                connection.writeErrMessage(`object`.toString())
-            } else {
-                onsuccess(connection, `object`)
-                //                onerror(new StorageException("error"), connection);
+            val result = handle(sqlStatement)
+            when (result) {
+                null->connection.writeok()
+                is MyResultSet->onsuccess(result.data,result.columns,connection)
+                is Long->onsuccess(result,connection)
+                is String->connection.writeErrMessage(result)
+                else ->connection.writeok()
             }
         } catch (e: Exception) {
             e.printStackTrace()
             onerror(e, connection)
         }
 
-    }
-
-    private fun onsuccess(connection: OConnection, `object`: Any) {
-        if (`object` is Number) {
-            onsuccess(`object` as Long, connection)
-        } else {
-            connection.writeok()
-        }
     }
 
     /**
