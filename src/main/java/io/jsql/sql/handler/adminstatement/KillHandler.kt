@@ -43,7 +43,7 @@ class KillHandler : SqlStatementHander() {
     }
 
     @Throws(Exception::class)
-    override fun handle(sqlStatement: SQLStatement): Any? {
+    override fun handle0(sqlStatement: SQLStatement, c: OConnection): Any? {
         return null
     }
 

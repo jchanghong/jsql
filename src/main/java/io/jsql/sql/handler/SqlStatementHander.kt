@@ -30,7 +30,7 @@ abstract class SqlStatementHander {
      * @throws Exception the exception
      */
     @Throws(Exception::class)
-    protected abstract fun handle(sqlStatement: SQLStatement): Any?
+    protected abstract fun handle0(sqlStatement: SQLStatement, c: OConnection): Any?
 
     /**
      * Handle.
@@ -40,7 +40,7 @@ abstract class SqlStatementHander {
      */
     fun handle(sqlStatement: SQLStatement, connection: OConnection) {
         try {
-            val result = handle(sqlStatement)
+            val result = handle0(sqlStatement,connection )
             when (result) {
                 null->connection.writeok()
                 is MyResultSet->onsuccess(result.data,result.columns,connection)

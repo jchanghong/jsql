@@ -28,7 +28,7 @@ class CreateDababaseHander : SqlStatementHander() {
     }
 
     @Throws(Exception::class)
-    override fun handle(sqlStatement: SQLStatement): Any? {
+    override fun handle0(sqlStatement: SQLStatement, c: OConnection): Any? {
         val createDatabaseStatement = sqlStatement as SQLCreateDatabaseStatement
         OConnection.DB_ADMIN!!.createdbAsyn(MSQLutil.getdbname(createDatabaseStatement))
         return null

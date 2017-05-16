@@ -1,7 +1,6 @@
 package io.jsql.sql.handler.data_define
 
 import com.alibaba.druid.sql.ast.SQLStatement
-import com.alibaba.druid.sql.ast.expr.SQLHexExpr
 import com.alibaba.druid.sql.ast.statement.SQLAlterViewRenameStatement
 import io.jsql.sql.OConnection
 import io.jsql.sql.handler.SqlStatementHander
@@ -25,7 +24,7 @@ class AlterView : SqlStatementHander() {
     }
 
     @Throws(Exception::class)
-    override fun handle(sqlStatement: SQLStatement): Any? {
+    override fun handle0(sqlStatement: SQLStatement, c: OConnection): Any? {
         return null
     }
 

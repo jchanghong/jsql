@@ -2,7 +2,6 @@ package io.jsql.sql.handler.data_define
 
 import com.alibaba.druid.sql.ast.SQLStatement
 import com.alibaba.druid.sql.ast.statement.SQLCreateViewStatement
-import io.jsql.mysql.handler.SQLHander
 import io.jsql.sql.OConnection
 import io.jsql.sql.handler.SqlStatementHander
 import org.springframework.stereotype.Component
@@ -18,7 +17,7 @@ class CreateView : SqlStatementHander() {
     }
 
     @Throws(Exception::class)
-    override fun handle(sqlStatement: SQLStatement): Any? {
+    override fun handle0(sqlStatement: SQLStatement, c: OConnection): Any? {
         return null
     }
 

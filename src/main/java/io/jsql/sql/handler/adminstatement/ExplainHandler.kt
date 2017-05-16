@@ -8,7 +8,6 @@ import io.jsql.mysql.PacketUtil
 import io.jsql.mysql.mysql.FieldPacket
 import io.jsql.sql.OConnection
 import io.jsql.sql.handler.SqlStatementHander
-import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 
@@ -25,7 +24,7 @@ class ExplainHandler : SqlStatementHander() {
     }
 
     @Throws(Exception::class)
-    override fun handle(sqlStatement: SQLStatement): Any? {
+    override fun handle0(sqlStatement: SQLStatement, c: OConnection): Any? {
         return null
     }
 

@@ -2,11 +2,9 @@ package io.jsql.sql.handler.data_define
 
 import com.alibaba.druid.sql.ast.SQLStatement
 import com.alibaba.druid.sql.ast.statement.SQLDropTableStatement
-import com.alibaba.druid.sql.ast.statement.SQLExprTableSource
 import io.jsql.config.ErrorCode
 import io.jsql.sql.OConnection
 import io.jsql.sql.handler.SqlStatementHander
-import io.jsql.storage.DB
 import io.jsql.storage.StorageException
 import org.springframework.stereotype.Component
 
@@ -21,7 +19,7 @@ class DropTable : SqlStatementHander() {
     }
 
     @Throws(Exception::class)
-    override fun handle(sqlStatement: SQLStatement): Any? {
+    override fun handle0(sqlStatement: SQLStatement, c: OConnection): Any? {
         if (c!!.schema == null) {
             return "没有选择数据库"
         }

@@ -56,7 +56,7 @@ class LogFile {
             randomAccessFile.seek(0)
             randomAccessFile.readLong()
         } catch (e: IOException) {
-            e.printStackTrace()
+//            e.printStackTrace()
              0
         }
 

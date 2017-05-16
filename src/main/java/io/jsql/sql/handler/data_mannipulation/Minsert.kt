@@ -7,7 +7,6 @@ import io.jsql.config.ErrorCode
 import io.jsql.mysql.mysql.OkPacket
 import io.jsql.sql.OConnection
 import io.jsql.sql.handler.SqlStatementHander
-import io.jsql.storage.DB
 import io.jsql.storage.StorageException
 import org.springframework.stereotype.Component
 
@@ -29,7 +28,7 @@ class Minsert : SqlStatementHander() {
     }
 
     @Throws(Exception::class)
-    override fun handle(sqlStatement: SQLStatement): Any? {
+    override fun handle0(sqlStatement: SQLStatement, c: OConnection): Any? {
         if (c!!.schema == null) {
             return "没有选择数据库"
         }

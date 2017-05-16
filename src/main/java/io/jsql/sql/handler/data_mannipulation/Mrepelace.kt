@@ -3,7 +3,6 @@ package io.jsql.sql.handler.data_mannipulation
 import com.alibaba.druid.sql.ast.SQLStatement
 import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlReplaceStatement
 import com.orientechnologies.orient.core.db.document.ODatabaseDocument
-import com.orientechnologies.orient.core.metadata.schema.OClass
 import io.jsql.config.ErrorCode
 import io.jsql.mysql.mysql.OkPacket
 import io.jsql.sql.OConnection
@@ -30,7 +29,7 @@ class Mrepelace : SqlStatementHander() {
     }
 
     @Throws(Exception::class)
-    override fun handle(sqlStatement: SQLStatement): Any? {
+    override fun handle0(sqlStatement: SQLStatement, c: OConnection): Any? {
         if (c!!.schema == null) {
             return "没有选择数据库"
         }

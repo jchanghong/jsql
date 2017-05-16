@@ -26,7 +26,7 @@ class Mloadxml : SqlStatementHander() {
     }
 
     @Throws(Exception::class)
-    override fun handle(sqlStatement: SQLStatement): Any? {
+    override fun handle0(sqlStatement: SQLStatement, c: OConnection): Any? {
         if (c!!.schema == null) {
             return "没有选择数据库"
         }

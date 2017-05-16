@@ -23,10 +23,8 @@
  */
 package io.jsql.sql.handler.data_mannipulation
 
-import com.alibaba.druid.sql.ast.SQLExpr
 import com.alibaba.druid.sql.ast.SQLStatement
 import com.alibaba.druid.sql.ast.expr.SQLBinaryOpExpr
-import com.alibaba.druid.sql.ast.statement.SQLSelectItem
 import com.alibaba.druid.sql.ast.statement.SQLSelectStatement
 import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlSelectQueryBlock
 import com.orientechnologies.orient.core.record.OElement
@@ -40,10 +38,6 @@ import io.jsql.sql.response.*
 import io.jsql.sql.util.Mcomputer
 import org.springframework.stereotype.Component
 
-import java.util.Collections
-import java.util.stream.Collectors
-import java.util.stream.Collectors.*
-import java.util.stream.Stream
 import kotlin.streams.toList
 
 /**
@@ -62,7 +56,7 @@ class MSelectHandler : SqlStatementHander() {
     }
 
     @Throws(Exception::class)
-    override fun handle(sqlStatement: SQLStatement): Any? {
+    override fun handle0(sqlStatement: SQLStatement, c: OConnection): Any? {
         val selectStatement = sqlStatement as SQLSelectStatement
         val queryBlock = selectStatement.select.query as MySqlSelectQueryBlock
         if (queryBlock.from != null) {
