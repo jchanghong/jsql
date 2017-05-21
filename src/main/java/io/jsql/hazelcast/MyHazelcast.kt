@@ -42,7 +42,6 @@ class MyHazelcast : ItemListener<SqlUpdateLog> {
     private var locals_maxlsn: Long = 0
     private var localmember: Member? = null
     private var iAtomic_remote_lsn: IAtomicLong? = null
-    @Autowired
     internal var oConnectionCMD: OConnectionCMD= OConnectionCMD()
     @Autowired
     internal var applicationContext: ApplicationContext? = null

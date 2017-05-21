@@ -3,6 +3,7 @@ package io.jsql.netty
 import io.jsql.mysql.mysql.AuthPacket
 import io.jsql.mysql.mysql.CommandPacket
 import io.jsql.mysql.mysql.MySQLPacket
+import io.netty.channel.ChannelHandler
 import io.netty.channel.ChannelHandlerContext
 import io.netty.channel.ChannelInboundHandlerAdapter
 import org.springframework.context.annotation.Scope
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Component
  * byte到mysql包的解析。
  */
 @Component
+@ChannelHandler.Sharable
 class ByteToMysqlPacket : ChannelInboundHandlerAdapter() {
     @Throws(Exception::class)
     override fun channelRead(ctx: ChannelHandlerContext, msg: Any) {

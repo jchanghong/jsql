@@ -27,6 +27,8 @@ import io.jsql.config.Capabilities
 import io.jsql.config.ErrorCode
 import io.jsql.config.Versions
 import io.jsql.mysql.CharsetUtil
+import io.jsql.mysql.handler.MysqlAuthHander
+import io.jsql.mysql.handler.MysqlCommandHandler
 import io.jsql.mysql.handler.MysqlPacketHander
 import io.jsql.mysql.handler.SQLHander
 import io.jsql.mysql.mysql.*
@@ -37,6 +39,7 @@ import io.netty.buffer.ByteBuf
 import io.netty.buffer.Unpooled
 import io.netty.channel.ChannelHandlerContext
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.context.annotation.Scope
 import org.springframework.stereotype.Component
@@ -53,8 +56,11 @@ import javax.annotation.PostConstruct
 @Scope("prototype")
 open class OConnection {
     val txInterrupted: Boolean
-  lateinit  var authhander: MysqlPacketHander
-   lateinit var comhander: MysqlPacketHander
+    @Autowired
+  lateinit  var authhander: MysqlAuthHander
+    @Autowired
+   lateinit var comhander: MysqlCommandHandler
+    @Autowired
    lateinit var sqlHander: SQLHander
     @Volatile var charsetIndex: Int = 0
     @Volatile var txIsolation: Int = 0
