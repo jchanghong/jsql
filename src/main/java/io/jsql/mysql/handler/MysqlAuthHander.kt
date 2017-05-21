@@ -28,11 +28,8 @@ import io.jsql.mysql.CharsetUtil
 import io.jsql.mysql.mysql.AuthPacket
 import io.jsql.mysql.mysql.MySQLPacket
 import io.jsql.sql.OConnection
-import io.jsql.storage.DB
 import io.netty.buffer.Unpooled
-import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import org.springframework.context.annotation.Scope
 import org.springframework.stereotype.Component
 
 /**
@@ -40,20 +37,15 @@ import org.springframework.stereotype.Component
  * 处理auth包
  */
 @Component
-@Scope("prototype")
-class MysqlAuthHander : MysqlPacketHander {
-    private var source: OConnection? = null
-    fun setSource(source: OConnection) {
-        this.source = source
-    }
+open class MysqlAuthHander : MysqlPacketHander {
 
-    fun handle(auth: AuthPacket) {
+   private fun handle0(auth: AuthPacket, source: OConnection) {
         // check quit packet
         //        if (data.length == QuitPacket.QUIT.length && data[4] == MySQLPacket.COM_QUIT) {
         ////            source.close("quit packet");
         //            return;
         //        }
-        source!!.schema = auth.database
+        source.schema = auth.database
 
         // check user
         //        if (!checkUser(auth.user, source.getHost())) {
@@ -63,9 +55,9 @@ class MysqlAuthHander : MysqlPacketHander {
 
         // check password
         if (!checkPassword(auth.password!!, auth.user!!)) {
-            failure(ErrorCode.ER_ACCESS_DENIED_ERROR, "Access denied for user '" + auth.user + "', because password is error ")
+            failure(ErrorCode.ER_ACCESS_DENIED_ERROR, "Access denied for user '" + auth.user + "', because password is error ", )
         } else {
-            success(auth)
+            success(auth, )
 
         }
 
@@ -117,7 +109,7 @@ class MysqlAuthHander : MysqlPacketHander {
     //                source.getPrivileges().userExists(user, host);
     //    }
 
-    protected fun checkPassword(password: ByteArray, user: String): Boolean {
+    private fun checkPassword(password: ByteArray, user: String): Boolean {
         //        String pass = source.getPrivileges().getPassword(user);
 
         // check null
@@ -171,12 +163,12 @@ class MysqlAuthHander : MysqlPacketHander {
     //        return 0;
     //    }
 
-    protected fun success(auth: AuthPacket) {
-        source!!.authenticated = true
-        source!!.user = auth.user
-        source!!.schema = auth.database
-        source!!.charsetIndex = auth.charsetIndex
-        source!!.charset = CharsetUtil.getCharset(source!!.charsetIndex)
+    private fun success(auth: AuthPacket, source: OConnection) {
+        source.authenticated = true
+        source.user = auth.user
+        source.schema = auth.database
+        source.charsetIndex = auth.charsetIndex
+        source.charset = CharsetUtil.getCharset(source.charsetIndex)
 
         if (LOGGER.isInfoEnabled) {
             val s = StringBuilder()
@@ -190,7 +182,7 @@ class MysqlAuthHander : MysqlPacketHander {
 
         //        ByteBuffer buffer = source.allocate();
         //        source.write(source.writeToBuffer(AUTH_OK, buffer));
-        source!!.write(Unpooled.wrappedBuffer(AUTH_OK))
+        source.write(Unpooled.wrappedBuffer(AUTH_OK))
         //        boolean clientCompress = Capabilities.CLIENT_COMPRESS==(Capabilities.CLIENT_COMPRESS & auth.clientFlags);
         //        boolean usingCompress = false;
         //        if(clientCompress&&usingCompress)
@@ -199,18 +191,14 @@ class MysqlAuthHander : MysqlPacketHander {
         //        }
     }
 
-    protected fun failure(errno: Int, info: String) {
-        LOGGER.error(source!!.toString() + info)
-        source!!.writeErrMessage(2.toByte(), errno, info)
+    private fun failure(errno: Int, info: String, source: OConnection) {
+        LOGGER.error(source.toString() + info)
+        source.writeErrMessage(2.toByte(), errno, info)
     }
 
-    override fun hander(mySQLPacket: MySQLPacket) {
+    override fun hander(mySQLPacket: MySQLPacket, source: OConnection) {
         println(mySQLPacket.toString())
-        handle(mySQLPacket as AuthPacket)
-    }
-
-    override fun setConnection(connection: OConnection) {
-        source = connection
+        handle0(mySQLPacket as AuthPacket,source)
     }
 
     companion object {

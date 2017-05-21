@@ -147,7 +147,7 @@ class MSelectHandler : SqlStatementHander() {
         }
         return null
     }
-    //     private void handle(SQLSelectStatement selectStatement, OConnection c) {
+    //     private void handle0(SQLSelectStatement selectStatement, OConnection c) {
     //
     //        MySqlSelectQueryBlock queryBlock = (MySqlSelectQueryBlock) selectStatement.getSelect().getQuery();
     //        if (queryBlock.getFrom() != null) {

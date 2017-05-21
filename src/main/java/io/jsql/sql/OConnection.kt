@@ -29,7 +29,6 @@ import io.jsql.config.Versions
 import io.jsql.mysql.CharsetUtil
 import io.jsql.mysql.handler.*
 import io.jsql.mysql.mysql.*
-import io.jsql.sql.handler.AllHanders
 import io.jsql.storage.DB
 import io.jsql.storage.Table
 import io.jsql.util.RandomUtil
@@ -55,8 +54,8 @@ import javax.annotation.PostConstruct
 @Scope("prototype")
 open class OConnection {
     val txInterrupted: Boolean
-    var authhander: MysqlPacketHander?=null
-    var comhander: MysqlPacketHander?=null
+  lateinit  var authhander: MysqlPacketHander
+   lateinit var comhander: MysqlPacketHander
     var sqlHander: SQLHander?=null
     @Volatile var charsetIndex: Int = 0
     @Volatile var txIsolation: Int = 0
@@ -292,11 +291,11 @@ open class OConnection {
         }
 
     open fun handerAuth(authPacket: AuthPacket) {
-        authhander!!.hander(authPacket)
+        authhander!!.hander(authPacket, )
     }
 
     open fun handerCommand(commandPacket: CommandPacket) {
-        comhander!!.hander(commandPacket)
+        comhander!!.hander(commandPacket, )
     }
 
     open fun write(byteBuf: ByteBuf) {

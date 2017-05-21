@@ -8,6 +8,5 @@ import io.jsql.sql.OConnection
  * 处理不同的mysql包
  */
 interface MysqlPacketHander {
-    fun hander(mySQLPacket: MySQLPacket)
-    fun setConnection(connection: OConnection)
+    fun hander(mySQLPacket: MySQLPacket, source: OConnection)
 }

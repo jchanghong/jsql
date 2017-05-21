@@ -43,21 +43,12 @@ import java.io.UnsupportedEncodingException
 @Scope("prototype")
 class MysqlCommandHandler : MysqlPacketHander {
 
-    private var source: OConnection? = null
 
-    fun setSource(source: OConnection) {
-        this.source = source
+    override fun hander(mySQLPacket: MySQLPacket, source: OConnection) {
+        handle0(mySQLPacket as CommandPacket,source)
     }
 
-    override fun hander(mySQLPacket: MySQLPacket) {
-        handle(mySQLPacket as CommandPacket)
-    }
-
-    override fun setConnection(connection: OConnection) {
-        source = connection
-    }
-
-    fun handle(data: CommandPacket) {
+  private  fun handle0(data: CommandPacket,source: OConnection) {
         logger.debug(data.toString())
         logger.info("command info")
 
@@ -72,91 +63,91 @@ class MysqlCommandHandler : MysqlPacketHander {
         //            return;
         //        }
         when (data.command) {
-            MySQLPacket.COM_INIT_DB -> initDB(data)
-            MySQLPacket.COM_QUERY -> query(data)
-            MySQLPacket.COM_PING -> ping()
-            MySQLPacket.COM_QUIT -> close("quit cmd")
-            MySQLPacket.COM_PROCESS_KILL -> kill(data)
-            MySQLPacket.COM_STMT_PREPARE -> stmtPrepare(data)
-            MySQLPacket.COM_STMT_SEND_LONG_DATA -> stmtSendLongData(data)
-            MySQLPacket.COM_STMT_RESET -> stmtReset(data)
-            MySQLPacket.COM_STMT_EXECUTE -> stmtExecute(data)
-            MySQLPacket.COM_STMT_CLOSE -> stmtClose(data)
-            MySQLPacket.COM_HEARTBEAT -> heartbeat(data)
-            else -> source!!.writeErrMessage(ErrorCode.ER_UNKNOWN_COM_ERROR,
+            MySQLPacket.COM_INIT_DB -> initDB(data,source)
+            MySQLPacket.COM_QUERY -> query(data,source)
+            MySQLPacket.COM_PING -> ping(source)
+            MySQLPacket.COM_QUIT -> close("quit cmd",source)
+            MySQLPacket.COM_PROCESS_KILL -> kill(data,source)
+            MySQLPacket.COM_STMT_PREPARE -> stmtPrepare(data,source)
+            MySQLPacket.COM_STMT_SEND_LONG_DATA -> stmtSendLongData(data,source)
+            MySQLPacket.COM_STMT_RESET -> stmtReset(data,source)
+            MySQLPacket.COM_STMT_EXECUTE -> stmtExecute(data,source)
+            MySQLPacket.COM_STMT_CLOSE -> stmtClose(data,source)
+            MySQLPacket.COM_HEARTBEAT -> heartbeat(data,source )
+            else -> source.writeErrMessage(ErrorCode.ER_UNKNOWN_COM_ERROR,
                     "Unknown command")
         }
     }
 
-    private fun heartbeat(data: CommandPacket) {
-        source!!.writeok()
+    private fun heartbeat(data: CommandPacket, source: OConnection) {
+        source.writeok()
     }
 
-    private fun stmtClose(data: CommandPacket) {
-        source!!.writeok()
+    private fun stmtClose(data: CommandPacket, source: OConnection) {
+        source.writeok()
     }
 
-    private fun stmtExecute(data: CommandPacket) {
-        source!!.writeok()
+    private fun stmtExecute(data: CommandPacket, source: OConnection) {
+        source.writeok()
     }
 
-    private fun stmtReset(data: CommandPacket) {
-        source!!.writeok()
+    private fun stmtReset(data: CommandPacket, source: OConnection) {
+        source.writeok()
     }
 
-    private fun stmtSendLongData(data: CommandPacket) {
-        source!!.writeok()
+    private fun stmtSendLongData(data: CommandPacket, source: OConnection) {
+        source.writeok()
     }
 
-    private fun stmtPrepare(data: CommandPacket) {
-        source!!.writeok()
+    private fun stmtPrepare(data: CommandPacket, source: OConnection) {
+        source.writeok()
     }
 
-    private fun kill(data: CommandPacket) {
-        source!!.close(data.toString())
-
-    }
-
-    private fun close(s: String) {
-        source!!.close(s)
+    private fun kill(data: CommandPacket, source: OConnection) {
+        source.close(data.toString())
 
     }
 
-    private fun ping() {
-        source!!.writeok()
+    private fun close(s: String, source: OConnection) {
+        source.close(s)
+
     }
 
-    private fun query(data: CommandPacket) {
+    private fun ping( source: OConnection) {
+        source.writeok()
+    }
+
+    private fun query(data: CommandPacket, source: OConnection) {
         val mm = MySQLMessage(data.arg!!)
         mm.position(0)
         try {
-            val sql = mm.readString(source!!.charset)
-            source!!.sqlHander!!.handle(sql!!)
+            val sql = mm.readString(source.charset)
+            source.sqlHander!!.handle(sql!!,source )
         } catch (e: UnsupportedEncodingException) {
-            source!!.writeErrMessage(ErrorCode.ER_UNKNOWN_CHARACTER_SET, "Unknown charset '" + source!!.charset + "'")
+            source.writeErrMessage(ErrorCode.ER_UNKNOWN_CHARACTER_SET, "Unknown charset '" + source.charset + "'")
             e.printStackTrace()
         }
 
     }
 
-    private fun initDB(data: CommandPacket) {
+    private fun initDB(data: CommandPacket, source: OConnection) {
         val mm = MySQLMessage(data.arg!!)
         mm.position(0)
         val db = mm.readString()
         // 检查schema的有效性
         try {
-            if (!OConnection.DB_ADMIN!!.getallDBs().contains(db)) {
-                source!!.writeErrMessage(ErrorCode.ER_BAD_DB_ERROR, "Unknown database '$db'")
+            if (!OConnection.DB_ADMIN.getallDBs().contains(db)) {
+                source.writeErrMessage(ErrorCode.ER_BAD_DB_ERROR, "Unknown database '$db'")
                 return
             }
         } catch (e: StorageException) {
             e.printStackTrace()
-            source!!.writeErrMessage(e.message!!)
+            source.writeErrMessage(e.message!!)
             return
         }
 
-        source!!.schema = db
-        source!!.writeok()
+        source.schema = db
+        source.writeok()
     }
 
     companion object {

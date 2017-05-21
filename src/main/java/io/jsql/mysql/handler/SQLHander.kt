@@ -7,7 +7,5 @@ import io.jsql.sql.OConnection
  * 处理不同的sql语句
  */
 interface SQLHander {
-    fun handle(sql: String)
-
-    fun setConnection(connection: OConnection)
+    fun handle(sql: String, source: OConnection)
 }

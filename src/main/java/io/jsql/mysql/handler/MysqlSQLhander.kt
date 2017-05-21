@@ -2,22 +2,18 @@ package io.jsql.mysql.handler
 
 import com.alibaba.druid.sql.ast.SQLStatement
 import com.alibaba.druid.sql.dialect.mysql.parser.MySqlStatementParser
-import com.alibaba.druid.sql.dialect.mysql.visitor.MySqlASTVisitor
 import com.google.common.collect.Lists
 import io.jsql.config.ErrorCode
 import io.jsql.hazelcast.MyHazelcast
 import io.jsql.hazelcast.SqlUpdateLog
 import io.jsql.sql.OConnection
 import io.jsql.sql.handler.AllHanders
-import io.jsql.sql.handler.SqlStatementHander
-import io.jsql.sql.handler.adminstatement.ShowHandler
 import io.jsql.sql.handler.data_define.*
 import io.jsql.sql.handler.data_mannipulation.Mdo
 import io.jsql.sql.handler.data_mannipulation.Mhandler
 import io.jsql.sql.handler.data_mannipulation.Msubquery
 import io.jsql.sql.handler.utilstatement.ExplainStatement
 import io.jsql.sql.parser.MSQLvisitor
-import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.ApplicationContext
@@ -52,7 +48,7 @@ class MysqlSQLhander : SQLHander {
     @Autowired
     internal var myHazelcast: MyHazelcast? = null
 
-    override fun handle(sql: String) {
+    override fun handle(sql: String, source: OConnection) {
         logger.info(sql)
         val c = this.source
         if (logger.isDebugEnabled) {

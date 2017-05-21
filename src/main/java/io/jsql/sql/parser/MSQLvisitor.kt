@@ -627,7 +627,7 @@ OR Variable_name = 'init_connect'*/
 
     override fun visit(astNode: SQLSelectStatement?): Boolean {
         //        Oconnection!!.sqlStatementHander = new MSelectHandler();
-        //        Oconnection!!.sqlStatementHander.handle(astNode, connection!!);
+        //        Oconnection!!.sqlStatementHander.handle0(astNode, connection!!);
         connection!!!!.writeok()
 
         return false
