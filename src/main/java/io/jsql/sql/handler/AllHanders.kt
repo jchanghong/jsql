@@ -1,14 +1,10 @@
 package io.jsql.sql.handler
 
-import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.CommandLineRunner
-import org.springframework.core.annotation.Order
 import org.springframework.stereotype.Component
-
+import java.util.*
 import javax.annotation.PostConstruct
-import java.util.HashMap
 
 /**
  * Created by 长宏 on 2017/5/3 0003.
@@ -17,7 +13,7 @@ import java.util.HashMap
 class AllHanders {
     @Autowired
  lateinit  private var handerList: List<SqlStatementHander>
-    var handerMap: MutableMap<Class<*>, SqlStatementHander> = HashMap()
+    var handerMap: MutableMap<Class<*>, SqlStatementHander> = IdentityHashMap()
     internal var logger = LoggerFactory.getLogger(AllHanders::class.java.name)
     @PostConstruct
     fun init() {
