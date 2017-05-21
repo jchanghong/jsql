@@ -40,7 +40,6 @@ import java.io.UnsupportedEncodingException
  * 处理命令包
  */
 @Component
-@Scope("prototype")
 class MysqlCommandHandler : MysqlPacketHander {
 
 
