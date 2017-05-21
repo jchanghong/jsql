@@ -327,8 +327,8 @@ open class OConnection {
     }
 
     companion object {
-        var DB_ADMIN: DB? = null
-        var TABLE_ADMIN: Table? = null
+      lateinit  var DB_ADMIN: DB
+       lateinit var TABLE_ADMIN: Table
         private val LOGGER = LoggerFactory
                 .getLogger(OConnection::class.java)
 

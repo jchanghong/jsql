@@ -58,7 +58,7 @@ import java.util.*
 //**/
 //
 internal object Mconstantvariables {
-val MAP:MutableMap<String, String> = HashMap<String, String>()
+val MAP:MutableMap<String, String> = HashMap()
 
 init{
 MAP.put("character_set_client", "utf8")

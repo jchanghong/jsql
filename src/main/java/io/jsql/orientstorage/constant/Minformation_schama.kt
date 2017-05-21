@@ -13,10 +13,10 @@ object Minformation_schama {
 
     fun init_if_notexits() {
         try {
-            if (OConnection.DB_ADMIN!!.getallDBs().contains(dbname)) {
+            if (OConnection.DB_ADMIN.getallDBs().contains(dbname)) {
             } else {
                 try {
-                    OConnection.DB_ADMIN!!.createdbSyn(dbname)
+                    OConnection.DB_ADMIN.createdbSyn(dbname)
                     MvariableTable.init_if_notexits()
                 } catch (e: StorageException) {
                     e.printStackTrace()
