@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/jsql.iml" filepath="$PROJECT_DIR$/jsql.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/jsql_main.iml" filepath="$PROJECT_DIR$/.idea/modules/jsql_main.iml" group="jsql" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/jsql_test.iml" filepath="$PROJECT_DIR$/.idea/modules/jsql_test.iml" group="jsql" />
     </modules>
   </component>
 </project>

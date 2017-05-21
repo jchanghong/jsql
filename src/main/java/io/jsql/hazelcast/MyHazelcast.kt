@@ -30,7 +30,7 @@ class MyHazelcast : ItemListener<SqlUpdateLog> {
     @Volatile private var isreplicating: Boolean = false
     private val remotequenelister = replicationlister()
     var hazelcastInstance: HazelcastInstance? = null
-        private set
+//        private set
     private val localquene = LinkedList<SqlUpdateLog>()
     private val localqueneReplication = LinkedList<SqlUpdateLog>()
     private var remotequene: IQueue<SqlUpdateLog>? = null
