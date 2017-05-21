@@ -323,6 +323,7 @@ open class OConnection {
     companion object {
       lateinit  var DB_ADMIN: DB
        lateinit var TABLE_ADMIN: Table
+        var connectionId:Int=0
         private val LOGGER = LoggerFactory
                 .getLogger(OConnection::class.java)
 
