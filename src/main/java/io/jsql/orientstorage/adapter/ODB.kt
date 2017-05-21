@@ -33,6 +33,7 @@ class ODB : DB {
     var dbDIR = "databases"
     @Autowired
     private val pool: MdatabasePool? = null
+    private val dbcaches:MutableSet<String> = mutableSetOf()
 
     init {
         val builder = StringBuilder("embedded:")
@@ -60,6 +61,7 @@ class ODB : DB {
         if (!orientDB.exists(dbname)) {
             throw StorageException("db not exits")
         }
+        dbcaches.remove(dbname)
         MCache.showdb().clear()
         orientDB.drop(dbname)
     }
@@ -82,6 +84,7 @@ class ODB : DB {
         if (orientDB.exists(dbname)) {
             throw StorageException("db exits")
         }
+        dbcaches.add(dbname)
         MCache.showdb().clear()
         orientDB.create(dbname, ODatabaseType.PLOCAL)
     }
@@ -100,6 +103,11 @@ class ODB : DB {
 
     @Throws(StorageException::class)
     override fun getallDBs(): List<String> {
+        if (dbcaches.size == 0) {
+            dbcaches.addAll(orientDB.list())
+        } else {
+            return dbcaches.toList()
+        }
         return orientDB.list()
     }
 
