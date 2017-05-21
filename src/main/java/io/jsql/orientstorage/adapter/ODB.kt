@@ -27,29 +27,15 @@ import java.util.stream.Stream
  */
 @Service
 class ODB : DB {
-    private val orientDB: OrientDB
-
-    @Value("\${db.dir}")
-    var dbDIR = "databases"
     @Autowired
-    private val pool: MdatabasePool? = null
+  lateinit  private var orientDB: OrientDB
+    @Autowired
+  lateinit  private var pool: MdatabasePool
     private val dbcaches:MutableSet<String> = mutableSetOf()
-
-    init {
-        val builder = StringBuilder("embedded:")
-        builder.append("./")
-        builder.append(dbDIR)
-        builder.append("/")
-        val confi = OrientDBConfig.defaultConfig()
-        orientDB = OrientDB(builder.toString(), null, null, confi)
-        //     pool = new MdatabasePool(orientDB);
-
-    }
 
     @PostConstruct
     internal fun post() {
         OConnection.DB_ADMIN = this
-        pool!!.setOrientDB(orientDB)
     }
 
     private val executorService = Executors.newFixedThreadPool(2)

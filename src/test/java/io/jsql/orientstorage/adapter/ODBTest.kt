@@ -14,7 +14,7 @@ class ODBTest {
     @Throws(Exception::class)
     fun setUp() {
         db = ODB()
-        db!!.dbDIR = "databases"
+//        db!!.dbDIR = "databases"
 
     }
 

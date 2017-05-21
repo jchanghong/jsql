@@ -14,21 +14,14 @@ import java.util.concurrent.CountDownLatch
  * 必须线程安全
  */
 @Component
-class MdatabasePool {
-    private var orientDB: OrientDB? = null
+class MdatabasePool(var orientDB: OrientDB) {
     private val multimap: Multimap<String, ODatabaseDocument>
-
-    fun setOrientDB(orientDB: OrientDB) {
-        this.orientDB = orientDB
-    }
-
     /**
      * Instantiates a new Mdatabase pool.
 
      * @param orientDB the orient db
      */
     init {
-        this.orientDB = orientDB
         val tem = HashMultimap.create<String, ODatabaseDocument>()
         multimap = Multimaps.synchronizedMultimap(tem)
     }
