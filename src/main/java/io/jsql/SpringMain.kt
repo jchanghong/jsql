@@ -46,6 +46,7 @@ open class SpringMain : CommandLineRunner {
             logger.info("in shutdow hook.........")
             myHazelcast.hazelcastInstance?.shutdown()
             OConnection.DB_ADMIN?.close()
+            logger.info("shutdown complete!!!")
         }
     }
 

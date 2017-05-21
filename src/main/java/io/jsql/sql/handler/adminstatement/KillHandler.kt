@@ -51,7 +51,7 @@ class KillHandler : SqlStatementHander() {
 
         fun handle(stmt: String, offset: Int, c: OConnection) {
             val id = stmt.substring(offset).trim { it <= ' ' }
-            if (StringUtil.isEmpty(id)) {
+            if (id.isNullOrEmpty()) {
                 c.writeErrMessage(ErrorCode.ER_NO_SUCH_THREAD, "NULL connection id")
             } else {
                 // get value
@@ -97,7 +97,7 @@ class KillHandler : SqlStatementHander() {
 
         fun handle(x: MySqlKillStatement, c: OConnection) {
             val id = x.threadId.toString()
-            if (StringUtil.isEmpty(id)) {
+            if (id.isNullOrEmpty()) {
                 c.writeErrMessage(ErrorCode.ER_NO_SUCH_THREAD, "NULL connection id")
             } else {
                 // get value

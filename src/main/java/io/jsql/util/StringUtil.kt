@@ -44,15 +44,11 @@ object StringUtil {
     private val CHARS = charArrayOf('1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'z', 'x', 'c', 'v', 'b', 'n', 'm', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'Z', 'X', 'C', 'V', 'B', 'N', 'M')
 
     fun encode(src: String?, charset: String): ByteArray? {
-        if (src == null) {
-            return null
+      return  try {
+             src?.toByteArray(charset(charset))?:null
+        } catch (e: Exception) {
+             null
         }
-        try {
-            return src.toByteArray(charset(charset))
-        } catch (e: UnsupportedEncodingException) {
-            return src.toByteArray()
-        }
-
     }
 
     fun decode(src: ByteArray, charset: String): String {
@@ -61,11 +57,11 @@ object StringUtil {
 
     fun decode(src: ByteArray, offset: Int, length: Int,
                charset: String): String {
-        try {
+     return   try {
 
-            return String(src, offset, length, kotlin.text.charset(charset))
-        } catch (e: UnsupportedEncodingException) {
-            return String(src, offset, length)
+             String(src, offset, length, kotlin.text.charset(charset))
+        } catch (e: Exception) {
+             String(src, offset, length)
         }
 
     }
@@ -81,10 +77,6 @@ object StringUtil {
         return s.toString()
     }
 
-
-    fun isEmpty(str: String?): Boolean {
-        return str == null || str.length == 0
-    }
 
     fun hexString2Bytes(hexString: CharArray?, offset: Int,
                         length: Int): ByteArray? {

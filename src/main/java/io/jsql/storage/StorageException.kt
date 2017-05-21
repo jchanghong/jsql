@@ -13,7 +13,7 @@ class StorageException : IOException {
 
      * @param message the detail message. The detail message is saved for                later retrieval by the [.getMessage] method.
      */
-    constructor(message: String) : super(message) {}
+    constructor(message: String) : super(message)
 
-    constructor(cause: Throwable) : super(cause) {}
+    constructor(cause: Throwable) : super(cause)
 }
