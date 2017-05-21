@@ -42,13 +42,14 @@ import javax.annotation.PostConstruct
 @Service
 class NettyServer {
     @Value("\${server.port}")
-    private val PORT: Int = 0
+    private val PORT: Int = 9999
     @Autowired
-    internal var applicationContext: ApplicationContext? = null
+  lateinit  internal var applicationContext: ApplicationContext
     internal var logger = LoggerFactory.getLogger(NettyServer::class.java.name)
     @Autowired
-    internal var myHazelcast: MyHazelcast? = null
-
+   lateinit internal var myHazelcast: MyHazelcast
+    @Autowired
+   lateinit var bytetomysql:ByteToMysqlPacket
     @Throws(Exception::class)
     fun start() {
         logger.info("port is " + PORT)
@@ -69,7 +70,7 @@ class NettyServer {
                             //p.addLast(new LoggingHandler(LogLevel.INFO));
                             p.addLast("idle", IdleStateHandler(10, 5, 0))
                             p.addLast("decoder", byteToMysqlDecoder)
-                            p.addLast("packet", byteToMysqlPacket)
+                            p.addLast("packet", bytetomysql)
                             p.addLast(group, "hander", mysqlPacketHander)
                         }
                     })
@@ -77,8 +78,8 @@ class NettyServer {
             val f = b.bind(PORT).sync()
             // Wait until the server socket is closed.
             logger.info("server start  complete.................... ")
-            myHazelcast!!.inits()
             Minformation_schama.init_if_notexits()
+            myHazelcast.inits()
             f.channel().closeFuture().sync()
         } finally {
             // Shut down all event loops to terminate all threads.
@@ -86,14 +87,9 @@ class NettyServer {
             workerGroup.shutdownGracefully()
         }
     }
-
     private val byteToMysqlDecoder: ChannelHandler
-        get() = applicationContext!!.getBean(ByteToMysqlDecoder::class.java)
-
-    private val byteToMysqlPacket: ChannelHandler
-        get() = applicationContext!!.getBean(ByteToMysqlPacket::class.java)
-
+        get() = applicationContext.getBean(ByteToMysqlDecoder::class.java)
     private val mysqlPacketHander: ChannelHandler
-        get() = applicationContext!!.getBean(MysqlPacketHander::class.java)
+        get() = applicationContext.getBean(MysqlPacketHander::class.java)
 
 }

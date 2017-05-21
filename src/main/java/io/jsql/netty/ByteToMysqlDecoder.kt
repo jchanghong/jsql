@@ -40,9 +40,9 @@ class ByteToMysqlDecoder : ChannelInboundHandlerAdapter() {
                 System.exit(0)
             }
             buf!!.readBytes(bytes)
-            ctx.fireChannelRead(bytes)
             buf!!.release()
             buf = null
+            ctx.fireChannelRead(bytes)
         }
     }
 

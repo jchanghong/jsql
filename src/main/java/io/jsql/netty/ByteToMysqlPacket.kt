@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component
  * byte到mysql包的解析。
  */
 @Component
-@Scope("prototype")
 class ByteToMysqlPacket : ChannelInboundHandlerAdapter() {
     @Throws(Exception::class)
     override fun channelRead(ctx: ChannelHandlerContext, msg: Any) {
