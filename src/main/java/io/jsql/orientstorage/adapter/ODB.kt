@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service
 
 import javax.annotation.PostConstruct
 import java.util.Optional
+import java.util.TreeSet
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.stream.Stream
@@ -31,7 +32,7 @@ class ODB : DB {
   lateinit  private var orientDB: OrientDB
     @Autowired
   lateinit  private var pool: MdatabasePool
-    private val dbcaches:MutableSet<String> = mutableSetOf()
+    private val dbcaches:MutableSet<String> = TreeSet()
 
     @PostConstruct
     internal fun post() {
@@ -39,8 +40,6 @@ class ODB : DB {
     }
 
     private val executorService = Executors.newFixedThreadPool(2)
-
-    //    private Map<String, ODatabasePool> dbpoolmap = new HashMap<>();
 
     @Throws(StorageException::class)
     override fun deletedbSyn(dbname: String) {
