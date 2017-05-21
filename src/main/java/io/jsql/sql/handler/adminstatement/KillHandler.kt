@@ -29,7 +29,6 @@ import io.jsql.config.ErrorCode
 import io.jsql.mysql.mysql.OkPacket
 import io.jsql.sql.OConnection
 import io.jsql.sql.handler.SqlStatementHander
-import io.jsql.util.StringUtil
 import org.springframework.stereotype.Component
 
 /**

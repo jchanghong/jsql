@@ -31,7 +31,6 @@ import io.jsql.mysql.mysql.MySQLPacket
 import io.jsql.sql.OConnection
 import io.jsql.storage.StorageException
 import org.slf4j.LoggerFactory
-import org.springframework.context.annotation.Scope
 import org.springframework.stereotype.Component
 import java.io.UnsupportedEncodingException
 
@@ -121,7 +120,7 @@ class MysqlCommandHandler : MysqlPacketHander {
         mm.position(0)
         try {
             val sql = mm.readString(source.charset)
-            source.sqlHander!!.handle(sql!!,source )
+            source.sqlHander.handle(sql!!,source )
         } catch (e: UnsupportedEncodingException) {
             source.writeErrMessage(ErrorCode.ER_UNKNOWN_CHARACTER_SET, "Unknown charset '" + source.charset + "'")
             e.printStackTrace()

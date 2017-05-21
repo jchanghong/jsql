@@ -10,7 +10,6 @@ import io.jsql.sql.OConnection
 import io.jsql.sql.handler.SqlStatementHander
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
-
 import java.util.regex.Pattern
 
 /**

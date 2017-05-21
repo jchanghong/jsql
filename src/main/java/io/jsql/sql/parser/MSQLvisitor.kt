@@ -21,15 +21,11 @@ import org.springframework.stereotype.Component
  * Created by 长宏 on 2017/3/19 0019.
  * 不再使用
  */
-class MSQLvisitor : MySqlASTVisitorAdapter() {
-    private var connection: OConnection? = null
+class MSQLvisitor : MySqlASTVisitorAdapter {
 
-    fun setconnection(connection: OConnection) {
-        this.connection = connection
-    }
+    var connection: OConnection
 
-
-    init {
+    constructor(connection: OConnection) : super() {
         this.connection = connection
     }
 
@@ -1273,9 +1269,5 @@ OR Variable_name = 'init_connect'*/
         return false
     }
 
-    fun setConnection(source: OConnection) {
-        this.connection=source
-//        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
 
 }

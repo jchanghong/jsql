@@ -26,25 +26,16 @@ import javax.annotation.PostConstruct
 @Component
 @Scope("prototype")
 class MysqlSQLhander : SQLHander {
-    private var mySqlASTVisitor: MSQLvisitor= MSQLvisitor()
-    private var exception: Exception? = null
     @Autowired
   lateinit  private var allHanders: AllHanders
 
     @PostConstruct
     internal fun init() {
     }
-
-//    fun setReadOnly(readOnly: Boolean?) {
-//        this.readOnly = readOnly
-//    }
-
     @Autowired
   lateinit  internal var myHazelcast: MyHazelcast
-
-    override fun handle(sql: String, source: OConnection) {
+    override fun handle(sql: String, c: OConnection) {
         logger.info(sql)
-        val c = source
         if (logger.isDebugEnabled) {
             logger.debug(sql)
         }
@@ -53,31 +44,23 @@ class MysqlSQLhander : SQLHander {
             val parser = MySqlStatementParser(sql)
             sqlStatement = parser.parseStatement()
             val hander = allHanders.handerMap[sqlStatement.javaClass]
-            if (isupdatesql(sql)) {
-                myHazelcast.exeSql(sql, if (source.schema == null) "" else source.schema!!)
-            }
             if (hander != null) {
                 hander.handle(sqlStatement, c)
-                return
             } else {
-                sqlStatement.accept(mySqlASTVisitor)
+                sqlStatement.accept(MSQLvisitor(c))
             }
-
-            exception = null
+            if (isupdatesql(sql)) {
+                myHazelcast.exeSql(sql, if (c.schema == null) "" else c.schema!!)
+            }
+            return
         } catch (e: Exception) {//如果不是合法的mysql语句，就报错
             //            e.printStackTrace();
-            exception = e
-            //            return;
+            //druid支持的语句就用上面的方法语句处理，如果不支持，就会有异常，就自己写代码解析sql语句，处理。
+            //下面是drop event语句的例子，这个例子druid不支持，所以自己写
+            handleotherStatement(sql, c,e)
         }
 
-        if (exception == null) {
-            if (isupdatesql(sql)) {
-                myHazelcast.exeSql(sql, if (source.schema == null) "" else source.schema!!)
-            }
-        }
-        //druid支持的语句就用上面的方法语句处理，如果不支持，就会有异常，就自己写代码解析sql语句，处理。
-        //下面是drop event语句的例子，这个例子druid不支持，所以自己写
-        handleotherStatement(sql, c)
+
     }
 
     fun handle(sql: SqlUpdateLog,c: OConnection) {
@@ -89,24 +72,20 @@ class MysqlSQLhander : SQLHander {
         try {
             val parser = MySqlStatementParser(sql.sql)
             sqlStatement = parser.parseStatement()
-            val hander = allHanders!!.handerMap[sqlStatement.javaClass]
+            val hander = allHanders.handerMap[sqlStatement.javaClass]
             if (hander != null) {
-                hander.handle(sqlStatement, c!!)
-                return
+                hander.handle(sqlStatement, c)
             } else {
-                sqlStatement.accept(mySqlASTVisitor)
+                sqlStatement.accept(MSQLvisitor(c))
             }
-
-            exception = null
+            return
         } catch (e: Exception) {//如果不是合法的mysql语句，就报错
-            //            e.printStackTrace();
-            exception = e
-            //            return;
+            //druid支持的语句就用上面的方法语句处理，如果不支持，就会有异常，就自己写代码解析sql语句，处理。
+            //下面是drop event语句的例子，这个例子druid不支持，所以自己写
+            handleotherStatement(sql.sql, c, e)
         }
 
-        //druid支持的语句就用上面的方法语句处理，如果不支持，就会有异常，就自己写代码解析sql语句，处理。
-        //下面是drop event语句的例子，这个例子druid不支持，所以自己写
-        handleotherStatement(sql.sql, c)
+
     }
 
     private fun isupdatesql(sql: String): Boolean {
@@ -121,7 +100,7 @@ class MysqlSQLhander : SQLHander {
     }
 
 
-    private fun handleotherStatement(sql: String, c: OConnection) {
+    private fun handleotherStatement(sql: String, c: OConnection, exception: Exception) {
         if (AlterEvent.isme(sql)) {
             AlterEvent.handle(sql, c)
             return
@@ -207,8 +186,8 @@ class MysqlSQLhander : SQLHander {
             Msubquery.handle(sql, c)
             return
         }
-
-        c.writeErrMessage(ErrorCode.ER_SP_BAD_SQLSTATE, if (exception == null) "不支持的语句！！！" else exception!!.message!!)
+        c.writeErrMessage(ErrorCode.ER_SP_BAD_SQLSTATE, exception.message ?:"error")
+//        c.writeok()
     }
 
     companion object {
