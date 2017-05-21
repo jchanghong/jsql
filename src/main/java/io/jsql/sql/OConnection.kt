@@ -27,7 +27,8 @@ import io.jsql.config.Capabilities
 import io.jsql.config.ErrorCode
 import io.jsql.config.Versions
 import io.jsql.mysql.CharsetUtil
-import io.jsql.mysql.handler.*
+import io.jsql.mysql.handler.MysqlPacketHander
+import io.jsql.mysql.handler.SQLHander
 import io.jsql.mysql.mysql.*
 import io.jsql.storage.DB
 import io.jsql.storage.Table
@@ -36,9 +37,7 @@ import io.netty.buffer.ByteBuf
 import io.netty.buffer.Unpooled
 import io.netty.channel.ChannelHandlerContext
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
-import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.Scope
 import org.springframework.stereotype.Component
 import java.io.UnsupportedEncodingException
@@ -56,7 +55,7 @@ open class OConnection {
     val txInterrupted: Boolean
   lateinit  var authhander: MysqlPacketHander
    lateinit var comhander: MysqlPacketHander
-    var sqlHander: SQLHander?=null
+   lateinit var sqlHander: SQLHander
     @Volatile var charsetIndex: Int = 0
     @Volatile var txIsolation: Int = 0
     @Volatile var autocommit: Boolean = false
@@ -72,18 +71,10 @@ open class OConnection {
     var seed: ByteArray?=null
     var authenticated: Boolean = false
     var user: String? = null
-    @Autowired
-   lateinit internal var applicationContext: ApplicationContext
-    var id: String? = null
+    var id: Long=++OConnection.connectionId
 
     @PostConstruct
     internal open fun init() {
-        authhander = applicationContext!!.getBean(MysqlAuthHander::class.java)
-        comhander = applicationContext!!.getBean(MysqlCommandHandler::class.java)
-        sqlHander = applicationContext!!.getBean(MysqlSQLhander::class.java)
-        authhander!!.setConnection(this)
-        comhander!!.setConnection(this)
-        sqlHander!!.setConnection(this)
     }
 
     init {
@@ -291,11 +282,11 @@ open class OConnection {
         }
 
     open fun handerAuth(authPacket: AuthPacket) {
-        authhander!!.hander(authPacket, )
+        authhander.hander(authPacket,this )
     }
 
     open fun handerCommand(commandPacket: CommandPacket) {
-        comhander!!.hander(commandPacket, )
+        comhander.hander(commandPacket,this )
     }
 
     open fun write(byteBuf: ByteBuf) {
@@ -322,7 +313,7 @@ open class OConnection {
     companion object {
       lateinit  var DB_ADMIN: DB
        lateinit var TABLE_ADMIN: Table
-        var connectionId:Int=0
+        var connectionId:Long=0
         private val LOGGER = LoggerFactory
                 .getLogger(OConnection::class.java)
 

@@ -16,10 +16,8 @@ import io.jsql.sql.handler.utilstatement.ExplainStatement
 import io.jsql.sql.parser.MSQLvisitor
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.Scope
 import org.springframework.stereotype.Component
-
 import javax.annotation.PostConstruct
 
 /**
@@ -28,17 +26,13 @@ import javax.annotation.PostConstruct
 @Component
 @Scope("prototype")
 class MysqlSQLhander : SQLHander {
-    private var source: OConnection? = null
-    @Autowired
-    internal var applicationContext: ApplicationContext? = null
-    private var mySqlASTVisitor: MSQLvisitor? = null
+    private var mySqlASTVisitor: MSQLvisitor= MSQLvisitor()
     private var exception: Exception? = null
     @Autowired
-    private val allHanders: AllHanders? = null
+  lateinit  private var allHanders: AllHanders
 
     @PostConstruct
     internal fun init() {
-        mySqlASTVisitor = applicationContext!!.getBean(MSQLvisitor::class.java)
     }
 
 //    fun setReadOnly(readOnly: Boolean?) {
@@ -46,11 +40,11 @@ class MysqlSQLhander : SQLHander {
 //    }
 
     @Autowired
-    internal var myHazelcast: MyHazelcast? = null
+  lateinit  internal var myHazelcast: MyHazelcast
 
     override fun handle(sql: String, source: OConnection) {
         logger.info(sql)
-        val c = this.source
+        val c = source
         if (logger.isDebugEnabled) {
             logger.debug(sql)
         }
@@ -58,12 +52,12 @@ class MysqlSQLhander : SQLHander {
         try {
             val parser = MySqlStatementParser(sql)
             sqlStatement = parser.parseStatement()
-            val hander = allHanders!!.handerMap[sqlStatement.javaClass]
+            val hander = allHanders.handerMap[sqlStatement.javaClass]
             if (isupdatesql(sql)) {
-                myHazelcast!!.exeSql(sql, if (source!!.schema == null) "" else source!!.schema!!)
+                myHazelcast.exeSql(sql, if (source.schema == null) "" else source.schema!!)
             }
             if (hander != null) {
-                hander.handle(sqlStatement, c!!)
+                hander.handle(sqlStatement, c)
                 return
             } else {
                 sqlStatement.accept(mySqlASTVisitor)
@@ -78,17 +72,16 @@ class MysqlSQLhander : SQLHander {
 
         if (exception == null) {
             if (isupdatesql(sql)) {
-                myHazelcast!!.exeSql(sql, if (source!!.schema == null) "" else source!!.schema!!)
+                myHazelcast.exeSql(sql, if (source.schema == null) "" else source.schema!!)
             }
         }
         //druid支持的语句就用上面的方法语句处理，如果不支持，就会有异常，就自己写代码解析sql语句，处理。
         //下面是drop event语句的例子，这个例子druid不支持，所以自己写
-        handleotherStatement(sql, c!!)
+        handleotherStatement(sql, c)
     }
 
-    fun handle(sql: SqlUpdateLog) {
+    fun handle(sql: SqlUpdateLog,c: OConnection) {
         logger.info(sql.toString())
-        val c = this.source
         if (logger.isDebugEnabled) {
             logger.debug(sql.toString())
         }
@@ -113,7 +106,7 @@ class MysqlSQLhander : SQLHander {
 
         //druid支持的语句就用上面的方法语句处理，如果不支持，就会有异常，就自己写代码解析sql语句，处理。
         //下面是drop event语句的例子，这个例子druid不支持，所以自己写
-        handleotherStatement(sql.sql, c!!)
+        handleotherStatement(sql.sql, c)
     }
 
     private fun isupdatesql(sql: String): Boolean {
@@ -127,10 +120,6 @@ class MysqlSQLhander : SQLHander {
         return false
     }
 
-    override fun setConnection(connection: OConnection) {
-        source = connection
-        mySqlASTVisitor!!.setConnection(source!!)
-    }
 
     private fun handleotherStatement(sql: String, c: OConnection) {
         if (AlterEvent.isme(sql)) {

@@ -37,7 +37,6 @@ import org.springframework.stereotype.Component
  * @author changhong
  * * 只用来执行后台命令。
  */
-@Component
 class OConnectionCMD : OConnection() {
 
     internal override fun init() {}

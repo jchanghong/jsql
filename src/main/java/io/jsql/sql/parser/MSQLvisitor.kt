@@ -21,8 +21,6 @@ import org.springframework.stereotype.Component
  * Created by 长宏 on 2017/3/19 0019.
  * 不再使用
  */
-@Component
-@Scope("prototype")
 class MSQLvisitor : MySqlASTVisitorAdapter() {
     private var connection: OConnection? = null
 

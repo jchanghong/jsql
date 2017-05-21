@@ -3,19 +3,13 @@ package io.jsql.hazelcast
 import com.google.common.collect.Lists
 import com.hazelcast.config.Config
 import com.hazelcast.core.*
-import com.hazelcast.nio.Address
 import io.jsql.mysql.handler.MysqlSQLhander
 import io.jsql.sql.OConnectionCMD
-import io.jsql.storage.DB
-import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.ApplicationContext
 import org.springframework.stereotype.Component
-
-import javax.annotation.PostConstruct
-import java.util.Collections
-import java.util.LinkedList
+import java.util.*
 
 /**
  * Created by 长宏 on 2017/5/5 0005.
@@ -49,7 +43,7 @@ class MyHazelcast : ItemListener<SqlUpdateLog> {
     private var localmember: Member? = null
     private var iAtomic_remote_lsn: IAtomicLong? = null
     @Autowired
-    internal var oConnectionCMD: OConnectionCMD? = null
+    internal var oConnectionCMD: OConnectionCMD= OConnectionCMD()
     @Autowired
     internal var applicationContext: ApplicationContext? = null
     //    LinkedList<SqlUpdateLog> logfiletest = new LinkedList<>();
@@ -75,7 +69,6 @@ class MyHazelcast : ItemListener<SqlUpdateLog> {
 //        sqLhander.setReadOnly(false)
         locals_maxlsn = logFile!!.maxLSN()
         sqLhander = applicationContext!!.getBean(MysqlSQLhander::class.java)
-        sqLhander.setConnection(oConnectionCMD!!)
         init()
     }
 
@@ -135,7 +128,7 @@ class MyHazelcast : ItemListener<SqlUpdateLog> {
             locals_maxlsn = log.LSN
             logger.info("exeSqlforReplication exe sql " + log)
             oConnectionCMD!!.schema = log.db
-            sqLhander.handle(log)
+            sqLhander.handle(log,oConnectionCMD)
 
             //            logfiletest.addLast(log);
             logFile!!.write(log)
@@ -150,7 +143,7 @@ class MyHazelcast : ItemListener<SqlUpdateLog> {
             locals_maxlsn = log.LSN
             logger.info("exe  Sql : " + log)
             oConnectionCMD!!.schema = log.db
-            sqLhander.handle(log)
+            sqLhander.handle(log,oConnectionCMD)
 
             //            logfiletest.addLast(log);
             logFile!!.write(log)
@@ -243,7 +236,7 @@ class MyHazelcast : ItemListener<SqlUpdateLog> {
             locals_maxlsn = log.LSN
             logger.info("exesqlforremoteData()  " + log)
             oConnectionCMD!!.schema = log.db
-            sqLhander.handle(log)
+            sqLhander.handle(log,oConnectionCMD)
 
             //            logfiletest.offer(log);
             logFile!!.write(log)
