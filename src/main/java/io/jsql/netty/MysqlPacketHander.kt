@@ -5,13 +5,13 @@ import io.jsql.mysql.mysql.CommandPacket
 import io.jsql.mysql.mysql.MySQLPacket
 import io.jsql.sql.OConnection
 import io.jsql.sql.OconnectionPool
-import io.jsql.sql.handler.AllHanders
 import io.netty.channel.ChannelHandlerContext
 import io.netty.channel.ChannelInboundHandlerAdapter
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.Scope
 import org.springframework.stereotype.Component
+import javax.annotation.PostConstruct
 
 /**
  * Created by 长宏 on 2017/4/29 0029.
@@ -20,21 +20,22 @@ import org.springframework.stereotype.Component
 @Scope("prototype")
 class MysqlPacketHander internal constructor() : ChannelInboundHandlerAdapter() {
     @Autowired
-    internal var allHanders: AllHanders? = null
-    internal var connection: OConnection? = null
+  lateinit  internal var connection: OConnection
     @Autowired
-    private val pool: OconnectionPool? = null
+    lateinit private var pool: OconnectionPool
     @Autowired
-    internal var applicationContext: ApplicationContext? = null
+    lateinit internal var applicationContext: ApplicationContext
+    @PostConstruct
+    fun myinit() {
+        connection = applicationContext.getBean("OConnection") as OConnection
+    }
 
     override fun exceptionCaught(ctx: ChannelHandlerContext, cause: Throwable) {
         // Close the connection when an exception is raised.
         cause.printStackTrace()
-        if (connection != null) {
-            pool!!.remove(connection!!)
-            connection = null
+        if (true) {
+            pool.remove(connection)
         }
-        //        ctx.channel().
         ctx.close()
     }
 
@@ -42,17 +43,16 @@ class MysqlPacketHander internal constructor() : ChannelInboundHandlerAdapter() 
     override fun channelRead(ctx: ChannelHandlerContext, msg: Any) {
         val mySQLPacket = msg as MySQLPacket
         if (mySQLPacket is AuthPacket) {
-            connection!!.handerAuth(mySQLPacket)
-            pool!!.add(connection!!)
+            connection.handerAuth(mySQLPacket)
+            pool.add(connection)
         } else if (mySQLPacket is CommandPacket) {
-            if (!pool!!.checkMax()) {
-                connection!!.writeErrMessage("too much connection!!!")
-                pool.remove(connection!!)
-                connection = null
+            if (!pool.checkMax()) {
+                connection.writeErrMessage("too much connection!!!")
+                pool.remove(connection)
                 ctx.close()
                 return
             }
-            connection!!.handerCommand(mySQLPacket)
+            connection.handerCommand(mySQLPacket)
         } else {
 
         }
@@ -60,10 +60,9 @@ class MysqlPacketHander internal constructor() : ChannelInboundHandlerAdapter() 
 
     @Throws(Exception::class)
     override fun channelActive(ctx: ChannelHandlerContext) {
-        connection = applicationContext!!.getBean("OConnection") as OConnection
-        connection!!.channelHandlerContext = ctx
+        connection.channelHandlerContext = ctx
         //发送握手包
-        connection!!.register()
+        connection.register()
     }
 
     @Throws(Exception::class)

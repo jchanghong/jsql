@@ -11,7 +11,7 @@ import java.util.HashSet
 @Component
 class OconnectionPool {
     @Value("\${connection.number.max}")
-    private val max: Long = 0
+    private val max: Long = 100
     private val oConnections = HashSet<OConnection>()
 
     fun checkMax(): Boolean {

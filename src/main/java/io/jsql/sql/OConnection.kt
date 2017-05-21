@@ -35,19 +35,15 @@ import io.jsql.storage.Table
 import io.jsql.util.RandomUtil
 import io.netty.buffer.ByteBuf
 import io.netty.buffer.Unpooled
-import io.netty.channel.ChannelFuture
-import io.netty.channel.ChannelFutureListener
 import io.netty.channel.ChannelHandlerContext
-import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.Scope
 import org.springframework.stereotype.Component
-
-import javax.annotation.PostConstruct
 import java.io.UnsupportedEncodingException
+import javax.annotation.PostConstruct
 
 /**
  * The type O connection.
@@ -78,9 +74,7 @@ open class OConnection {
     var authenticated: Boolean = false
     var user: String? = null
     @Autowired
-    private val allHanders: AllHanders? = null
-    @Autowired
-    internal var applicationContext: ApplicationContext? = null
+   lateinit internal var applicationContext: ApplicationContext
     var id: String? = null
 
     @PostConstruct
