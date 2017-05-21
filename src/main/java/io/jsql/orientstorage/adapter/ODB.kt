@@ -2,26 +2,20 @@ package io.jsql.orientstorage.adapter
 
 import com.orientechnologies.orient.core.db.ODatabaseType
 import com.orientechnologies.orient.core.db.OrientDB
-import com.orientechnologies.orient.core.db.OrientDBConfig
 import com.orientechnologies.orient.core.db.document.ODatabaseDocument
 import com.orientechnologies.orient.core.record.OElement
 import com.orientechnologies.orient.core.sql.executor.OResult
-import com.orientechnologies.orient.core.sql.executor.OResultSet
 import io.jsql.cache.MCache
 import io.jsql.orientstorage.MdatabasePool
 import io.jsql.sql.OConnection
 import io.jsql.storage.DB
 import io.jsql.storage.StorageException
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
-
-import javax.annotation.PostConstruct
-import java.util.Optional
-import java.util.TreeSet
-import java.util.concurrent.ExecutorService
+import java.util.*
 import java.util.concurrent.Executors
 import java.util.stream.Stream
+import javax.annotation.PostConstruct
 
 /**
  * Created by 长宏 on 2017/5/3 0003.
@@ -102,7 +96,7 @@ class ODB : DB {
         document.activateOnCurrentThread()
         val arg:Array<Any>?=null
         val command = document.command(sql, arg)
-        pool!!.close(document)
+        pool.close(document)
         return command.stream().findAny()
     }
 
@@ -120,8 +114,7 @@ class ODB : DB {
     override fun query(sqlquery: String, dbname: String): Stream<OElement> {
         val document = getdb(dbname)
         document.activateOnCurrentThread()
-        var arg:Array<Any>?=null
-        val resultSet = document.query(sqlquery, arg)
+        val resultSet = document.query(sqlquery, null)
         val oElementStream = resultSet.stream().map { a -> a.toElement() }
         pool!!.close(document)
         return oElementStream
@@ -133,12 +126,12 @@ class ODB : DB {
         if (!orientDB.exists(dbname)) {
             throw StorageException("db not exists")
         }
-        return pool!!.get(dbname)
+        return pool.get(dbname)
     }
 
     override fun close() {
         try {
-            pool!!.close()
+            pool.close()
             orientDB.close()
             executorService.shutdown()
         } catch (e: Exception) {
@@ -152,7 +145,7 @@ class ODB : DB {
     }
 
     override fun close(databaseDocument: ODatabaseDocument) {
-        pool!!.close(databaseDocument)
+        pool.close(databaseDocument)
 
     }
 }
