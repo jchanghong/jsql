@@ -23,15 +23,9 @@
  */
 package io.jsql.util
 
-import com.google.common.base.MoreObjects
-import com.google.common.base.Strings
-import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-
 import java.io.ByteArrayOutputStream
-import java.io.UnsupportedEncodingException
-import java.util.Objects
-import java.util.Random
+import java.util.*
 
 /**
  * @author jsql
@@ -49,32 +43,6 @@ object StringUtil {
         } catch (e: Exception) {
              null
         }
-    }
-
-    fun decode(src: ByteArray, charset: String): String {
-        return decode(src, 0, src.size, charset)
-    }
-
-    fun decode(src: ByteArray, offset: Int, length: Int,
-               charset: String): String {
-     return   try {
-
-             String(src, offset, length, kotlin.text.charset(charset))
-        } catch (e: Exception) {
-             String(src, offset, length)
-        }
-
-    }
-
-
-    fun getRandomString(size: Int): String {
-        val s = StringBuilder(size)
-        val len = CHARS.size
-        for (i in 0..size - 1) {
-            val x = RANDOM.nextInt()
-            s.append(CHARS[(if (x < 0) -x else x) % len])
-        }
-        return s.toString()
     }
 
 
@@ -286,78 +254,6 @@ object StringUtil {
         return cnt
     }
 
-    fun replaceOnce(text: String, repl: String, with: String): String {
-        return replace(text, repl, with, 1)
-    }
-
-    @JvmOverloads fun replace(text: String?, repl: String?, with: String?, max: Int = -1): String {
-        var max = max
-        if (text == null || repl == null || with == null
-                || repl.length == 0 || max == 0) {
-            return text!!
-        }
-        val buf = StringBuilder(text.length)
-        var start = 0
-        var end = text.indexOf(repl, start)
-        while (end != -1) {
-            buf.append(text.substring(start, end)).append(with)
-            start = end + repl.length
-            if (--max == 0) {
-                break
-            }
-            end=text.indexOf(repl,start)
-        }
-        buf.append(text.substring(start))
-        return buf.toString()
-    }
-
-    fun replaceChars(str: String?, searchChar: Char,
-                     replaceChar: Char): String? {
-        if (str == null) {
-            return null
-        }
-        return str.replace(searchChar, replaceChar)
-    }
-
-    fun replaceChars(str: String?, searchChars: String?,
-                     replaceChars: String?): String {
-        if (str == null || str.length == 0 || searchChars == null
-                || searchChars.length == 0) {
-            return str!!
-        }
-        val chars = str.toCharArray()
-        var len = chars.size
-        var modified = false
-        var i = 0
-        val isize = searchChars.length
-        while (i < isize) {
-            val searchChar = searchChars[i]
-            if (replaceChars == null || i >= replaceChars.length) {// 删除
-                var pos = 0
-                for (j in 0..len - 1) {
-                    if (chars[j] != searchChar) {
-                        chars[pos++] = chars[j]
-                    } else {
-                        modified = true
-                    }
-                }
-                len = pos
-            } else {// 替换
-                for (j in 0..len - 1) {
-                    if (chars[j] == searchChar) {
-                        chars[j] = replaceChars[i]
-                        modified = true
-                    }
-                }
-            }
-            i++
-        }
-        if (!modified) {
-            return str
-        }
-        return String(chars, 0, len)
-    }
-
     /*
       insert into tablexxx
 
@@ -453,16 +349,6 @@ object StringUtil {
             return sb.toString()
         }
         return ""
-    }
-
-    @JvmStatic fun main(args: Array<String>) {
-        //		System.out.println(getTableName("insert into ssd  (id) values (s)"));
-        //		System.out.println(getTableName("insert into    ssd(id) values (s)"));
-        //		System.out.println(getTableName("  insert  into    ssd(id) values (s)"));
-        //		System.out.println(getTableName("  insert  into    isd(id) values (s)"));
-        //		System.out.println(getTableName("INSERT INTO test_activity_input  (id,vip_no"));
-        //		System.out.println(getTableName("/* ApplicationName=DBeaver 3.3.1 - OrientServer connection */ insert into employee(id,name,sharding_id) values(4,’myhome’,10011)"));
-        //        System.out.println(countChar("insert into ssd  (id) values (s) ,(s),(7);",'('));
     }
 
 }
