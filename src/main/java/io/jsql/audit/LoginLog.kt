@@ -8,8 +8,8 @@ import java.util.*
 \* Date: 2017/6/15 0015
 \* Time: 15:07
 \*/
-data class LoginLog(val user:String,  val host:String, val result: Boolean,val time: Date=Date())
+data class LoginLog(val user: String, val host: String, val result: Boolean, val time: Date = Date())
 
 fun LoginLog.sendesServer() {
-   elasticUtil.put(this)
+    elasticUtil.put(this)
 }

@@ -14,7 +14,7 @@ import kotlin.concurrent.thread
 \* Time: 16:16
 \*/
 object elasticUtil {
-    val logquene=LinkedBlockingQueue<Any>()
+    val logquene = LinkedBlockingQueue<Any>()
     fun put(x: LoginLog): Unit {
         run()
         logquene.put(x)
@@ -24,23 +24,24 @@ object elasticUtil {
         run()
         logquene.put(x)
     }
+
     val esrestClient = RestClient.builder(
             HttpHost("localhost", 9200, "http")
-           ).build()
-    var runing=false
+    ).build()
+    var runing = false
     fun run(): Unit {
         if (runing) {
             return
         }
-        runing=true
-        thread (start = true){
+        runing = true
+        thread(start = true) {
             println("thread start")
-            while  (true) {
+            while (true) {
                 val any = logquene.take()
-                val path=if (any is SqlLog)"/sqlindex/sqllog" else "/sqlindex/loginlog"
-                var entity= NStringEntity(jsonmapper.writeValueAsString(any), ContentType.APPLICATION_JSON)
+                val path = if (any is SqlLog) "/sqlindex/sqllog" else "/sqlindex/loginlog"
+                var entity = NStringEntity(jsonmapper.writeValueAsString(any), ContentType.APPLICATION_JSON)
                 print(entity.toString())
-                esrestClient.performRequest("post",path, emptyMap(), entity)
+                esrestClient.performRequest("post", path, emptyMap(), entity)
             }
             println("thread end")
         }

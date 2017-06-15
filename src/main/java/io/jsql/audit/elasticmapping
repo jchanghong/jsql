@@ -1,0 +1,32 @@
+put
+
+
+
+
+{
+  "mappings": {
+    "sqllog": {
+      "_all":       { "enabled": false  },
+      "properties": {
+        "sql":    { "type": "text"  },
+        "user":     { "type": "text"  },
+        "host":      { "type": "text" } ,
+"time" :{"type":"date"}
+      }
+    },
+    "loginlog": {
+      "_all":       { "enabled": false  },
+      "properties": {
+        "user":    { "type": "text"  },
+        "host":     { "type": "text"  },
+        "result":  {
+          "type":   "boolean"
+        },
+        "time":  {
+          "type":   "date"
+
+        }
+      }
+    }
+  }
+}

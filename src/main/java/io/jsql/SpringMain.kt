@@ -3,26 +3,21 @@ package io.jsql
 import io.jsql.hazelcast.MyHazelcast
 import io.jsql.netty.NettyServer
 import io.jsql.sql.OConnection
-import org.elasticsearch.bootstrap.Elasticsearch
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.core.annotation.Order
-import kotlin.concurrent.thread
 
 /**
  * Created by 长宏 on 2017/5/2 0002.
  * 启动类，通过spring boot启动。
  * ioc，aop功能。
- * 启动说明：
- * 更改下面的变量启动elastic服务器
  */
 @SpringBootApplication
 @Order(1)
 open class SpringMain : CommandLineRunner {
-    val es=false
     private val logger = LoggerFactory.getLogger(SpringMain::class.java.name)
     @Autowired
    lateinit private var nettyServer: NettyServer
@@ -32,10 +27,6 @@ open class SpringMain : CommandLineRunner {
     override fun run(vararg strings: String) {
         Runtime.getRuntime().addShutdownHook(hook)
         logger.info("begin start....................................")
-        if (es) {
-
-            thread (start = true){  Elasticsearch.main(strings)}
-        }
         try {
             nettyServer.start()
         } catch (e: Exception) {
@@ -60,6 +51,7 @@ open class SpringMain : CommandLineRunner {
 
     companion object {
         @JvmStatic fun main(args: Array<String>) {
+//                thread (start = true){  Elasticsearch.main(args)}
             SpringApplication.run(SpringMain::class.java, *args)
         }
     }
