@@ -43,6 +43,7 @@ class MysqlPacketHander internal constructor() : ChannelInboundHandlerAdapter() 
     override fun channelRead(ctx: ChannelHandlerContext, msg: Any) {
         val mySQLPacket = msg as MySQLPacket
         if (mySQLPacket is AuthPacket) {
+            connection.host=ctx.channel().remoteAddress().toString()
             connection.handerAuth(mySQLPacket)
             pool.add(connection)
         } else if (mySQLPacket is CommandPacket) {

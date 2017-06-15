@@ -23,6 +23,8 @@
  */
 package io.jsql.mysql.handler
 
+import io.jsql.audit.LoginLog
+import io.jsql.audit.sendesServer
 import io.jsql.config.ErrorCode
 import io.jsql.mysql.CharsetUtil
 import io.jsql.mysql.mysql.AuthPacket
@@ -55,6 +57,7 @@ open class MysqlAuthHander : MysqlPacketHander {
 
         // check password
         if (!checkPassword(auth.password!!, auth.user!!)) {
+            LoginLog(auth.user?:"null",source.host,false).sendesServer()
             failure(ErrorCode.ER_ACCESS_DENIED_ERROR, "Access denied for user '" + auth.user + "', because password is error ",source )
         } else {
             success(auth,source )
@@ -164,12 +167,13 @@ open class MysqlAuthHander : MysqlPacketHander {
     //    }
 
     private fun success(auth: AuthPacket, source: OConnection) {
+
         source.authenticated = true
         source.user = auth.user
         source.schema = auth.database
         source.charsetIndex = auth.charsetIndex
         source.charset = CharsetUtil.getCharset(source.charsetIndex)
-
+        LoginLog(source.user?:"null",source.host,true).sendesServer()
         if (LOGGER.isInfoEnabled) {
             val s = StringBuilder()
             s.append(source).append('\'').append(auth.user).append("' login success")

@@ -14,7 +14,7 @@
         <appender-ref ref="STDOUT" />
     </logger>
 -->
-    <root level="info,debug">
+    <root level="info">
         <appender-ref ref="STDOUT" />
     </root>
 

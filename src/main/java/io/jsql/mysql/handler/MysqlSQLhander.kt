@@ -3,6 +3,8 @@ package io.jsql.mysql.handler
 import com.alibaba.druid.sql.ast.SQLStatement
 import com.alibaba.druid.sql.dialect.mysql.parser.MySqlStatementParser
 import com.google.common.collect.Lists
+import io.jsql.audit.SqlLog
+import io.jsql.audit.sentoELServer
 import io.jsql.config.ErrorCode
 import io.jsql.hazelcast.MyHazelcast
 import io.jsql.hazelcast.SqlUpdateLog
@@ -35,6 +37,7 @@ class MysqlSQLhander : SQLHander {
     @Autowired
   lateinit  internal var myHazelcast: MyHazelcast
     override fun handle(sql: String, c: OConnection) {
+        SqlLog(sql,c.user?:"null",c.host).sentoELServer()
         logger.info(sql)
         if (logger.isDebugEnabled) {
             logger.debug(sql)

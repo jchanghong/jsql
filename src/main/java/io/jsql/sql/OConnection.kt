@@ -23,6 +23,7 @@
  */
 package io.jsql.sql
 
+import io.jsql.audit.LoginLog
 import io.jsql.config.Capabilities
 import io.jsql.config.ErrorCode
 import io.jsql.config.Versions
@@ -78,6 +79,9 @@ open class OConnection {
     var authenticated: Boolean = false
     var user: String? = null
     var id: Long=++OConnection.connectionId
+
+    var host = "127.0.0.1"
+
 
     @PostConstruct
     internal open fun init() {
