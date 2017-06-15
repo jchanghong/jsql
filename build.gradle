@@ -50,17 +50,30 @@ targetCompatibility = 1.8
 tasks.withType(JavaCompile) {
 	options.encoding = 'UTF-8'
 }
+configurations {
+    compile.exclude module: 'accessors-smart'
+//    all*.exclude group: 'org.gradle.test.excludes', module: 'reports'
+}
 
 dependencies {
+
     compile fileTree(dir: 'lib', include: '*.jar')
-    compile group: 'org.elasticsearch.client', name: 'rest', version:'5.3.3'
+    compile ( 'org.elasticsearch.client:rest:5.3.3')
+            {
+                exclude group :'commons-logging'
+            }
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind'/*, version:'2.7.5'*/
     compile group: 'com.google.guava', name: 'guava', version:'19.0'
     compile group: 'com.alibaba', name: 'druid', version:'1.0.26'
     compile group: 'mysql', name: 'mysql-connector-java'
     compile group: 'joda-time', name: 'joda-time', version:'2.9.9'
     compile group: 'com.github.shyiko', name: 'mysql-binlog-connector-java', version:'0.4.1'
-    compile group: 'com.esotericsoftware.kryo', name: 'kryo', version:'2.10'
+    compile ( 'com.esotericsoftware.kryo:kryo:2.10')
+
+                {
+                    exclude group :'com.esotericsoftware.reflectasm'
+                }
+
     compile group: 'commons-lang', name: 'commons-lang', version:'2.6'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-aop'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
