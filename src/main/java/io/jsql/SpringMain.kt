@@ -36,6 +36,7 @@ open class SpringMain : CommandLineRunner {
         try {
             nettyServer.start()
         } catch (e: Exception) {
+
             e.printStackTrace()
             System.exit(-1)
         }
