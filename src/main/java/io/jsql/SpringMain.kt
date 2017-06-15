@@ -19,10 +19,13 @@ import kotlin.concurrent.thread
  * Created by 长宏 on 2017/5/2 0002.
  * 启动类，通过spring boot启动。
  * ioc，aop功能。
+ * 启动说明：
+ * 更改下面的变量启动elastic服务器
  */
 @SpringBootApplication
 @Order(1)
 open class SpringMain : CommandLineRunner {
+    val es=false
     private val logger = LoggerFactory.getLogger(SpringMain::class.java.name)
     @Autowired
    lateinit private var nettyServer: NettyServer
@@ -32,7 +35,10 @@ open class SpringMain : CommandLineRunner {
     override fun run(vararg strings: String) {
         Runtime.getRuntime().addShutdownHook(hook)
         logger.info("begin start....................................")
-        thread (start = true){  Elasticsearch.main(strings)}
+        if (es) {
+
+            thread (start = true){  Elasticsearch.main(strings)}
+        }
         try {
             nettyServer.start()
         } catch (e: Exception) {
