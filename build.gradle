@@ -52,6 +52,8 @@ tasks.withType(JavaCompile) {
 }
 
 dependencies {
+    compile group: 'org.elasticsearch.client', name: 'rest', version:'5.4.1'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind'/*, version:'2.7.5'*/
     compile group: 'com.google.guava', name: 'guava', version:'19.0'
     compile group: 'com.alibaba', name: 'druid', version:'1.0.26'
     compile group: 'mysql', name: 'mysql-connector-java'
