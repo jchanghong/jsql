@@ -126,16 +126,6 @@ open class OConnection {
         err.write(channelHandlerContext!!.channel())
     }
 
-    //    /**
-    //     * 提交事务
-    //     */
-    //    public void commit() {
-    //        if (txInterrupted) {
-    //            writeErrMessage(ErrorCode.ER_YES,
-    //                    "Transaction error, need to rollback.");
-    //        } else {
-    //        }
-    //    }
 
     //    /**
     //     * 回滚事务
