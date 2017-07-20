@@ -1,6 +1,8 @@
 package io.jsql.mysql.handler
 
 import com.alibaba.druid.sql.ast.SQLStatement
+import com.alibaba.druid.sql.ast.statement.SQLUseStatement
+import com.alibaba.druid.sql.dialect.mysql.ast.clause.MySqlDeclareHandlerStatement
 import com.alibaba.druid.sql.dialect.mysql.parser.MySqlStatementParser
 import com.google.common.collect.Lists
 import io.jsql.audit.SqlLog
@@ -10,6 +12,7 @@ import io.jsql.hazelcast.MyHazelcast
 import io.jsql.hazelcast.SqlUpdateLog
 import io.jsql.sql.OConnection
 import io.jsql.sql.handler.AllHanders
+import io.jsql.sql.handler.SqlStatementHander
 import io.jsql.sql.handler.data_define.*
 import io.jsql.sql.handler.data_mannipulation.Mdo
 import io.jsql.sql.handler.data_mannipulation.Mhandler
@@ -166,7 +169,21 @@ class MysqlSQLhander : SQLHander {
             return
         }
         if (ExplainStatement.isme(sql, c)) {
-            ExplainStatement.handle(sql, c)
+            var index=sql.indexOf("explain")
+            var table=sql.substring(index+8)
+            val handle = ExplainStatement()
+            if (table.length > 10) {
+                val parser = MySqlStatementParser(table)
+                var    sqlStatement = parser.parseStatement()
+                handle.handle(sqlStatement,c)
+            }
+            else
+            {
+                val parser = MySqlStatementParser("use $table")
+                var    sqlStatement = parser.parseStatement()
+                handle.handle(sqlStatement,c)
+            }
+
             return
         }
         if (DropLOGFILEGROUP.isme(sql)) {

@@ -1,8 +1,12 @@
 package io.jsql.sql.handler.utilstatement
 
+import com.alibaba.druid.sql.ast.SQLStatement
+import com.alibaba.druid.sql.ast.statement.SQLSelectStatement
+import com.alibaba.druid.sql.ast.statement.SQLUseStatement
 import com.orientechnologies.orient.core.db.document.ODatabaseDocument
-import com.orientechnologies.orient.core.metadata.schema.OClass
 import com.orientechnologies.orient.core.metadata.schema.OProperty
+import com.orientechnologies.orient.core.record.OElement
+import com.orientechnologies.orient.core.record.impl.ODocument
 import io.jsql.config.ErrorCode
 import io.jsql.config.Fields
 import io.jsql.mysql.PacketUtil
@@ -10,15 +14,42 @@ import io.jsql.mysql.mysql.EOFPacket
 import io.jsql.mysql.mysql.FieldPacket
 import io.jsql.mysql.mysql.ResultSetHeaderPacket
 import io.jsql.sql.OConnection
+import io.jsql.sql.handler.MyResultSet
+import io.jsql.sql.handler.SqlStatementHander
 import io.jsql.storage.StorageException
-
-import java.util.ArrayList
 import java.util.function.Consumer
 
 /**
  * Created by 长宏 on 2017/3/27.
  */
-class ExplainStatement {
+class ExplainStatement: SqlStatementHander() {
+    override fun supportSQLstatement(): Class<out SQLStatement> {
+        return SQLUseStatement::class.java
+    }
+
+    override fun handle0(sqlStatement: SQLStatement, c: OConnection): Any? {
+        if (sqlStatement is SQLUseStatement) {
+            var  sqls=sqlStatement
+            var  sql=sqls.database.toString()
+
+          var list=ArrayList<OElement>()
+            for (i in 1..5) {
+                val element = ODocument()
+                element.setProperty("c1", "c111111111")
+                element.setProperty("c2","2222222222222")
+                list.add(element)
+            }
+            return MyResultSet(list, listOf("c1","c2"))
+        }
+        else if (sqlStatement is SQLSelectStatement) {
+
+        }
+        else{
+            return "error"
+        }
+    return    null
+    }
+
     /*
 
 
@@ -35,16 +66,8 @@ class ExplainStatement {
 
     companion object {
 
-        fun isme(sql: String, c: OConnection): Boolean {
-            val sqll = sql.toUpperCase().trim { it <= ' ' }
-            val list = sqll.split("\\s+".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-            if (list.size > 1 && list[0] == "EXPLAIN") {
-                return true
-            } else if (list.size > 2 && list[0] == "EXPLAIN") {
-                return ExplainStatement.handle2(sql, c)
-            }
-            return false
-        }
+        fun isme(sql: String, c: OConnection): Boolean =if (sql.startsWith("explain")) true else false
+
 
         /*
     explain select*from tb_name
