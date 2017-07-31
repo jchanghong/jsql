@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component
 /**
  * Created by 长宏 on 2017/3/23 0023.
  */
-@Component
 object Minformation_schama {
     val dbname = "information_schema"
 
