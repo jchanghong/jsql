@@ -13,6 +13,7 @@ import io.jsql.hazelcast.SqlUpdateLog
 import io.jsql.sql.OConnection
 import io.jsql.sql.handler.AllHanders
 import io.jsql.sql.handler.SqlStatementHander
+import io.jsql.sql.handler.componed_statement.BeginEndStatement
 import io.jsql.sql.handler.data_define.*
 import io.jsql.sql.handler.data_mannipulation.Mdo
 import io.jsql.sql.handler.data_mannipulation.Mhandler
@@ -136,6 +137,10 @@ class MysqlSQLhander : SQLHander {
             AlterTableSpace.handle(sql, c)
             return
         }
+//        if(BeginEndStatement.isme(sql)){
+//            BeginEndStatement.handle0(sql, c)
+//            return
+//        }
         if (CreateEvent.isme(sql)) {
             CreateEvent.handle(sql, c)
             return
@@ -171,8 +176,9 @@ class MysqlSQLhander : SQLHander {
         if (ExplainStatement.isme(sql, c)) {
             var index=sql.indexOf("explain")
             var table=sql.substring(index+8)
+            var sql1=sql.split(" ")
             val handle = ExplainStatement()
-            if (table.length > 10) {
+            if (sql1.size > 2) {
                 val parser = MySqlStatementParser(table)
                 var    sqlStatement = parser.parseStatement()
                 handle.handle(sqlStatement,c)
@@ -181,9 +187,9 @@ class MysqlSQLhander : SQLHander {
             {
                 val parser = MySqlStatementParser("use $table")
                 var    sqlStatement = parser.parseStatement()
+
                 handle.handle(sqlStatement,c)
             }
-
             return
         }
         if (DropLOGFILEGROUP.isme(sql)) {
