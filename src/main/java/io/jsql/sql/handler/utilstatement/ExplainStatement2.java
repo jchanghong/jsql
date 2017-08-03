@@ -48,7 +48,7 @@ public class ExplainStatement2 extends SqlStatementHander {
         documentTx.activateOnCurrentThread();
         OClass oClass = documentTx.getClass(tablename.getFrom().toString().trim());
         if (oClass == null) {
-            return null;
+            return "表不存在";
         }
         List<OElement> elements = new ArrayList<>();
         oClass.properties().forEach(a -> {

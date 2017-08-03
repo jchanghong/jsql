@@ -43,7 +43,7 @@ public class MySqlDescribeStatement2 extends SqlStatementHander {
         documentTx.activateOnCurrentThread();
         OClass oClass = documentTx.getClass(describeStatement.getObject().getSimpleName());
         if (oClass == null) {
-            return null;
+            return "表不存在";
         }
         List<OElement> elements = new ArrayList<>();
         oClass.properties().forEach(a -> {
