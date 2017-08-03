@@ -1,8 +1,6 @@
-package io.jsql.mysql.handler
+package io.jsql.sql
 
 import com.alibaba.druid.sql.ast.SQLStatement
-import com.alibaba.druid.sql.ast.statement.SQLUseStatement
-import com.alibaba.druid.sql.dialect.mysql.ast.clause.MySqlDeclareHandlerStatement
 import com.alibaba.druid.sql.dialect.mysql.parser.MySqlStatementParser
 import com.google.common.collect.Lists
 import io.jsql.audit.SqlLog
@@ -10,16 +8,14 @@ import io.jsql.audit.sentoELServer
 import io.jsql.config.ErrorCode
 import io.jsql.hazelcast.MyHazelcast
 import io.jsql.hazelcast.SqlUpdateLog
-import io.jsql.sql.OConnection
+import io.jsql.mysql.handler.SQLHander
 import io.jsql.sql.handler.AllHanders
-import io.jsql.sql.handler.SqlStatementHander
-import io.jsql.sql.handler.componed_statement.BeginEndStatement
 import io.jsql.sql.handler.data_define.*
 import io.jsql.sql.handler.data_mannipulation.Mdo
 import io.jsql.sql.handler.data_mannipulation.Mhandler
 import io.jsql.sql.handler.data_mannipulation.Msubquery
-import io.jsql.sql.handler.utilstatement.ExplainStatement
 import io.jsql.sql.parser.MSQLvisitor
+import io.jsql.util.tosql
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Scope
@@ -48,8 +44,7 @@ class MysqlSQLhander : SQLHander {
         }
         val sqlStatement: SQLStatement
         try {
-            val parser = MySqlStatementParser(sql)
-            sqlStatement = parser.parseStatement()
+            sqlStatement = sql.tosql()
             val hander = allHanders.handerMap[sqlStatement.javaClass]
             if (hander != null) {
                 hander.handle(sqlStatement, c)
@@ -171,25 +166,6 @@ class MysqlSQLhander : SQLHander {
         }
         if (DropFunction.isme(sql)) {
             DropFunction.handle(sql, c)
-            return
-        }
-        if (ExplainStatement.isme(sql, c)) {
-            var index=sql.indexOf("explain")
-            var table=sql.substring(index+8)
-            var sql1=sql.split(" ")
-            val handle = ExplainStatement()
-            if (sql1.size > 2) {
-                val parser = MySqlStatementParser(table)
-                var    sqlStatement = parser.parseStatement()
-                handle.handle(sqlStatement,c)
-            }
-            else
-            {
-                val parser = MySqlStatementParser("use $table")
-                var    sqlStatement = parser.parseStatement()
-
-                handle.handle(sqlStatement,c)
-            }
             return
         }
         if (DropLOGFILEGROUP.isme(sql)) {

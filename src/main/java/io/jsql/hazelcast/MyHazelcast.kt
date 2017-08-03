@@ -3,7 +3,7 @@ package io.jsql.hazelcast
 import com.google.common.collect.Lists
 import com.hazelcast.config.Config
 import com.hazelcast.core.*
-import io.jsql.mysql.handler.MysqlSQLhander
+import io.jsql.sql.MysqlSQLhander
 import io.jsql.sql.OConnectionCMD
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
