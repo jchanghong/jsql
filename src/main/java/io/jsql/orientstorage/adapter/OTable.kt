@@ -78,7 +78,7 @@ class OTable : Table {
                 if (dstring.contains(e.key)) {
                     oClass.getProperty(e.key).createIndex(OClass.INDEX_TYPE.NOTUNIQUE)
                 }
-            } else if (e.value.toLowerCase().contains("datatime")) {
+            } else if (e.value.toLowerCase().contains("datetime")) {
                 oClass.createProperty(e.key, OType.DATETIME)
                 if (dstring.contains(e.key)) {
                     oClass.getProperty(e.key).createIndex(OClass.INDEX_TYPE.NOTUNIQUE)
