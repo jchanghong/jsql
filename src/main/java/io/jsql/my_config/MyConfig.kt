@@ -15,20 +15,21 @@ import javax.annotation.PostConstruct
  */
 @Component
 @PropertySource("file:./config/config.properties")
-class SpringProperty {
+class MyConfig {
     @Value("\${jsql.distributed}")
     val distributed = true
-
+    @Value("\${jsql.audit}")
+    val audit = true
     @PostConstruct
     fun afterinit() {
         log.info(this.toString())
     }
 
     override fun toString(): String {
-        return "distribute:$distributed"
+        return "distribute:$distributed, audit:$audit"
     }
     companion object {
-        val log=LoggerFactory.getLogger(SpringProperty::class.java)
+        val log=LoggerFactory.getLogger(MyConfig::class.java)
     }
 
 }

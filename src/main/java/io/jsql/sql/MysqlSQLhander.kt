@@ -41,7 +41,8 @@ class MysqlSQLhander : SQLHander {
     }
     @Autowired
   lateinit  internal var myHazelcast: MyHazelcast
-    override fun handle(sql: String, c: OConnection) {
+
+    override fun handle(sql: String, c: OConnection) {//处理正常的sql语句，前端连接
         SqlLog(sql,c.user?:"null",c.host).sentoELServer()
         logger.info(sql)
         if (logger.isDebugEnabled) {
@@ -70,7 +71,7 @@ class MysqlSQLhander : SQLHander {
 
     }
 
-    fun handle(sql: SqlUpdateLog,c: OConnection) {
+    fun handle(sql: SqlUpdateLog,c: OConnection) {//处理来自其他服务器的sql语句，同步，不需要前端连接
         logger.info(sql.toString())
         if (logger.isDebugEnabled) {
             logger.debug(sql.toString())

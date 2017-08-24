@@ -5,10 +5,8 @@
 package io.jsql.orientstorage
 
 import com.orientechnologies.orient.core.db.OrientDB
-import io.jsql.my_config.SpringProperty
-import io.jsql.storage.DB
+import io.jsql.my_config.MyConfig
 import org.junit.Assert.assertNotNull
-import org.junit.Assert.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -17,7 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner
 import kotlin.test.assertEquals
 
 @RunWith(SpringRunner::class)
-@SpringBootTest(classes = arrayOf(OrientdbConfig::class,SpringProperty::class))
+@SpringBootTest(classes = arrayOf(OrientdbConfig::class, MyConfig::class))
 class OrientdbConfigTest {
     @Autowired
  lateinit   var springv:OrientDB
