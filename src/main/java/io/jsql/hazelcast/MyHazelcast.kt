@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.ApplicationContext
 import org.springframework.stereotype.Component
 import java.util.*
+import javax.annotation.PostConstruct
 
 /**
  * Created by 长宏 on 2017/5/5 0005.
@@ -52,6 +53,10 @@ class MyHazelcast : ItemListener<SqlUpdateLog> {
     //    LinkedList<SqlUpdateLog> logfiletest = new LinkedList<>();
     internal var sqLhander = MysqlSQLhander()
 
+    @PostConstruct
+    fun myinit() {
+        locals_maxlsn = logFile!!.maxLSN()
+    }
     fun inits() {
         val config = Config()
         hazelcastInstance = Hazelcast.newHazelcastInstance(config)
@@ -70,7 +75,6 @@ class MyHazelcast : ItemListener<SqlUpdateLog> {
         cmdiQueue!!.addItemListener(cmdItemListener, true)
         //        locals_maxlsn = logFile.maxLSN();
 //        sqLhander.setReadOnly(false)
-        locals_maxlsn = logFile!!.maxLSN()
         sqLhander = applicationContext!!.getBean(MysqlSQLhander::class.java)
         init()
     }
@@ -189,7 +193,8 @@ class MyHazelcast : ItemListener<SqlUpdateLog> {
         }
     }
 
-    //本机发出的sql语句
+  /**
+   *  本机发出的sql语句.记录到本地logfile。同时发布到其他服务器*/
     fun exeSql(sql: String, db: String) {
         //        if (isupdatesql(sql)) {
         if (isreplicating) {
@@ -206,6 +211,15 @@ class MyHazelcast : ItemListener<SqlUpdateLog> {
             remotequene!!.offer(log)
         }
         //        }
+    }
+
+    /**
+     * 只记录到本地logfile。不发布到其他服务器
+     * */
+    fun exesqlLocal(sql: String, db: String) {
+        var l = locals_maxlsn
+        val log = SqlUpdateLog(l + 1, sql, db)
+        logFile!!.write(log)
     }
 
     private fun isupdatesql(sql: String): Boolean {

@@ -4,6 +4,7 @@
 package io.jsql.netty
 
 import io.jsql.hazelcast.MyHazelcast
+import io.jsql.my_config.MyConfig
 import io.jsql.orientstorage.constant.Minformation_schama
 import io.netty.bootstrap.ServerBootstrap
 import io.netty.channel.ChannelHandler
@@ -64,7 +65,9 @@ class NettyServer {
             // Wait until the server socket is closed.
             logger.info("server start  complete.................... ")
             Minformation_schama.init_if_notexits()
-            myHazelcast.inits()
+            if (config.distributed) {
+                myHazelcast.inits()
+            }
             f.channel().closeFuture().sync()
         } finally {
             // Shut down all event loops to terminate all threads.
@@ -72,6 +75,8 @@ class NettyServer {
             workerGroup.shutdownGracefully()
         }
     }
+    @Autowired
+    lateinit var config:MyConfig
     private val byteToMysqlDecoder: ChannelHandler
         get() = applicationContext.getBean(ByteToMysqlDecoder::class.java)
     private val mysqlPacketHander: ChannelHandler

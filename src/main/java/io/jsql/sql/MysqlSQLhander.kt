@@ -62,7 +62,12 @@ class MysqlSQLhander : SQLHander {
                 sqlStatement.accept(MSQLvisitor(c))
             }
             if (isupdatesql(sql)) {
-                myHazelcast.exeSql(sql, if (c.schema == null) "" else c.schema!!)
+                if (config.distributed) {
+                    myHazelcast.exeSql(sql, if (c.schema == null) "" else c.schema!!)
+                }
+                else{
+                    myHazelcast.exesqlLocal(sql, if (c.schema == null) "" else c.schema!!)
+                }
             }
             return
         } catch (e: Exception) {//如果不是合法的mysql语句，就报错
