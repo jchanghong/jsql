@@ -44,9 +44,7 @@ class LogFile {
     fun write(updateLog: SqlUpdateLog) {
         try {
             randomAccessFile.seek(if (randomAccessFile.length()==0L) 8 else randomAccessFile.length())
-            randomAccessFile.writeLong(updateLog.LSN)
-            randomAccessFile.writeUTF(updateLog.sql)
-            randomAccessFile.writeUTF(updateLog.db)
+            randomAccessFile.writeUTF(updateLog.toStringLog())
             randomAccessFile.seek(0)
             randomAccessFile.writeLong(updateLog.LSN)
         } catch (e: IOException) {
@@ -74,12 +72,9 @@ class LogFile {
 
         while (true) {
             try {
-                val lsn = randomAccessFile.readLong()
-                val sql = randomAccessFile.readUTF()
-                val db = randomAccessFile.readUTF()
-                logs.add(SqlUpdateLog(lsn, sql, db))
+                logs.add(SqlUpdateLog(randomAccessFile.readUTF()))
             } catch (e: IOException) {
-                                e.printStackTrace();
+//                                e.printStackTrace()
                 break
             }
         }
