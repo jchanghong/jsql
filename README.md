@@ -1,5 +1,5 @@
-# jsql
-java sql database like mysql
+# Jsql
+Java-based distributed database like Mysql
 # 2017/8/23更新
 * 之前用的是java。后面联系kotlin。全部用kotlin重写。
 * 数据库引擎可以用自己开发的kv存储，但是这个项目采用了更成熟的开源存储。
