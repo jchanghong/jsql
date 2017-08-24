@@ -13,6 +13,7 @@ import io.jsql.audit.sentoELServer
 import io.jsql.config.ErrorCode
 import io.jsql.hazelcast.MyHazelcast
 import io.jsql.hazelcast.SqlUpdateLog
+import io.jsql.my_config.MyConfig
 import io.jsql.mysql.handler.SQLHander
 import io.jsql.sql.handler.AllHanders
 import io.jsql.sql.handler.data_define.*
@@ -41,9 +42,12 @@ class MysqlSQLhander : SQLHander {
     }
     @Autowired
   lateinit  internal var myHazelcast: MyHazelcast
-
+    @Autowired
+    lateinit var config: MyConfig
     override fun handle(sql: String, c: OConnection) {//处理正常的sql语句，前端连接
-        SqlLog(sql,c.user?:"null",c.host).sentoELServer()
+        if (config.audit) {
+            SqlLog(sql,c.user?:"null",c.host).sentoELServer()
+        }
         logger.info(sql)
         if (logger.isDebugEnabled) {
             logger.debug(sql)

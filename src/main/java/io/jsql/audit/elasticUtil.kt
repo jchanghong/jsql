@@ -25,10 +25,10 @@ object elasticUtil {
             log.info("audit thread start-------------------")
             while (true) {
                 val any = logquene.take()
-                println(any.toString())
+//                println(any.toString())
                 val path = if (any is SqlLog) "/sqlindex/sqllog" else "/sqlindex/loginlog"
                 var entity = NStringEntity(jsonmapper.writeValueAsString(any), ContentType.APPLICATION_JSON)
-//                esrestClient.performRequest("post", path, emptyMap(), entity)
+                esrestClient.performRequest("post", path, emptyMap(), entity)
             }
             log.info("audit thread end-------------------")
         }

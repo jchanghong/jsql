@@ -6,12 +6,14 @@ package io.jsql.mysql.handler
 import io.jsql.audit.LoginLog
 import io.jsql.audit.sendesServer
 import io.jsql.config.ErrorCode
+import io.jsql.my_config.MyConfig
 import io.jsql.mysql.CharsetUtil
 import io.jsql.mysql.mysql.AuthPacket
 import io.jsql.mysql.mysql.MySQLPacket
 import io.jsql.sql.OConnection
 import io.netty.buffer.Unpooled
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 /**
@@ -21,6 +23,8 @@ import org.springframework.stereotype.Component
 @Component
 open class MysqlAuthHander : MysqlPacketHander {
 
+    @Autowired
+    lateinit var config:MyConfig
    private fun handle0(auth: AuthPacket, source: OConnection) {
         // check quit packet
         //        if (data.length == QuitPacket.QUIT.length && data[4] == MySQLPacket.COM_QUIT) {
@@ -37,7 +41,10 @@ open class MysqlAuthHander : MysqlPacketHander {
 
         // check password
         if (!checkPassword(auth.password!!, auth.user!!)) {
-            LoginLog(auth.user?:"null",source.host,false).sendesServer()
+            if (config.audit) {
+
+                LoginLog(auth.user?:"null",source.host,false).sendesServer()
+            }
             failure(ErrorCode.ER_ACCESS_DENIED_ERROR, "Access denied for user '" + auth.user + "', because password is error ",source )
         } else {
             success(auth,source )
@@ -153,7 +160,9 @@ open class MysqlAuthHander : MysqlPacketHander {
         source.schema = auth.database
         source.charsetIndex = auth.charsetIndex
         source.charset = CharsetUtil.getCharset(source.charsetIndex)
-        LoginLog(source.user?:"null",source.host,true).sendesServer()
+        if (config.audit) {
+            LoginLog(source.user?:"null",source.host,true).sendesServer()
+        }
         if (LOGGER.isInfoEnabled) {
             val s = StringBuilder()
             s.append(source).append('\'').append(auth.user).append("' login success")
