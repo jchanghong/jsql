@@ -1,3 +1,7 @@
+/*
+ * Java-based distributed database like Mysql
+ */
+
 package io.jsql.hazelcast.test
 
 import com.hazelcast.config.Config

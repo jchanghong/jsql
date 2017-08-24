@@ -1,3 +1,7 @@
+/*
+ * Java-based distributed database like Mysql
+ */
+
 package io.jsql.test
 
 import org.junit.After

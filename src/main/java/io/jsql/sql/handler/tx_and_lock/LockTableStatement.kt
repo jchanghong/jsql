@@ -1,3 +1,7 @@
+/*
+ * Java-based distributed database like Mysql
+ */
+
 package io.jsql.sql.handler.tx_and_lock
 
 /**

@@ -1,3 +1,7 @@
+/*
+ * Java-based distributed database like Mysql
+ */
+
 package io.jsql.sql
 
 import org.springframework.beans.factory.annotation.Value

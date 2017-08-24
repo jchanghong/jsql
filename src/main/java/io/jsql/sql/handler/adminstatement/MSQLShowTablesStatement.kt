@@ -1,3 +1,7 @@
+/*
+ * Java-based distributed database like Mysql
+ */
+
 package io.jsql.sql.handler.adminstatement
 
 import com.alibaba.druid.sql.ast.SQLStatement

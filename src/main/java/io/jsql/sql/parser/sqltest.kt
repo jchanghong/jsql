@@ -1,8 +1,11 @@
+/*
+ * Java-based distributed database like Mysql
+ */
+
 package io.jsql.sql.parser
 
-import com.alibaba.druid.sql.ast.SQLStatement
 import com.alibaba.druid.sql.dialect.mysql.parser.MySqlStatementParser
-import io.jsql.sql.OConnectionCMD
+import io.jsql.sql.ONullConnection
 
 /**
  * Created by 长宏 on 2017/2/25 0025.
@@ -13,7 +16,7 @@ object sqltest {
         val sql = "showdb tables;"
         val parser = MySqlStatementParser(sql)
         val mySqlStatement = parser.parseStatement()
-        val visitor = MSQLvisitor(OConnectionCMD())
+        val visitor = MSQLvisitor(ONullConnection())
         mySqlStatement.accept(visitor)
 
     }

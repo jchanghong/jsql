@@ -1,3 +1,7 @@
+/*
+ * Java-based distributed database like Mysql
+ */
+
 package io.jsql.sql.handler
 
 import com.orientechnologies.orient.core.record.OElement

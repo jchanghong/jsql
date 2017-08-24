@@ -1,3 +1,7 @@
+/*
+ * Java-based distributed database like Mysql
+ */
+
 package io.jsql.orientstorage
 
 import com.orientechnologies.orient.core.db.OrientDB

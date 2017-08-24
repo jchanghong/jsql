@@ -1,3 +1,7 @@
+/*
+ * Java-based distributed database like Mysql
+ */
+
 package io.jsql.orientstorage.adapter
 
 import com.alibaba.druid.sql.ast.statement.SQLColumnDefinition

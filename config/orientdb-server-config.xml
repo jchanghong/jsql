@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+  ~ Java-based distributed database like Mysql
+  -->
+
 <orient-server>
     <handlers>
         <handler class="com.orientechnologies.orient.graph.handler.OGraphServerHandler">

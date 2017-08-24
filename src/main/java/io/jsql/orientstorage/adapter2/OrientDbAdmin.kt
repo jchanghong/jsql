@@ -1,3 +1,7 @@
+/*
+ * Java-based distributed database like Mysql
+ */
+
 //package io.jsql.orientstorage.adapter2;
 //
 //import com.orientechnologies.orient.client.remote.OServerAdmin;

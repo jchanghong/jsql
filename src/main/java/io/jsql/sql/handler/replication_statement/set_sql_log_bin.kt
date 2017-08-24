@@ -1,3 +1,7 @@
+/*
+ * Java-based distributed database like Mysql
+ */
+
 package io.jsql.sql.handler.replication_statement
 
 import io.jsql.config.ErrorCode
