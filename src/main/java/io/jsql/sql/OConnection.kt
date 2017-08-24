@@ -67,12 +67,12 @@ open class OConnection {
 
     @PostConstruct
     internal open fun init() {
-        LOGGER.debug("postconstruct:"+this.toString())
+        LOGGER.info("postconstruct:"+this.toString())
     }
 
     @PreDestroy
     internal fun destroy() {
-        LOGGER.debug("predestroy:"+this.toString())
+        LOGGER.info("predestroy:"+this.toString())
     }
 
     init {

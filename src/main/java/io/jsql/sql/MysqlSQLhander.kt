@@ -28,9 +28,10 @@ import javax.annotation.PostConstruct
 
 /**
  * Created by 长宏 on 2017/4/30 0030.
+ * 处理sql语句的入口
  */
 @Component
-@Scope("prototype")
+//@Scope("prototype")
 class MysqlSQLhander : SQLHander {
     @Autowired
   lateinit  private var allHanders: AllHanders
