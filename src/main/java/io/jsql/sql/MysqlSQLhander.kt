@@ -2,6 +2,7 @@
  * Java-based distributed database like Mysql
  */
 
+
 package io.jsql.sql
 
 import com.alibaba.druid.sql.ast.SQLStatement
@@ -31,10 +32,9 @@ import javax.annotation.PostConstruct
  * 处理sql语句的入口
  */
 @Component
-//@Scope("prototype")
 class MysqlSQLhander : SQLHander {
     @Autowired
-  lateinit  private var allHanders: AllHanders
+  lateinit  private var allHanders: AllHanders//所有的sql处理器容器
 
     @PostConstruct
     internal fun init() {
