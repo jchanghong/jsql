@@ -36,6 +36,7 @@ import org.springframework.stereotype.Component
 
  * @author changhong
  * * 只用来执行后台命令。
+ * 用于分布式实现
  */
 class OConnectionCMD : OConnection() {
 
