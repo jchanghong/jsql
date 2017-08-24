@@ -22,6 +22,7 @@ import javax.annotation.PostConstruct
  * 复制队列
  * 命令队列。
  * 2个锁。
+ *
  * 发布
  */
 @Component
