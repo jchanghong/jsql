@@ -95,11 +95,11 @@ class LogFile {
         @Throws(IOException::class)
         @JvmStatic fun main(args: Array<String>) {
             val logFile = LogFile()
-            logFile.write(SqlUpdateLog(1, "sql", "d1"))
+            logFile.write(SqlUpdateLog(7, "sql", "d1"))
             println(logFile.maxLSN())
-            logFile.write(SqlUpdateLog(2, "sql2", "d2"))
+            logFile.write(SqlUpdateLog(8, "sql2", "d2"))
             println(logFile.maxLSN())
-            logFile.write(SqlUpdateLog(3, "sql3", "d3"))
+            logFile.write(SqlUpdateLog(9, "sql3", "d3"))
             println(logFile.maxLSN())
             logFile.getall().forEach { a -> println(a.toString()) }
             logFile.close()
