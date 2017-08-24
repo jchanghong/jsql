@@ -3,8 +3,7 @@ package io.jsql.storage
 import com.orientechnologies.orient.core.db.document.ODatabaseDocument
 import com.orientechnologies.orient.core.record.OElement
 import com.orientechnologies.orient.core.sql.executor.OResult
-import io.jsql.hazelcast.SqlUpdateLog
-import java.util.Optional
+import java.util.*
 import java.util.stream.Stream
 
 /**
@@ -12,7 +11,6 @@ import java.util.stream.Stream
  * 和数据库有关的接口
  */
 interface DB {
-    //  public static   String currentDB = null;
     /**
      * Deletedb syn.同步操作
 
@@ -43,6 +41,7 @@ interface DB {
 
     fun close()
 
+    @Throws(StorageException::class)
     fun exe(sql: String, db: String)
     fun close(databaseDocument: ODatabaseDocument)
 }

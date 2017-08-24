@@ -18,13 +18,14 @@ public class Druid {
         String sql1 = "ALTER TABLE t2 DROP COLUMN c, DROP COLUMN d;";
 //        String sql="DESCRIBE City;";
         String sql="EXPLAIN select * from t1;";
-        List<SQLStatement> list = SQLUtils.parseStatements(sql1, "mysql");
+        List<SQLStatement> list = SQLUtils.parseStatements(sql, "mysql");
 
         for (SQLStatement sqlStatement:list
                 ) {
             System.out.println(sqlStatement.getClass().getName());
 
         }
+        System.out.println("----------");
         MySqlStatementParser parser = new MySqlStatementParser(sql);
         System.out.println(parser.parseSpStatement().getClass().getName());
     }
