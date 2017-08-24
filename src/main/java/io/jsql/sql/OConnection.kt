@@ -27,6 +27,7 @@ import org.springframework.context.annotation.Scope
 import org.springframework.stereotype.Component
 import java.io.UnsupportedEncodingException
 import javax.annotation.PostConstruct
+import javax.annotation.PreDestroy
 
 /**
  * The type O connection.
@@ -66,6 +67,12 @@ open class OConnection {
 
     @PostConstruct
     internal open fun init() {
+        LOGGER.debug("postconstruct:"+this.toString())
+    }
+
+    @PreDestroy
+    internal fun destroy() {
+        LOGGER.debug("predestroy:"+this.toString())
     }
 
     init {
