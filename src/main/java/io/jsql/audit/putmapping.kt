@@ -53,6 +53,6 @@ fun main(args: Array<String>) {
         elasticUtil.esrestClient.performRequest("put", "/sqlindex", emptyMap(), entity)
     }
     finally {
-        elasticUtil.esrestClient.close()
+        elasticUtil.close()
     }
 }

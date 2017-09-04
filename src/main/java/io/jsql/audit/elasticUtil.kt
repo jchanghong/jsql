@@ -20,16 +20,28 @@ import kotlin.concurrent.thread
 \*/
 object elasticUtil {
     val log=LoggerFactory.getLogger(elasticUtil::class.java)
+    @Volatile
+    var run=true
+
+    fun close() {
+        run = false
+    }
     init {
         thread(start = true) {
             log.info("audit thread start-------------------")
-            while (true) {
-                val any = logquene.take()
+            while (run|| logquene.size>0) {
+                if (logquene.size > 0) {
+                    val any = logquene.take()
 //                println(any.toString())
-                val path = if (any is SqlLog) "/sqlindex/sqllog" else "/sqlindex/loginlog"
-                var entity = NStringEntity(jsonmapper.writeValueAsString(any), ContentType.APPLICATION_JSON)
-                esrestClient.performRequest("post", path, emptyMap(), entity)
+                    val path = if (any is SqlLog) "/sqlindex/sqllog" else "/sqlindex/loginlog"
+                    var entity = NStringEntity(jsonmapper.writeValueAsString(any), ContentType.APPLICATION_JSON)
+                    esrestClient.performRequest("post", path, emptyMap(), entity)
+                    if (!run && logquene.size <= 0) {
+                        esrestClient.close()
+                    }
+                }
             }
+            log.info(logquene.size.toString())
             log.info("audit thread end-------------------")
         }
     }

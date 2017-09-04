@@ -34,4 +34,5 @@ fun main(args: Array<String>) {
         val login = SqlLog("sql", "user $i", "local")
         login.sentoELServer()
     }
+    elasticUtil.close()
 }
