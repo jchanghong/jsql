@@ -22,6 +22,8 @@ fun SqlLog.sentoELServer() {
     elasticUtil.put(this)
 }
 
+/**
+ * 测试数据*/
 fun main(args: Array<String>) {
     println(jsonmapper.writeValueAsString(SqlLog("dd", "dd", "dd")))
     for (i in 1..20) {
