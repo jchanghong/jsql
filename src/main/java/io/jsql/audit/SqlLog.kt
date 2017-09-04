@@ -6,6 +6,7 @@ package io.jsql.audit
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import java.util.*
+import java.util.concurrent.CountDownLatch
 
 
 /**
@@ -26,13 +27,29 @@ fun SqlLog.sentoELServer() {
  * 测试数据*/
 fun main(args: Array<String>) {
     println(jsonmapper.writeValueAsString(SqlLog("dd", "dd", "dd")))
-    for (i in 1..20) {
-        val login = LoginLog("user $i", "local", true)
-        login.sendesServer()
+    val  ran=Random()
+    val s=System.currentTimeMillis()
+    for (i in 1..1000) {
+        Thread.sleep(ran.nextInt(100)+0L)
+        elasticUtil.sentoServerSyn(SqlLog("select * from table$i","user $i","local"))
     }
-    for (i in 1..20) {
-        val login = SqlLog("select * from blog", "user $i", "local")
-        login.sentoELServer()
+    for (i in 1..1000) {
+        Thread.sleep(ran.nextInt(100)+0L)
+        elasticUtil.sentoServerSyn(LoginLog("user $i","localhost",true))
     }
+    println("end------")
+    println((System.currentTimeMillis()-s)/1000)
     elasticUtil.close()
 }
+
+//private fun insertdate() {
+//    var cat=CountDownLatch(1)
+//    for (i in 1..20) {
+//        val login = LoginLog("user $i", "local", true)
+//        login.sendesServer()
+//    }
+//    for (i in 1..20) {
+//        val login = SqlLog("select * from blog", "user $i", "local")
+//        login.sentoELServer()
+//    }
+//}

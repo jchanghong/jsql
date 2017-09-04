@@ -15,18 +15,9 @@ import org.apache.http.nio.entity.NStringEntity
 \* Time: 22:36
 \*/
 fun main(args: Array<String>) {
-    var string = """
+    var stringlogin = """
 {
   "mappings": {
-    "sqllog": {
-      "_all":       { "enabled": false  },
-      "properties": {
-        "sql":    { "type": "text"  },
-        "user":     { "type": "text"  },
-        "host":      { "type": "text" } ,
-"time" :{"type":"date"}
-      }
-    },
     "loginlog": {
       "_all":       { "enabled": false  },
       "properties": {
@@ -39,20 +30,49 @@ fun main(args: Array<String>) {
           "type":   "date"
 
         }
-      }
+        }
     }
   }
 }
 
 """
-    var entity = NStringEntity(string, ContentType.APPLICATION_JSON)
-    try {
-        elasticUtil.esrestClient.performRequest("put", "/sqlindex", emptyMap(), entity)
-        } catch (e: Exception) {
-        elasticUtil.esrestClient.performRequest("delete", "/sqlindex", emptyMap())
-        elasticUtil.esrestClient.performRequest("put", "/sqlindex", emptyMap(), entity)
+
+    var stringsql = """
+{
+  "mappings": {
+    "sqllog": {
+      "_all":       { "enabled": false  },
+      "properties": {
+        "sql":    { "type": "text"  },
+        "user":     { "type": "text"  },
+        "host":      { "type": "text" } ,
+"time" :{"type":"date"}
+      }
     }
-    finally {
-        elasticUtil.close()
+    }
+  }
+}
+
+"""
+    var entity = NStringEntity(stringlogin, ContentType.APPLICATION_JSON)
+    var entitysql = NStringEntity(stringsql, ContentType.APPLICATION_JSON)
+    try {
+        elasticUtil.esrestClient.performRequest("delete", "/sqlindex", emptyMap())
+        println("deleted--------sqlindex")
+    } catch (e: Exception) {
+        println("sqlindex not exits--------to be create.....................")
+    } finally {
+        elasticUtil.esrestClient.performRequest("put", "/sqlindex", emptyMap(), entitysql)
+        println("sqlindex created")
+    }
+
+    try {
+        elasticUtil.esrestClient.performRequest("delete", "/loginindex", emptyMap())
+        println("deleted----------loginindex")
+    } catch (e: Exception) {
+        println("loginindex not exits--------to be create.....................")
+    } finally {
+        elasticUtil.esrestClient.performRequest("put", "/loginindex", emptyMap(), entity)
+        println("loginindex created")
     }
 }

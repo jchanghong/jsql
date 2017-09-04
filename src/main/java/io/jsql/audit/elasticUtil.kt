@@ -33,7 +33,7 @@ object elasticUtil {
                 if (logquene.size > 0) {
                     val any = logquene.take()
 //                println(any.toString())
-                    val path = if (any is SqlLog) "/sqlindex/sqllog" else "/sqlindex/loginlog"
+                    val path = if (any is SqlLog) "/sqlindex/sqllog" else "/loginindex/loginlog"
                     var entity = NStringEntity(jsonmapper.writeValueAsString(any), ContentType.APPLICATION_JSON)
                     esrestClient.performRequest("post", path, emptyMap(), entity)
                     if (!run && logquene.size <= 0) {
@@ -44,6 +44,12 @@ object elasticUtil {
             log.info(logquene.size.toString())
             log.info("audit thread end-------------------")
         }
+    }
+
+    fun sentoServerSyn(any: Any) {
+        val path = if (any is SqlLog) "/sqlindex/sqllog" else "/loginindex/loginlog"
+        var entity = NStringEntity(jsonmapper.writeValueAsString(any), ContentType.APPLICATION_JSON)
+        esrestClient.performRequest("post", path, emptyMap(), entity)
     }
     val logquene = LinkedBlockingQueue<Any>()
     fun put(x: LoginLog): Unit {
