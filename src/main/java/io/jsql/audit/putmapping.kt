@@ -46,8 +46,13 @@ fun main(args: Array<String>) {
 
 """
     var entity = NStringEntity(string, ContentType.APPLICATION_JSON)
-    elasticUtil.esrestClient.performRequest("put", "/indexname", emptyMap(), entity)
-    elasticUtil.esrestClient.performRequest("delete", "/indexname", emptyMap())
-    elasticUtil.esrestClient.performRequest("put", "/indexname", emptyMap(), entity)
-    elasticUtil.esrestClient.close()
+    try {
+        elasticUtil.esrestClient.performRequest("put", "/sqlindex", emptyMap(), entity)
+        } catch (e: Exception) {
+        elasticUtil.esrestClient.performRequest("delete", "/sqlindex", emptyMap())
+        elasticUtil.esrestClient.performRequest("put", "/sqlindex", emptyMap(), entity)
+    }
+    finally {
+        elasticUtil.esrestClient.close()
+    }
 }
