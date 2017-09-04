@@ -31,7 +31,7 @@ fun main(args: Array<String>) {
         login.sendesServer()
     }
     for (i in 1..20) {
-        val login = SqlLog("sql", "user $i", "local")
+        val login = SqlLog("select * from blog", "user $i", "local")
         login.sentoELServer()
     }
     elasticUtil.close()
