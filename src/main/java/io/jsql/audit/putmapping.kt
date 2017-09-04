@@ -45,6 +45,7 @@ fun main(args: Array<String>) {
 
 """
     var entity = NStringEntity(string, ContentType.APPLICATION_JSON)
+    elasticUtil.esrestClient.performRequest("put", "/indexname", emptyMap(), entity)
     elasticUtil.esrestClient.performRequest("delete", "/indexname", emptyMap())
     elasticUtil.esrestClient.performRequest("put", "/indexname", emptyMap(), entity)
     elasticUtil.esrestClient.close()

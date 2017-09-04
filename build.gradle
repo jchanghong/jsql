@@ -62,7 +62,7 @@ configurations {
 dependencies {
 
     compile fileTree(dir: 'lib', include: '*.jar')
-    compile ( 'org.elasticsearch.client:rest:5.3.3')
+    compile ( 'org.elasticsearch.client:rest:5.5.2')
             {
                 exclude group :'commons-logging'
             }
