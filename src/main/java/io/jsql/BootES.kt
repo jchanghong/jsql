@@ -4,10 +4,6 @@
 
 package io.jsql
 
-import org.elasticsearch.bootstrap.Elasticsearch
-import java.util.concurrent.CountDownLatch
-import kotlin.concurrent.thread
-
 /**
 \* Created with IntelliJ IDEA.
 \* User: jiang
@@ -16,9 +12,9 @@ import kotlin.concurrent.thread
 启动elasticsearch服务器
 \*/
 fun main(args: Array<String>) {
-    var down = CountDownLatch(1)
-    thread (start = true){  Elasticsearch.main(args)}
-    println("start.......")
-    down.await()
+//    var down = CountDownLatch(1)
+//    thread (start = true){  Elasticsearch.main(args)}
+//    println("start.......")
+//    down.await()
 
 }

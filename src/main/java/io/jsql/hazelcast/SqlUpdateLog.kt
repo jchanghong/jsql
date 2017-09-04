@@ -8,7 +8,6 @@ import com.google.common.base.MoreObjects
 import com.google.common.base.Objects
 import com.google.common.collect.ComparisonChain
 import io.jsql.util.Mlogger
-import org.elasticsearch.common.collect.HppcMaps
 
 import java.io.Serializable
 
