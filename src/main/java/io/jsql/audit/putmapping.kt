@@ -11,6 +11,7 @@ import org.apache.http.nio.entity.NStringEntity
 \* Created with IntelliJ IDEA.
 \* User: jiang
 \* Date: 2017/6/15 0015
+简历maping，也就是建立表
 \* Time: 22:36
 \*/
 fun main(args: Array<String>) {
