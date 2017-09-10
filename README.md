@@ -1,7 +1,7 @@
 # Jsql
 Java-based distributed database like Mysql
 # 2017/8/23更新
-* 之前用的是java。后面联系kotlin。全部用kotlin重写。
+* 之前用的是java。后面练习kotlin。全部用kotlin重写。
 * 数据库引擎可以用自己开发的kv存储，但是这个项目采用了更成熟的开源存储。
 * 前端实现mysql通信协议，用netty框架。
 * 中间sql解析用到了druid。
