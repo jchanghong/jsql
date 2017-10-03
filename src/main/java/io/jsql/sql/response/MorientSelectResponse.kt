@@ -3,7 +3,6 @@
  */
 package io.jsql.sql.response
 
-import com.alibaba.druid.sql.ast.statement.SQLSelectStatement
 import com.orientechnologies.orient.core.db.document.ODatabaseDocument
 import com.orientechnologies.orient.core.record.OElement
 import io.jsql.orientstorage.sqlhander.sqlutil.MSQLutil

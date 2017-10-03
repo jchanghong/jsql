@@ -4,7 +4,7 @@
 
 package io.jsql.orientstorage.constant
 
-import java.util.HashMap
+import java.util.*
 
 /**
  * Created by 长宏 on 2017/3/23 0023.

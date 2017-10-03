@@ -4,12 +4,9 @@
 
 package io.jsql.sql.handler.utilstatement
 
-import com.alibaba.druid.sql.ast.statement.SQLUseStatement
 import io.jsql.config.ErrorCode
 import io.jsql.sql.OConnection
-import io.jsql.storage.DB
 import io.jsql.storage.StorageException
-import io.jsql.util.StringUtil
 
 /**
  * Created by 长宏 on 2017/2/26 0026.
@@ -22,7 +19,7 @@ object Usedatabase {
             if (schema.endsWith(";")) {
                 schema = schema.substring(0, schema.length - 1)
             }
-            schema = schema.replace("`","")
+            schema = schema.replace("`", "")
             length = schema.length
             if (schema[0] == '\'' && schema[length - 1] == '\'') {
                 schema = schema.substring(1, length - 1)

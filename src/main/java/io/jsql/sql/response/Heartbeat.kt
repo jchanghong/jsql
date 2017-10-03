@@ -4,7 +4,6 @@
 package io.jsql.sql.response
 
 import io.jsql.sql.OConnection
-import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 /**

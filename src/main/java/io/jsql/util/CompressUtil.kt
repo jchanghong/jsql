@@ -6,11 +6,10 @@ package io.jsql.util
 
 import com.google.common.collect.Lists
 import io.jsql.mysql.MySQLMessage
-
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.nio.ByteBuffer
-import java.util.ArrayList
+import java.util.*
 import java.util.concurrent.ConcurrentLinkedQueue
 import java.util.zip.Deflater
 import java.util.zip.Inflater
@@ -147,7 +146,7 @@ object CompressUtil {
 
         //未压缩, 直接返回
         if (packetLength == data.size - 4) {
-            var arg:ByteArray?=null
+            var arg: ByteArray? = null
             return Lists.newArrayList<ByteArray>(arg)
 
             //压缩不成功的, 直接返回

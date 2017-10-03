@@ -3,8 +3,6 @@
  */
 package io.jsql.sql.handler.adminstatement
 
-import com.alibaba.druid.sql.ast.SQLStatement
-import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlKillStatement
 import io.jsql.config.ErrorCode
 import io.jsql.mysql.mysql.OkPacket
 import io.jsql.sql.OConnection

@@ -6,7 +6,6 @@ package io.jsql.orientstorage.constant
 
 import io.jsql.sql.OConnection
 import io.jsql.storage.StorageException
-import org.springframework.stereotype.Component
 
 /**
  * Created by 长宏 on 2017/3/23 0023.

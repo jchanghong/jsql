@@ -33,11 +33,13 @@ import java.util.List;
 @Component
 public class MySqlDescribeStatement2 extends SqlStatementHander {
     private static final Logger LOGGER = LoggerFactory.getLogger(MySqlDescribeStatement2.class);
+
     @NotNull
     @Override
     public Class<? extends SQLStatement> supportSQLstatement() {
         return MySqlDescribeStatement.class;
     }
+
     @Nullable
     @Override
     protected Object handle0(@NotNull SQLStatement sqlStatement, @NotNull OConnection c) throws Exception {
@@ -60,7 +62,7 @@ public class MySqlDescribeStatement2 extends SqlStatementHander {
             element.setProperty("Extra", " ");
             elements.add(element);
         });
-        String[] list=new String[]{"Field", "Type", "Null", "Key", "Default", "Extra"};
+        String[] list = new String[]{"Field", "Type", "Null", "Key", "Default", "Extra"};
         return new MyResultSet(elements, Arrays.asList(list));
     }
 }

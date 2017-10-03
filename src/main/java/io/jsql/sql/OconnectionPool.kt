@@ -6,8 +6,7 @@ package io.jsql.sql
 
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
-
-import java.util.HashSet
+import java.util.*
 
 /**
  * Created by 长宏 on 2017/5/2 0002.

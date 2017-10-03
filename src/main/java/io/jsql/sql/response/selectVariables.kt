@@ -6,13 +6,13 @@ package io.jsql.sql.response
 import com.google.common.base.Splitter
 import io.jsql.config.Fields
 import io.jsql.mysql.PacketUtil
-import io.jsql.mysql.mysql.*
+import io.jsql.mysql.mysql.EOFPacket
+import io.jsql.mysql.mysql.FieldPacket
+import io.jsql.mysql.mysql.MySQLPacket
+import io.jsql.mysql.mysql.RowDataPacket
 import io.jsql.sql.OConnection
-import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-
-import java.util.ArrayList
-import java.util.HashMap
+import java.util.*
 
 /**
  * @author changhong

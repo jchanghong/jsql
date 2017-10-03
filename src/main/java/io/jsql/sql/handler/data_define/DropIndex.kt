@@ -4,10 +4,7 @@
 
 package io.jsql.sql.handler.data_define
 
-import com.alibaba.druid.sql.ast.SQLStatement
-import com.alibaba.druid.sql.ast.statement.SQLDropIndexStatement
 import com.orientechnologies.orient.core.db.document.ODatabaseDocument
-import com.orientechnologies.orient.core.metadata.schema.OProperty
 import io.jsql.sql.OConnection
 import io.jsql.sql.handler.SqlStatementHander
 import io.jsql.storage.StorageException

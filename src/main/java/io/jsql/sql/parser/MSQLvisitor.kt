@@ -4,13 +4,6 @@
 
 package io.jsql.sql.parser
 
-import com.alibaba.druid.sql.ast.*
-import com.alibaba.druid.sql.ast.statement.*
-import com.alibaba.druid.sql.dialect.mysql.ast.*
-import com.alibaba.druid.sql.dialect.mysql.ast.clause.*
-import com.alibaba.druid.sql.dialect.mysql.ast.expr.MySqlUserName
-import com.alibaba.druid.sql.dialect.mysql.ast.statement.*
-import com.alibaba.druid.sql.dialect.mysql.visitor.MySqlASTVisitorAdapter
 import io.jsql.sql.OConnection
 import io.jsql.sql.handler.adminstatement.MSetHandler
 import io.jsql.sql.handler.adminstatement.ShowHandler
@@ -18,8 +11,6 @@ import io.jsql.sql.handler.data_define.*
 import io.jsql.sql.handler.data_mannipulation.*
 import io.jsql.sql.handler.utilstatement.HelpStatement
 import io.jsql.sql.handler.utilstatement.Usedatabase
-import org.springframework.context.annotation.Scope
-import org.springframework.stereotype.Component
 
 /**
  * Created by 长宏 on 2017/3/19 0019.

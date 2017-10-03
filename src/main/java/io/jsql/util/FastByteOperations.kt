@@ -6,11 +6,7 @@ package io.jsql.util
 import com.google.common.primitives.Longs
 import com.google.common.primitives.UnsignedBytes
 import com.google.common.primitives.UnsignedLongs
-import com.orientechnologies.orient.core.record.ORecordVersionHelper.compareTo
-import io.jsql.util.FastByteOperations.UnsafeOperations.Companion.compareTo
 import sun.misc.Unsafe
-
-import java.lang.reflect.Field
 import java.nio.Buffer
 import java.nio.ByteBuffer
 import java.nio.ByteOrder

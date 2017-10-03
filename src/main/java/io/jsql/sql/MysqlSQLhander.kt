@@ -5,8 +5,6 @@
 
 package io.jsql.sql
 
-import com.alibaba.druid.sql.ast.SQLStatement
-import com.alibaba.druid.sql.dialect.mysql.parser.MySqlStatementParser
 import com.google.common.collect.Lists
 import io.jsql.audit.SqlLog
 import io.jsql.audit.sentoELServer
@@ -24,7 +22,6 @@ import io.jsql.sql.parser.MSQLvisitor
 import io.jsql.util.tosql
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.context.annotation.Scope
 import org.springframework.stereotype.Component
 import javax.annotation.PostConstruct
 
@@ -35,18 +32,20 @@ import javax.annotation.PostConstruct
 @Component
 class MysqlSQLhander : SQLHander {
     @Autowired
-  lateinit  private var allHanders: AllHanders//所有的sql处理器容器
+    lateinit private var allHanders: AllHanders//所有的sql处理器容器
 
     @PostConstruct
     internal fun init() {
     }
+
     @Autowired
-  lateinit  internal var myHazelcast: MyHazelcast
+    lateinit internal var myHazelcast: MyHazelcast
     @Autowired
     lateinit var config: MyConfig
+
     override fun handle(sql: String, c: OConnection) {//处理正常的sql语句，前端连接
         if (config.audit) {
-            SqlLog(sql,c.user?:"null",c.host).sentoELServer()
+            SqlLog(sql, c.user ?: "null", c.host).sentoELServer()
         }
         logger.info(sql)
         if (logger.isDebugEnabled) {
@@ -64,8 +63,7 @@ class MysqlSQLhander : SQLHander {
             if (isupdatesql(sql)) {
                 if (config.distributed) {
                     myHazelcast.exeSql(sql, if (c.schema == null) "" else c.schema!!)
-                }
-                else{
+                } else {
                     myHazelcast.exesqlLocal(sql, if (c.schema == null) "" else c.schema!!)
                 }
             }
@@ -74,13 +72,13 @@ class MysqlSQLhander : SQLHander {
             //            e.printStackTrace();
             //druid支持的语句就用上面的方法语句处理，如果不支持，就会有异常，就自己写代码解析sql语句，处理。
             //下面是drop event语句的例子，这个例子druid不支持，所以自己写
-            handleotherStatement(sql, c,e)
+            handleotherStatement(sql, c, e)
         }
 
 
     }
 
-    fun handle(sql: SqlUpdateLog,c: OConnection) {//处理来自其他服务器的sql语句，同步，不需要前端连接
+    fun handle(sql: SqlUpdateLog, c: OConnection) {//处理来自其他服务器的sql语句，同步，不需要前端连接
         logger.info(sql.toString())
         if (logger.isDebugEnabled) {
             logger.debug(sql.toString())
@@ -203,7 +201,7 @@ class MysqlSQLhander : SQLHander {
             Msubquery.handle(sql, c)
             return
         }
-        c.writeErrMessage(ErrorCode.ER_SP_BAD_SQLSTATE, exception.message ?:"error")
+        c.writeErrMessage(ErrorCode.ER_SP_BAD_SQLSTATE, exception.message ?: "error")
 //        c.writeok()
     }
 

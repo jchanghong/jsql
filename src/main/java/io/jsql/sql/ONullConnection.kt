@@ -9,7 +9,6 @@ import io.jsql.mysql.mysql.CommandPacket
 import io.jsql.mysql.mysql.MySQLPacket
 import io.netty.buffer.ByteBuf
 import io.netty.buffer.Unpooled
-import org.springframework.stereotype.Component
 
 /**
  * The type O connection.

@@ -24,8 +24,8 @@ import org.springframework.core.annotation.Order
 open class SpringMain : CommandLineRunner {
     private val logger = LoggerFactory.getLogger(SpringMain::class.java.name)
     @Autowired
-   lateinit private var nettyServer: NettyServer
-    private var hook=Mhook()
+    lateinit private var nettyServer: NettyServer
+    private var hook = Mhook()
 
     @Throws(Exception::class)
     override fun run(vararg strings: String) {
@@ -42,7 +42,7 @@ open class SpringMain : CommandLineRunner {
     }
 
     @Autowired
-  lateinit  internal var myHazelcast: MyHazelcast
+    lateinit internal var myHazelcast: MyHazelcast
 
     private inner class Mhook : Thread() {
         override fun run() {
@@ -54,7 +54,8 @@ open class SpringMain : CommandLineRunner {
     }
 
     companion object {
-        @JvmStatic fun main(args: Array<String>) {
+        @JvmStatic
+        fun main(args: Array<String>) {
 //                thread (start = true){  Elasticsearch.main(args)}
             SpringApplication.run(SpringMain::class.java, *args)
         }

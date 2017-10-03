@@ -4,8 +4,6 @@
 
 package io.jsql.orientstorage.adapter
 
-import com.alibaba.druid.sql.ast.statement.SQLColumnDefinition
-import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlCreateTableStatement
 import com.orientechnologies.orient.core.metadata.schema.OClass
 import com.orientechnologies.orient.core.metadata.schema.OType
 import com.orientechnologies.orient.core.record.OElement
@@ -26,7 +24,7 @@ import javax.annotation.PostConstruct
 @Service
 class OTable : Table {
     @Autowired
-  lateinit  private var dbadmin: DB
+    lateinit private var dbadmin: DB
 
     @PostConstruct
     internal fun post() {

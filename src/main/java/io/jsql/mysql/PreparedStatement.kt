@@ -5,7 +5,7 @@ package io.jsql.mysql
 
 import java.io.ByteArrayOutputStream
 import java.io.IOException
-import java.util.HashMap
+import java.util.*
 
 /**
  * @author jsql, CrazyPig

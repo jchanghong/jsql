@@ -20,7 +20,7 @@ object Versions {
 
     fun setServerVersion(version: String) {
         val mysqlVersionPart = version.toByteArray()
-        var startIndex: Int=0
+        var startIndex: Int = 0
         while (startIndex < SERVER_VERSION.size) {
             if (SERVER_VERSION[startIndex] == '_'.toByte())
                 break

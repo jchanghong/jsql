@@ -4,10 +4,6 @@
 
 package io.jsql.util
 
-import com.alibaba.druid.sql.SQLUtils
-import com.alibaba.druid.sql.ast.SQLStatement
-import com.alibaba.druid.util.JdbcConstants
-
 
 /**
 \* Created with IntelliJ IDEA.

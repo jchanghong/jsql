@@ -7,8 +7,6 @@ package io.jsql.util
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-import java.io.PrintStream
-
 /**
  * Created by 长宏 on 2017/5/5 0005.
  */

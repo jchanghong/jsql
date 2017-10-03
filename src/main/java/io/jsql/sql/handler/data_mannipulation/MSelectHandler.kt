@@ -3,10 +3,6 @@
  */
 package io.jsql.sql.handler.data_mannipulation
 
-import com.alibaba.druid.sql.ast.SQLStatement
-import com.alibaba.druid.sql.ast.expr.SQLBinaryOpExpr
-import com.alibaba.druid.sql.ast.statement.SQLSelectStatement
-import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlSelectQueryBlock
 import com.orientechnologies.orient.core.record.OElement
 import com.orientechnologies.orient.core.record.impl.ODocument
 import io.jsql.orientstorage.constant.Minformation_schama
@@ -17,7 +13,6 @@ import io.jsql.sql.handler.SqlStatementHander
 import io.jsql.sql.response.*
 import io.jsql.sql.util.Mcomputer
 import org.springframework.stereotype.Component
-
 import kotlin.streams.toList
 
 /**

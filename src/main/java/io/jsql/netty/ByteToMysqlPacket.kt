@@ -10,7 +10,6 @@ import io.jsql.mysql.mysql.MySQLPacket
 import io.netty.channel.ChannelHandler
 import io.netty.channel.ChannelHandlerContext
 import io.netty.channel.ChannelInboundHandlerAdapter
-import org.springframework.context.annotation.Scope
 import org.springframework.stereotype.Component
 
 /**

@@ -71,11 +71,11 @@ class ExecutePacket(protected val pstmt: PreparedStatement) : MySQLPacket() {
     var statementId: Long = 0
     var flags: Byte = 0
     var iterationCount: Long = 0
-    var nullBitMap: ByteArray?=null
+    var nullBitMap: ByteArray? = null
     var newParameterBoundFlag: Byte = 0
 
     init {
-        this.values = arrayOfNulls<BindValue>(pstmt.parametersNumber)as Array<BindValue>
+        this.values = arrayOfNulls<BindValue>(pstmt.parametersNumber) as Array<BindValue>
     }
 
     @Throws(UnsupportedEncodingException::class)
@@ -108,7 +108,7 @@ class ExecutePacket(protected val pstmt: PreparedStatement) : MySQLPacket() {
         for (i in 0..parameterCount - 1) {
             val bv = BindValue()
             bv.type = pstmt.parametersType[i]
-            if ((nullBitMap!![i / 8].toInt() and (1 shl (i and 7))) .equals( 0)) {
+            if ((nullBitMap!![i / 8].toInt() and (1 shl (i and 7))).equals(0)) {
                 bv.isNull = true
             } else {
                 BindValueUtil.read(mm, bv, charset)

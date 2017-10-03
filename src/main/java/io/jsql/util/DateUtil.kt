@@ -6,9 +6,8 @@ package io.jsql.util
 
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
-
 import java.text.ParseException
-import java.util.Date
+import java.util.*
 
 /**
  * 使用joda解析date,可以得到date的year,month,day等字段值
@@ -36,7 +35,8 @@ object DateUtil {
      * @throws ParseException
      */
     @Throws(ParseException::class)
-    @JvmOverloads fun parseDate(dateStr: String, datePattern: String = DEFAULT_DATE_PATTERN): Date {
+    @JvmOverloads
+    fun parseDate(dateStr: String, datePattern: String = DEFAULT_DATE_PATTERN): Date {
         val dt = DateTimeFormat.forPattern(datePattern).parseDateTime(dateStr)
         return dt.toDate()
     }

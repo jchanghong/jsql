@@ -5,7 +5,6 @@ package io.jsql.mysql.mysql
 
 import io.jsql.mysql.MBufferUtil
 import io.jsql.mysql.MySQLMessage
-import io.netty.buffer.ByteBuf
 import io.netty.buffer.Unpooled
 import io.netty.channel.Channel
 

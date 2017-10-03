@@ -6,12 +6,13 @@ package io.jsql.sql.response
 
 import io.jsql.config.Fields
 import io.jsql.mysql.PacketUtil
-import io.jsql.mysql.mysql.*
+import io.jsql.mysql.mysql.EOFPacket
+import io.jsql.mysql.mysql.FieldPacket
+import io.jsql.mysql.mysql.MySQLPacket
+import io.jsql.mysql.mysql.RowDataPacket
 import io.jsql.sql.OConnection
 import io.jsql.util.StringUtil
-
-import java.util.ArrayList
-import java.util.HashMap
+import java.util.*
 
 /**
  * Created by jiang on 2017/2/26 0026.

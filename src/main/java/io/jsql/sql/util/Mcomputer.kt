@@ -4,8 +4,7 @@
 
 package io.jsql.sql.util
 
-import java.util.Arrays
-import java.util.Scanner
+import java.util.*
 
 /**
  * Created by 长宏 on 2017/2/28 0028.
@@ -78,7 +77,8 @@ object Mcomputer {
 
      * @param args the input arguments
      */
-    @JvmStatic fun main(args: Array<String>) {
+    @JvmStatic
+    fun main(args: Array<String>) {
         println(dimissc("(1+(1+2)+2)+((1+2))"))
         println(compute("(1+(1+2)+2)+((1+2))"))
         val scanner = Scanner(System.`in`)

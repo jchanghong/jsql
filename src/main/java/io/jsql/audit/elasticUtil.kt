@@ -19,17 +19,18 @@ import kotlin.concurrent.thread
 \* Time: 16:16
 \*/
 object elasticUtil {
-    val log=LoggerFactory.getLogger(elasticUtil::class.java)
+    val log = LoggerFactory.getLogger(elasticUtil::class.java)
     @Volatile
-    var run=true
+    var run = true
 
     fun close() {
         run = false
     }
+
     init {
         thread(start = true) {
             log.info("audit thread start-------------------")
-            while (run|| logquene.size>0) {
+            while (run || logquene.size > 0) {
                 if (logquene.size > 0) {
                     val any = logquene.take()
 //                println(any.toString())
@@ -51,6 +52,7 @@ object elasticUtil {
         var entity = NStringEntity(jsonmapper.writeValueAsString(any), ContentType.APPLICATION_JSON)
         esrestClient.performRequest("post", path, emptyMap(), entity)
     }
+
     val logquene = LinkedBlockingQueue<Any>()
     fun put(x: LoginLog): Unit {
         logquene.put(x)
@@ -59,6 +61,7 @@ object elasticUtil {
     fun put(x: SqlLog): Unit {
         logquene.put(x)
     }
+
     val esrestClient = RestClient.builder(
             HttpHost("localhost", 9200, "http")
     ).build()

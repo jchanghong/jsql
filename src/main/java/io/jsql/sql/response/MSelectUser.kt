@@ -5,14 +5,7 @@ package io.jsql.sql.response
 
 import com.orientechnologies.orient.core.record.OElement
 import com.orientechnologies.orient.core.record.impl.ODocument
-import io.jsql.config.Fields
-import io.jsql.mysql.PacketUtil
-import io.jsql.mysql.mysql.*
-import io.jsql.sql.OConnection
 import io.jsql.sql.handler.MyResultSet
-import io.jsql.util.StringUtil
-
-import java.util.Collections
 
 /**
  * @author jsql

@@ -5,11 +5,10 @@
 package io.jsql.hazelcast.test
 
 import com.hazelcast.config.Config
-import com.hazelcast.core.*
-import org.slf4j.Logger
+import com.hazelcast.core.Hazelcast
+import com.hazelcast.core.ItemEvent
+import com.hazelcast.core.ItemListener
 import org.slf4j.LoggerFactory
-
-import java.util.concurrent.BlockingQueue
 import java.util.concurrent.TimeUnit
 
 /**
@@ -19,7 +18,8 @@ object QUEne {
     internal var logger = LoggerFactory.getLogger("mew")
 
     @Throws(InterruptedException::class)
-    @JvmStatic fun main(args: Array<String>) {
+    @JvmStatic
+    fun main(args: Array<String>) {
         val listener = object : ItemListener<String> {
             override fun itemAdded(item: ItemEvent<String>) {
                 logger.info(item.toString())

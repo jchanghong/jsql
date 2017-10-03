@@ -7,9 +7,7 @@ import io.jsql.config.Capabilities
 import io.jsql.mysql.MBufferUtil
 import io.jsql.mysql.MySQLMessage
 import io.jsql.mysql.StreamUtil
-import io.netty.buffer.ByteBuf
 import io.netty.buffer.Unpooled
-
 import java.io.IOException
 import java.io.OutputStream
 
@@ -41,7 +39,7 @@ class AuthPacket : MySQLPacket() {
     var clientFlags: Long = 0
     var maxPacketSize: Long = 0
     var charsetIndex: Int = 0
-    var extra: ByteArray?=null // from FILLER(23)
+    var extra: ByteArray? = null // from FILLER(23)
     var user: String? = null
     var password: ByteArray? = null
     var database: String? = null
@@ -64,7 +62,7 @@ class AuthPacket : MySQLPacket() {
         mm.position(current + FILLER.size)
         user = mm.readStringWithNull()
         password = mm.readBytesWithLength()
-        if (!(clientFlags and Capabilities.CLIENT_CONNECT_WITH_DB.toLong() ).equals(0) && mm.hasRemaining()) {
+        if (!(clientFlags and Capabilities.CLIENT_CONNECT_WITH_DB.toLong()).equals(0) && mm.hasRemaining()) {
             database = mm.readStringWithNull()
         }
     }

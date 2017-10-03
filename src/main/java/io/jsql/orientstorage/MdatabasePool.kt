@@ -20,6 +20,7 @@ import java.util.concurrent.CountDownLatch
 @Component
 class MdatabasePool(var orientDB: OrientDB) {
     private val multimap: Multimap<String, ODatabaseDocument>
+
     /**
      * Instantiates a new Mdatabase pool.
 
@@ -66,7 +67,8 @@ class MdatabasePool(var orientDB: OrientDB) {
          * @throws InterruptedException the interrupted exception
          */
         @Throws(InterruptedException::class)
-        @JvmStatic fun main(args: Array<String>) {
+        @JvmStatic
+        fun main(args: Array<String>) {
             val map1 = HashMultimap.create<String, String>()
             val map = Multimaps.synchronizedMultimap(map1)
             val latch = CountDownLatch(1)
