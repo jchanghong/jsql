@@ -12,8 +12,7 @@ import java.sql.SQLException
  * test
  */
 object JDBC {
-    @JvmStatic
-    fun main(args: Array<String>) {
+    @JvmStatic fun main(args: Array<String>) {
         val url = "jdbc:mysql://localhost:9999/changhong?" + "user=root&password=0000&useUnicode=true&characterEncoding=UTF8"
         try {
             val connection = DriverManager.getConnection(url)

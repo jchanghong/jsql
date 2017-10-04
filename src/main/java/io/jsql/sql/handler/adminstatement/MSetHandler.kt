@@ -4,6 +4,11 @@
 
 package io.jsql.sql.handler.adminstatement
 
+import com.alibaba.druid.sql.ast.statement.SQLSetStatement
+import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlSetCharSetStatement
+import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlSetNamesStatement
+import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlSetPasswordStatement
+import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlSetTransactionStatement
 import io.jsql.config.ErrorCode
 import io.jsql.sql.OConnection
 

@@ -4,6 +4,7 @@
 
 package io.jsql.sql.parser
 
+import com.alibaba.druid.sql.dialect.mysql.parser.MySqlStatementParser
 import io.jsql.sql.ONullConnection
 
 /**
@@ -11,8 +12,7 @@ import io.jsql.sql.ONullConnection
  * 测试
  */
 object sqltest {
-    @JvmStatic
-    fun main(args: Array<String>) {
+    @JvmStatic fun main(args: Array<String>) {
         val sql = "showdb tables;"
         val parser = MySqlStatementParser(sql)
         val mySqlStatement = parser.parseStatement()

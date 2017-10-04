@@ -3,13 +3,16 @@
  */
 package io.jsql.mysql
 
+import kotlin.experimental.and
+import kotlin.experimental.or
+
 /**
  * @author jsql
  */
 object ByteUtil {
 
     fun readUB2(data: ByteArray, offset: Int): Int {
-        var i1 = offset
+        var i1=offset
         var i = data[i1].toInt() and 0xff
         i = i or (data[++i1].toInt() and 0xff shl 8)
         return i

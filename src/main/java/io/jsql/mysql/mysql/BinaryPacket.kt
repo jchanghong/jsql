@@ -6,8 +6,10 @@ package io.jsql.mysql.mysql
 import io.jsql.mysql.ByteUtil
 import io.jsql.mysql.MBufferUtil
 import io.jsql.mysql.StreamUtil
+import io.netty.buffer.ByteBuf
 import io.netty.buffer.Unpooled
 import io.netty.channel.Channel
+
 import java.io.IOException
 import java.io.InputStream
 

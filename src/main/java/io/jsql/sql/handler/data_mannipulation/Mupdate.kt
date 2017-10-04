@@ -4,6 +4,8 @@
 
 package io.jsql.sql.handler.data_mannipulation
 
+import com.alibaba.druid.sql.ast.SQLStatement
+import com.alibaba.druid.sql.ast.statement.SQLUpdateStatement
 import io.jsql.config.ErrorCode
 import io.jsql.mysql.mysql.OkPacket
 import io.jsql.sql.OConnection

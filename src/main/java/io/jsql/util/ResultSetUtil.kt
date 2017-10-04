@@ -102,8 +102,7 @@ object ResultSetUtil {
     }
 
     @Throws(Exception::class)
-    @JvmStatic
-    fun main(args: Array<String>) {
+    @JvmStatic fun main(args: Array<String>) {
         // byte[] byt =
         // fromHex("20 00 00 02 03 64 65 66 00 00 00 0A 40 40 73 71 6C 5F 6D 6F 64 65 00 0C 21 00 BA 00 00 00 FD 01 00 1F 00 00");
         // MysqlPacketBuffer buffer = new MysqlPacketBuffer(byt);

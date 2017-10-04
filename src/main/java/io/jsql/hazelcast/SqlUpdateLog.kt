@@ -27,11 +27,11 @@ import java.io.Serializable
  */
 class SqlUpdateLog(var LSN: Long, var sql: String, var db: String) : Comparable<SqlUpdateLog>, Mlogger, Serializable {
 
-    constructor(log: String) : this(0, "", "") {
-        val strings = log.split(",")
-        LSN = strings[0].toLong()
-        sql = strings[1]
-        db = strings[2]
+    constructor(log:String) : this(0,"","") {
+       val strings= log.split(",")
+        LSN=strings[0].toLong()
+        sql=strings[1]
+        db=strings[2]
     }
 
     override fun compareTo(o: SqlUpdateLog): Int {
@@ -51,21 +51,20 @@ class SqlUpdateLog(var LSN: Long, var sql: String, var db: String) : Comparable<
     }
 
     //存文件中的格式，方便调试查看
-    fun toStringLog(): String {
-        return "$LSN,$sql,$db"
+     fun toStringLog(): String {
+         return "$LSN,$sql,$db"
 
     }
 
     companion object {
 
-        @JvmStatic
-        fun main(args: Array<String>) {
+        @JvmStatic fun main(args: Array<String>) {
             var sqlUpdateLog = SqlUpdateLog(1, "ddd", "db")
             println(sqlUpdateLog.toString())
-            sqlUpdateLog = SqlUpdateLog("2,ddd2,db2")
+            sqlUpdateLog= SqlUpdateLog("2,ddd2,db2")
             println(sqlUpdateLog.toString())
             println(sqlUpdateLog.toStringLog())
-            var log2 = SqlUpdateLog(sqlUpdateLog.toStringLog())
+            var log2=SqlUpdateLog(sqlUpdateLog.toStringLog())
             println(log2.toString())
 
 

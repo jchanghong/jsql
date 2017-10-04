@@ -4,7 +4,7 @@
 package io.jsql.util
 
 import java.nio.charset.Charset
-import java.util.*
+import java.util.Date
 
 object ByteUtil {
 
@@ -126,8 +126,7 @@ object ByteUtil {
         return getBytes(intBits)
     }
 
-    @JvmOverloads
-    fun getBytes(data: String, charsetName: String = "GBK"): ByteArray {
+    @JvmOverloads fun getBytes(data: String, charsetName: String = "GBK"): ByteArray {
         val charset = Charset.forName(charsetName)
         return data.toByteArray(charset)
     }
@@ -164,8 +163,7 @@ object ByteUtil {
         return java.lang.Float.parseFloat(String(bytes))
     }
 
-    @JvmOverloads
-    fun getString(bytes: ByteArray, charsetName: String = "UTF-8"): String {
+    @JvmOverloads fun getString(bytes: ByteArray, charsetName: String = "UTF-8"): String {
         return String(bytes, Charset.forName(charsetName))
     }
 

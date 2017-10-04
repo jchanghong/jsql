@@ -5,10 +5,7 @@ package io.jsql.sql.response
 
 import io.jsql.config.Fields
 import io.jsql.mysql.PacketUtil
-import io.jsql.mysql.mysql.EOFPacket
-import io.jsql.mysql.mysql.FieldPacket
-import io.jsql.mysql.mysql.MySQLPacket
-import io.jsql.mysql.mysql.RowDataPacket
+import io.jsql.mysql.mysql.*
 import io.jsql.sql.OConnection
 import io.jsql.util.StringUtil
 
@@ -52,7 +49,7 @@ object MSelect2Response {
         // write last eof
         val lastEof = EOFPacket()
         lastEof.packetId = ++packetId
-        c.writeResultSet(header, fields as Array<MySQLPacket>, eof, rows as Array<MySQLPacket>, lastEof)
+        c.writeResultSet(header, fields as Array<MySQLPacket>, eof, rows as  Array<MySQLPacket>, lastEof)
     }
 
 }

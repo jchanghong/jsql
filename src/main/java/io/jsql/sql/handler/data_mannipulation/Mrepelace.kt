@@ -4,6 +4,8 @@
 
 package io.jsql.sql.handler.data_mannipulation
 
+import com.alibaba.druid.sql.ast.SQLStatement
+import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlReplaceStatement
 import com.orientechnologies.orient.core.db.document.ODatabaseDocument
 import io.jsql.config.ErrorCode
 import io.jsql.mysql.mysql.OkPacket
@@ -11,7 +13,8 @@ import io.jsql.sql.OConnection
 import io.jsql.sql.handler.SqlStatementHander
 import io.jsql.storage.StorageException
 import org.springframework.stereotype.Component
-import java.util.*
+
+import java.util.HashSet
 
 /**
  * Created by 长宏 on 2017/3/18 0018.

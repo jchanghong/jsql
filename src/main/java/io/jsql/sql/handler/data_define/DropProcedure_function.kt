@@ -4,6 +4,9 @@
 
 package io.jsql.sql.handler.data_define
 
+import com.alibaba.druid.sql.ast.SQLStatement
+import com.alibaba.druid.sql.ast.statement.SQLDropFunctionStatement
+import com.alibaba.druid.sql.ast.statement.SQLDropProcedureStatement
 import io.jsql.sql.OConnection
 import io.jsql.sql.handler.SqlStatementHander
 import org.springframework.stereotype.Component

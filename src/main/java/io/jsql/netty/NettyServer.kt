@@ -30,13 +30,12 @@ class NettyServer {
     @Value("\${server.port}")
     private val PORT: Int = 9999
     @Autowired
-    lateinit internal var applicationContext: ApplicationContext
+  lateinit  internal var applicationContext: ApplicationContext
     internal var logger = LoggerFactory.getLogger(NettyServer::class.java.name)
     @Autowired
-    lateinit internal var myHazelcast: MyHazelcast
+   lateinit internal var myHazelcast: MyHazelcast
     @Autowired
-    lateinit var bytetomysql: ByteToMysqlPacket
-
+   lateinit var bytetomysql:ByteToMysqlPacket
     @Throws(Exception::class)
     fun start() {
         logger.info("port is " + PORT)
@@ -76,9 +75,8 @@ class NettyServer {
             workerGroup.shutdownGracefully()
         }
     }
-
     @Autowired
-    lateinit var config: MyConfig
+    lateinit var config:MyConfig
     private val byteToMysqlDecoder: ChannelHandler
         get() = applicationContext.getBean(ByteToMysqlDecoder::class.java)
     private val mysqlPacketHander: ChannelHandler

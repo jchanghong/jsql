@@ -8,7 +8,8 @@ import io.jsql.mysql.MySQLMessage
 import io.netty.buffer.ByteBuf
 import io.netty.buffer.Unpooled
 import io.netty.channel.Channel
-import java.util.*
+
+import java.util.ArrayList
 
 /**
  * From server to client. One packet for each row in the result set.
@@ -38,7 +39,7 @@ import java.util.*
  */
 class RowDataPacket(var fieldCount: Int) : MySQLPacket() {
     val fieldValues: MutableList<ByteArray>
-    var value: ByteArray? = null
+    var value: ByteArray?=null
 
     init {
         this.fieldValues = ArrayList<ByteArray>(fieldCount)

@@ -21,10 +21,10 @@ public class Druid {
     public static void main(String[] args) {
         String sql1 = "ALTER TABLE t2 DROP COLUMN c, DROP COLUMN d;";
 //        String sql="DESCRIBE City;";
-        String sql = "EXPLAIN select * from t1;";
+        String sql="EXPLAIN select * from t1;";
         List<SQLStatement> list = SQLUtils.parseStatements(sql, "mysql");
 
-        for (SQLStatement sqlStatement : list
+        for (SQLStatement sqlStatement:list
                 ) {
             System.out.println(sqlStatement.getClass().getName());
 

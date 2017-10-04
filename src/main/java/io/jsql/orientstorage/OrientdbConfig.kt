@@ -14,17 +14,17 @@ import org.springframework.context.annotation.Configuration
 
 @Configuration
 @ComponentScan
-class OrientdbConfig {
+class OrientdbConfig
+{
     @Value("\${db.dir}")
     val dbDIR = "databases"
-
     @Bean
-    fun orientdb(): OrientDB {
+    fun orientdb():OrientDB {
         val builder = StringBuilder("embedded:")
         builder.append("./")
         builder.append(dbDIR)
         builder.append("/")
         val confi = OrientDBConfig.defaultConfig()
-        return OrientDB(builder.toString(), null, null, confi)
+     return   OrientDB(builder.toString(), null, null, confi)
     }
 }

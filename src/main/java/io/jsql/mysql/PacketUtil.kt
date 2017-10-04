@@ -8,6 +8,8 @@ import io.jsql.mysql.mysql.BinaryPacket
 import io.jsql.mysql.mysql.ErrorPacket
 import io.jsql.mysql.mysql.FieldPacket
 import io.jsql.mysql.mysql.ResultSetHeaderPacket
+
+import java.io.FilePermission
 import java.io.UnsupportedEncodingException
 
 /**

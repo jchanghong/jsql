@@ -4,6 +4,8 @@
 
 package io.jsql.sql.handler.data_define
 
+import com.alibaba.druid.sql.ast.SQLStatement
+import com.alibaba.druid.sql.ast.statement.SQLAlterTableStatement
 import com.orientechnologies.orient.core.db.document.ODatabaseDocument
 import com.orientechnologies.orient.core.metadata.schema.OClass
 import com.orientechnologies.orient.core.metadata.schema.OType

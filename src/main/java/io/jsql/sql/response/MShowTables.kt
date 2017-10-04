@@ -4,6 +4,7 @@
 
 package io.jsql.sql.response
 
+import com.alibaba.druid.sql.ast.statement.SQLShowTablesStatement
 import com.orientechnologies.orient.core.record.OElement
 import com.orientechnologies.orient.core.record.impl.ODocument
 import io.jsql.sql.OConnection

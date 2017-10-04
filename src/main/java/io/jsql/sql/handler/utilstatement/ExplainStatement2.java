@@ -35,7 +35,6 @@ import java.util.List;
 @Component
 public class ExplainStatement2 extends SqlStatementHander {
     private static final Logger LOGGER = LoggerFactory.getLogger(ExplainStatement2.class);
-
     @NotNull
     @Override
     public Class<? extends SQLStatement> supportSQLstatement() {
@@ -66,7 +65,7 @@ public class ExplainStatement2 extends SqlStatementHander {
             element.setProperty("Extra", " ");
             elements.add(element);
         });
-        String[] list = new String[]{"Field", "Type", "Null", "Key", "Default", "Extra"};
+        String[] list=new String[]{"Field", "Type", "Null", "Key", "Default", "Extra"};
         return new MyResultSet(elements, Arrays.asList(list));
     }
 }

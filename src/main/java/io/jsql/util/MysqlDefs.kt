@@ -15,7 +15,7 @@
 package io.jsql.util
 
 import java.sql.Types
-import java.util.*
+import java.util.HashMap
 
 /**
  * copy from mysql-connector-j MysqlDefs contains many values that are needed

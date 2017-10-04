@@ -4,7 +4,16 @@
 
 package io.jsql.orientstorage.sqlhander.sqlutil
 
-import java.util.*
+import com.alibaba.druid.sql.SQLUtils
+import com.alibaba.druid.sql.ast.statement.SQLColumnDefinition
+import com.alibaba.druid.sql.ast.statement.SQLCreateDatabaseStatement
+import com.alibaba.druid.sql.ast.statement.SQLSelectStatement
+import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlCreateTableStatement
+import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlSelectQueryBlock
+import com.alibaba.druid.sql.dialect.mysql.parser.MySqlStatementParser
+
+import java.util.ArrayList
+import java.util.HashMap
 
 /**
  * Created by 长宏 on 2016/12/17 0017.
@@ -99,8 +108,7 @@ object MSQLutil {
 
      * @param args the input arguments
      */
-    @JvmStatic
-    fun main(args: Array<String>) {
+    @JvmStatic fun main(args: Array<String>) {
 
         val sql = "create table t1(id int,name varchar);"
         gettablenamefileds(SQLUtils.parseStatements(sql, "mysql")[0] as MySqlCreateTableStatement)

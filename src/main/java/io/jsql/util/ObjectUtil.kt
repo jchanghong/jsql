@@ -3,12 +3,17 @@
  */
 package io.jsql.util
 
+import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+
+import java.beans.BeanInfo
 import java.beans.IntrospectionException
 import java.beans.Introspector
+import java.beans.PropertyDescriptor
 import java.io.*
+import java.lang.reflect.Field
 import java.lang.reflect.InvocationTargetException
-import java.util.*
+import java.util.Arrays
 
 /**
  * @author jsql

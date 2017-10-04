@@ -62,27 +62,27 @@ import java.util.*
 //**/
 //
 internal object Mconstantvariables {
-    val MAP: MutableMap<String, String> = HashMap()
+val MAP:MutableMap<String, String> = HashMap()
 
-    init {
-        MAP.put("character_set_client", "utf8")
-        MAP.put("character_set_connection", "utf8")
-        MAP.put("character_set_results", "utf8")
-        MAP.put("character_set_server", "utf8")
-        MAP.put("init_connect", "")
-        MAP.put("interactive_timeout", "28800")
-        MAP.put("license", "GPL")
-        MAP.put("lower_case_table_names", "1")
-        MAP.put("max_allowed_packet", "4194304")
-        MAP.put("net_buffer_length", "16384")
-        MAP.put("net_write_timeout", "60")
-        MAP.put("query_cache_size", "1048576")
-        MAP.put("query_cache_type", "OFF")
-        MAP.put("sql_mode", "ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION ")
-        MAP.put("system_time_zone", "CST")
-        MAP.put("time_zone", "SYSTEM")
-        MAP.put("tx_isolation", "REPEATABLE")
-        MAP.put("wait_timeout", "28800")
-        MAP.put("auto_increment_increment", "1")
-    }
+init{
+MAP.put("character_set_client", "utf8")
+MAP.put("character_set_connection", "utf8")
+MAP.put("character_set_results", "utf8")
+MAP.put("character_set_server", "utf8")
+MAP.put("init_connect", "")
+MAP.put("interactive_timeout", "28800")
+MAP.put("license", "GPL")
+MAP.put("lower_case_table_names", "1")
+MAP.put("max_allowed_packet", "4194304")
+MAP.put("net_buffer_length", "16384")
+MAP.put("net_write_timeout", "60")
+MAP.put("query_cache_size", "1048576")
+MAP.put("query_cache_type", "OFF")
+MAP.put("sql_mode", "ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION ")
+MAP.put("system_time_zone", "CST")
+MAP.put("time_zone", "SYSTEM")
+MAP.put("tx_isolation", "REPEATABLE")
+MAP.put("wait_timeout", "28800")
+MAP.put("auto_increment_increment", "1")
+}
 }

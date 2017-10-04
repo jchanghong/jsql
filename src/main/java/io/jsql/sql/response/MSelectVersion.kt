@@ -7,6 +7,8 @@ import com.orientechnologies.orient.core.record.OElement
 import com.orientechnologies.orient.core.record.impl.ODocument
 import io.jsql.sql.handler.MyResultSet
 
+import java.util.Collections
+
 
 /**
  * @author jsql

@@ -73,7 +73,7 @@ import java.io.OutputStream
 class CommandPacket : MySQLPacket() {
 
     var command: Byte = 0
-    var arg: ByteArray? = null
+    var arg: ByteArray?=null
 
     override fun read(data: ByteArray) {
         val mm = MySQLMessage(data)

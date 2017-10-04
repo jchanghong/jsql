@@ -4,12 +4,14 @@
 
 package io.jsql.sql
 
+import io.jsql.audit.LoginLog
 import io.jsql.config.Capabilities
 import io.jsql.config.ErrorCode
 import io.jsql.config.Versions
 import io.jsql.mysql.CharsetUtil
 import io.jsql.mysql.handler.MysqlAuthHander
 import io.jsql.mysql.handler.MysqlCommandHandler
+import io.jsql.mysql.handler.MysqlPacketHander
 import io.jsql.mysql.handler.SQLHander
 import io.jsql.mysql.mysql.*
 import io.jsql.storage.DB
@@ -38,44 +40,39 @@ import javax.annotation.PreDestroy
 open class OConnection {
     val txInterrupted: Boolean
     @Autowired
-    lateinit var authhander: MysqlAuthHander
+  lateinit  var authhander: MysqlAuthHander
     @Autowired
-    lateinit var comhander: MysqlCommandHandler
+   lateinit var comhander: MysqlCommandHandler
     @Autowired
-    lateinit var sqlHander: SQLHander
-    @Volatile
-    var charsetIndex: Int = 0
-    @Volatile
-    var txIsolation: Int = 0
-    @Volatile
-    var autocommit: Boolean = false
-    @Volatile
-    var txInterrputMsg = ""
+   lateinit var sqlHander: SQLHander
+    @Volatile var charsetIndex: Int = 0
+    @Volatile var txIsolation: Int = 0
+    @Volatile var autocommit: Boolean = false
+    @Volatile var txInterrputMsg = ""
     var lastInsertId: Long = 0
     /**
      * 标志是否执行了lock tables语句，并处于lock状态
      */
-    @Volatile
-    var isLocked = false
+    @Volatile var isLocked = false
     var charset = "utf8"
     var schema: String? = null
     var channelHandlerContext: ChannelHandlerContext? = null
-    var seed: ByteArray? = null
+    var seed: ByteArray?=null
     var authenticated: Boolean = false
     var user: String? = null
-    var id: Long = ++OConnection.connectionId
+    var id: Long=++OConnection.connectionId
 
     var host = "127.0.0.1"
 
 
     @PostConstruct
     internal open fun init() {
-        LOGGER.info("postconstruct:" + this.toString())
+        LOGGER.info("postconstruct:"+this.toString())
     }
 
     @PreDestroy
     internal fun destroy() {
-        LOGGER.info("predestroy:" + this.toString())
+        LOGGER.info("predestroy:"+this.toString())
     }
 
     init {
@@ -273,11 +270,11 @@ open class OConnection {
         }
 
     open fun handerAuth(authPacket: AuthPacket) {
-        authhander.hander(authPacket, this)
+        authhander.hander(authPacket,this )
     }
 
     open fun handerCommand(commandPacket: CommandPacket) {
-        comhander.hander(commandPacket, this)
+        comhander.hander(commandPacket,this )
     }
 
     open fun write(byteBuf: ByteBuf) {
@@ -302,9 +299,9 @@ open class OConnection {
     }
 
     companion object {
-        lateinit var DB_ADMIN: DB
-        lateinit var TABLE_ADMIN: Table
-        var connectionId: Long = 0
+      lateinit  var DB_ADMIN: DB
+       lateinit var TABLE_ADMIN: Table
+        var connectionId:Long=0
         private val LOGGER = LoggerFactory
                 .getLogger(OConnection::class.java)
 

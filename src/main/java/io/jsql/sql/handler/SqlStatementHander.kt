@@ -4,6 +4,7 @@
 
 package io.jsql.sql.handler
 
+import com.alibaba.druid.sql.ast.SQLStatement
 import com.orientechnologies.orient.core.record.OElement
 import io.jsql.sql.OConnection
 
@@ -43,13 +44,13 @@ abstract class SqlStatementHander {
      */
     fun handle(sqlStatement: SQLStatement, connection: OConnection) {
         try {
-            val result = handle0(sqlStatement, connection)
+            val result = handle0(sqlStatement,connection )
             when (result) {
-                null -> connection.writeok()
-                is MyResultSet -> onsuccess(result.data, result.columns, connection)
-                is Long -> onsuccess(result, connection)
-                is String -> connection.writeErrMessage(result)
-                else -> connection.writeok()
+                null->connection.writeok()
+                is MyResultSet->onsuccess(result.data,result.columns,connection)
+                is Long->onsuccess(result,connection)
+                is String->connection.writeErrMessage(result)
+                else ->connection.writeok()
             }
         } catch (e: Exception) {
             e.printStackTrace()

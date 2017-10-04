@@ -6,6 +6,7 @@ package io.jsql.audit
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import java.util.*
+import java.util.concurrent.CountDownLatch
 
 
 /**
@@ -26,18 +27,18 @@ fun SqlLog.sentoELServer() {
  * 测试数据*/
 fun main(args: Array<String>) {
     println(jsonmapper.writeValueAsString(SqlLog("dd", "dd", "dd")))
-    val ran = Random()
-    val s = System.currentTimeMillis()
+    val  ran=Random()
+    val s=System.currentTimeMillis()
     for (i in 1..1000) {
-        Thread.sleep(ran.nextInt(100) + 0L)
-        elasticUtil.sentoServerSyn(SqlLog("select * from table$i", "user $i", "local"))
+        Thread.sleep(ran.nextInt(100)+0L)
+        elasticUtil.sentoServerSyn(SqlLog("select * from table$i","user $i","local"))
     }
     for (i in 1..1000) {
-        Thread.sleep(ran.nextInt(100) + 0L)
-        elasticUtil.sentoServerSyn(LoginLog("user $i", "localhost", true))
+        Thread.sleep(ran.nextInt(100)+0L)
+        elasticUtil.sentoServerSyn(LoginLog("user $i","localhost",true))
     }
     println("end------")
-    println((System.currentTimeMillis() - s) / 1000)
+    println((System.currentTimeMillis()-s)/1000)
     elasticUtil.close()
 }
 

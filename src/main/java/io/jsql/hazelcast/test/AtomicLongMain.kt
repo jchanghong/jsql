@@ -4,8 +4,8 @@
 
 package io.jsql.hazelcast.test
 
-import com.hazelcast.core.Hazelcast
-import com.hazelcast.core.IFunction
+import com.hazelcast.core.*
+import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 /**
@@ -13,8 +13,7 @@ import org.slf4j.LoggerFactory
  */
 object AtomicLongMain {
     internal var logger = LoggerFactory.getLogger("me")
-    @JvmStatic
-    fun main(args: Array<String>) {
+    @JvmStatic fun main(args: Array<String>) {
         val hz = Hazelcast.newHazelcastInstance()
         val counter = hz.getAtomicLong("counter")
         counter.addAndGet(3) // value is now 3

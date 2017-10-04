@@ -20,7 +20,6 @@ class MyConfig {
     val distributed = true
     @Value("\${jsql.audit}")
     val audit = true
-
     @PostConstruct
     fun afterinit() {
         log.info(this.toString())
@@ -29,9 +28,8 @@ class MyConfig {
     override fun toString(): String {
         return "distribute:$distributed, audit:$audit"
     }
-
     companion object {
-        val log = LoggerFactory.getLogger(MyConfig::class.java)
+        val log=LoggerFactory.getLogger(MyConfig::class.java)
     }
 
 }

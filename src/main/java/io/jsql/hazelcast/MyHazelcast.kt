@@ -30,7 +30,7 @@ class MyHazelcast : ItemListener<SqlUpdateLog> {
     @Volatile private var isreplicating: Boolean = false
     private val remotequenelister = replicationlister()
     var hazelcastInstance: HazelcastInstance? = null
-    //        private set
+//        private set
     private val localquene = LinkedList<SqlUpdateLog>()
     private val localqueneReplication = LinkedList<SqlUpdateLog>()
     private var remotequene: IQueue<SqlUpdateLog>? = null
@@ -39,9 +39,9 @@ class MyHazelcast : ItemListener<SqlUpdateLog> {
     private var cmdItemListener: ItemListener<ReplicationCMD>? = null
     private var idGenerator: IdGenerator? = null
     private var id_froCMD: Long = -1
-    internal var iLockwrite: ILock? = null
-    internal var iLockread: ILock? = null
-    internal var ilockcmdquene: ILock? = null
+    internal var iLockwrite: ILock?=null
+    internal var iLockread: ILock?=null
+    internal var ilockcmdquene: ILock?=null
     @Autowired
     internal var logFile: LogFile? = null
     internal var logger = LoggerFactory.getLogger(MyHazelcast::class.java.name)
@@ -58,7 +58,6 @@ class MyHazelcast : ItemListener<SqlUpdateLog> {
     fun myinit() {
         locals_maxlsn = logFile!!.maxLSN()
     }
-
     fun inits() {
         val config = Config()
         hazelcastInstance = Hazelcast.newHazelcastInstance(config)
@@ -195,8 +194,8 @@ class MyHazelcast : ItemListener<SqlUpdateLog> {
         }
     }
 
-    /**
-     *  本机发出的sql语句.记录到本地logfile。同时发布到其他服务器*/
+  /**
+   *  本机发出的sql语句.记录到本地logfile。同时发布到其他服务器*/
     fun exeSql(sql: String, db: String) {
         //        if (isupdatesql(sql)) {
         if (isreplicating) {

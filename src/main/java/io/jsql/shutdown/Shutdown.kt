@@ -6,6 +6,7 @@ package io.jsql.shutdown
 
 import io.netty.bootstrap.Bootstrap
 import io.netty.channel.ChannelFuture
+import io.netty.channel.EventLoopGroup
 import io.netty.channel.nio.NioEventLoopGroup
 import io.netty.channel.socket.nio.NioSocketChannel
 
@@ -17,8 +18,7 @@ object Shutdown {
 
     internal var port = 10001
     @Throws(Exception::class)
-    @JvmStatic
-    fun main1(args: Array<String>) {
+    @JvmStatic fun main1(args: Array<String>) {
         // Configure the server.
         val workerGroup = NioEventLoopGroup()
         try {
