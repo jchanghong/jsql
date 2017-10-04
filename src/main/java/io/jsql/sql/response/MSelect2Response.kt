@@ -49,7 +49,7 @@ object MSelect2Response {
         // write last eof
         val lastEof = EOFPacket()
         lastEof.packetId = ++packetId
-        c.writeResultSet(header, fields as Array<MySQLPacket>, eof, rows as  Array<MySQLPacket>, lastEof)
+        c.writeResultSet(header, fields as Array<MySQLPacket>, eof, rows as Array<MySQLPacket>, lastEof)
     }
 
 }

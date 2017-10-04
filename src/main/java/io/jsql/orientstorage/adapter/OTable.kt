@@ -26,7 +26,7 @@ import javax.annotation.PostConstruct
 @Service
 class OTable : Table {
     @Autowired
-  lateinit  private var dbadmin: DB
+    lateinit private var dbadmin: DB
 
     @PostConstruct
     internal fun post() {

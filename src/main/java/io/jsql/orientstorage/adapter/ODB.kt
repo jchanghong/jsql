@@ -27,10 +27,10 @@ import javax.annotation.PostConstruct
 @Service
 class ODB : DB {
     @Autowired
-  lateinit  private var orientDB: OrientDB
+    lateinit private var orientDB: OrientDB
     @Autowired
-  lateinit  private var pool: MdatabasePool
-    private val dbcaches:MutableSet<String> = TreeSet()
+    lateinit private var pool: MdatabasePool
+    private val dbcaches: MutableSet<String> = TreeSet()
 
     @PostConstruct
     internal fun post() {
@@ -98,7 +98,7 @@ class ODB : DB {
     override fun exesqlforResult(sql: String, dbname: String): Optional<OResult> {
         val document = getdb(dbname)
         document.activateOnCurrentThread()
-        val arg:Array<Any>?=null
+        val arg: Array<Any>? = null
         val command = document.command(sql, arg)
         pool.close(document)
         return command.stream().findAny()

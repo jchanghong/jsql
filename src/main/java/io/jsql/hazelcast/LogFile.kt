@@ -20,9 +20,10 @@ import java.util.*
 @Component
 class LogFile {
 
-   lateinit internal var randomAccessFile: RandomAccessFile
+    lateinit internal var randomAccessFile: RandomAccessFile
     @Value("\${log.file}")
     var filename = "./config/log/log.log"
+
     init {
         val file = File(filename)
         if (!file.exists()) {
@@ -43,7 +44,7 @@ class LogFile {
 
     fun write(updateLog: SqlUpdateLog) {
         try {
-            randomAccessFile.seek(if (randomAccessFile.length()==0L) 8 else randomAccessFile.length())
+            randomAccessFile.seek(if (randomAccessFile.length() == 0L) 8 else randomAccessFile.length())
             randomAccessFile.writeUTF(updateLog.toStringLog())
             randomAccessFile.seek(0)
             randomAccessFile.writeLong(updateLog.LSN)
@@ -54,19 +55,19 @@ class LogFile {
     }
 
     fun maxLSN(): Long =
-        try {
-            randomAccessFile.seek(0)
-            randomAccessFile.readLong()
-        } catch (e: IOException) {
-             0
-        }
+            try {
+                randomAccessFile.seek(0)
+                randomAccessFile.readLong()
+            } catch (e: IOException) {
+                0
+            }
 
     fun getall(): List<SqlUpdateLog> {
         val logs = ArrayList<SqlUpdateLog>()
         try {
             randomAccessFile.seek(8)
         } catch (e: IOException) {
-                        e.printStackTrace();
+            e.printStackTrace();
             return logs
         }
 
@@ -93,7 +94,8 @@ class LogFile {
     companion object {
         internal var logger = LoggerFactory.getLogger(LogFile::class.java.name)
         @Throws(IOException::class)
-        @JvmStatic fun main(args: Array<String>) {
+        @JvmStatic
+        fun main(args: Array<String>) {
             val logFile = LogFile()
             logFile.write(SqlUpdateLog(7, "sql", "d1"))
             println(logFile.maxLSN())

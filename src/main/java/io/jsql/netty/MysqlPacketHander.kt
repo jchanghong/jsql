@@ -24,11 +24,12 @@ import javax.annotation.PostConstruct
 @Scope("prototype")
 class MysqlPacketHander internal constructor() : ChannelInboundHandlerAdapter() {
     @Autowired
-  lateinit  internal var connection: OConnection
+    lateinit internal var connection: OConnection
     @Autowired
     lateinit private var pool: OconnectionPool
     @Autowired
     lateinit internal var applicationContext: ApplicationContext
+
     @PostConstruct
     fun myinit() {
         connection = applicationContext.getBean("OConnection") as OConnection
@@ -47,7 +48,7 @@ class MysqlPacketHander internal constructor() : ChannelInboundHandlerAdapter() 
     override fun channelRead(ctx: ChannelHandlerContext, msg: Any) {
         val mySQLPacket = msg as MySQLPacket
         if (mySQLPacket is AuthPacket) {
-            connection.host=ctx.channel().remoteAddress().toString()
+            connection.host = ctx.channel().remoteAddress().toString()
             connection.handerAuth(mySQLPacket)
             pool.add(connection)
         } else if (mySQLPacket is CommandPacket) {

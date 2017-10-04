@@ -38,13 +38,13 @@ import io.netty.channel.Channel
 class HandshakePacket : MySQLPacket() {
 
     var protocolVersion: Byte = 0
-    var serverVersion: ByteArray?=null
+    var serverVersion: ByteArray? = null
     var threadId: Long = 0
-    var seed: ByteArray?=null
+    var seed: ByteArray? = null
     var serverCapabilities: Int = 0
     var serverCharsetIndex: Byte = 0
     var serverStatus: Int = 0
-    var restOfScrambleBuff: ByteArray?=null
+    var restOfScrambleBuff: ByteArray? = null
 
     fun read(bin: BinaryPacket) {
         packetLength = bin.packetLength

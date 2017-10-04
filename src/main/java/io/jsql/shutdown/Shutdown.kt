@@ -18,7 +18,8 @@ object Shutdown {
 
     internal var port = 10001
     @Throws(Exception::class)
-    @JvmStatic fun main1(args: Array<String>) {
+    @JvmStatic
+    fun main1(args: Array<String>) {
         // Configure the server.
         val workerGroup = NioEventLoopGroup()
         try {

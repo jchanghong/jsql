@@ -147,7 +147,7 @@ object CompressUtil {
 
         //未压缩, 直接返回
         if (packetLength == data.size - 4) {
-            var arg:ByteArray?=null
+            var arg: ByteArray? = null
             return Lists.newArrayList<ByteArray>(arg)
 
             //压缩不成功的, 直接返回

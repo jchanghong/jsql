@@ -16,11 +16,11 @@ import javax.annotation.PostConstruct
 @Component
 class AllHanders {
     @Autowired
- lateinit  private var handerList: List<SqlStatementHander>
+    lateinit private var handerList: List<SqlStatementHander>
     var handerMap: MutableMap<Class<*>, SqlStatementHander> = IdentityHashMap()
     internal var logger = LoggerFactory.getLogger(AllHanders::class.java.name)
     @PostConstruct
     fun init() {
-        handerList.forEach {  handerMap.put(it.supportSQLstatement(), it) }
+        handerList.forEach { handerMap.put(it.supportSQLstatement(), it) }
     }
 }

@@ -11,7 +11,8 @@ import io.jsql.shutdown.Shutdown
  * 关闭本机服务器
  */
 object ShutdownMain {
-    @JvmStatic fun main(args: Array<String>) {
+    @JvmStatic
+    fun main(args: Array<String>) {
         try {
             Shutdown.main1(args)
         } catch (e: Exception) {

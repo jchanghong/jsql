@@ -24,8 +24,9 @@ import org.springframework.stereotype.Component
 open class MysqlAuthHander : MysqlPacketHander {
 
     @Autowired
-    lateinit var config:MyConfig
-   private fun handle0(auth: AuthPacket, source: OConnection) {
+    lateinit var config: MyConfig
+
+    private fun handle0(auth: AuthPacket, source: OConnection) {
         // check quit packet
         //        if (data.length == QuitPacket.QUIT.length && data[4] == MySQLPacket.COM_QUIT) {
         ////            source.close("quit packet");
@@ -43,11 +44,11 @@ open class MysqlAuthHander : MysqlPacketHander {
         if (!checkPassword(auth.password!!, auth.user!!)) {
             if (config.audit) {
 
-                LoginLog(auth.user?:"null",source.host,false).sendesServer()
+                LoginLog(auth.user ?: "null", source.host, false).sendesServer()
             }
-            failure(ErrorCode.ER_ACCESS_DENIED_ERROR, "Access denied for user '" + auth.user + "', because password is error ",source )
+            failure(ErrorCode.ER_ACCESS_DENIED_ERROR, "Access denied for user '" + auth.user + "', because password is error ", source)
         } else {
-            success(auth,source )
+            success(auth, source)
 
         }
 
@@ -161,7 +162,7 @@ open class MysqlAuthHander : MysqlPacketHander {
         source.charsetIndex = auth.charsetIndex
         source.charset = CharsetUtil.getCharset(source.charsetIndex)
         if (config.audit) {
-            LoginLog(source.user?:"null",source.host,true).sendesServer()
+            LoginLog(source.user ?: "null", source.host, true).sendesServer()
         }
         if (LOGGER.isInfoEnabled) {
             val s = StringBuilder()
@@ -191,7 +192,7 @@ open class MysqlAuthHander : MysqlPacketHander {
 
     override fun hander(mySQLPacket: MySQLPacket, source: OConnection) {
         println(mySQLPacket.toString())
-        handle0(mySQLPacket as AuthPacket,source)
+        handle0(mySQLPacket as AuthPacket, source)
     }
 
     companion object {

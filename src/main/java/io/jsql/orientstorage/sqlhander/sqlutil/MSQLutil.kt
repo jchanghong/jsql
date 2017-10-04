@@ -108,7 +108,8 @@ object MSQLutil {
 
      * @param args the input arguments
      */
-    @JvmStatic fun main(args: Array<String>) {
+    @JvmStatic
+    fun main(args: Array<String>) {
 
         val sql = "create table t1(id int,name varchar);"
         gettablenamefileds(SQLUtils.parseStatements(sql, "mysql")[0] as MySqlCreateTableStatement)

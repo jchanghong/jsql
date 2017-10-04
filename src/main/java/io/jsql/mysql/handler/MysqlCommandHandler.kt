@@ -23,10 +23,10 @@ class MysqlCommandHandler : MysqlPacketHander {
 
 
     override fun hander(mySQLPacket: MySQLPacket, source: OConnection) {
-        handle0(mySQLPacket as CommandPacket,source)
+        handle0(mySQLPacket as CommandPacket, source)
     }
 
-  private  fun handle0(data: CommandPacket,source: OConnection) {
+    private fun handle0(data: CommandPacket, source: OConnection) {
         logger.debug(data.toString())
         logger.info("command info")
 
@@ -41,17 +41,17 @@ class MysqlCommandHandler : MysqlPacketHander {
         //            return;
         //        }
         when (data.command) {
-            MySQLPacket.COM_INIT_DB -> initDB(data,source)
-            MySQLPacket.COM_QUERY -> query(data,source)
+            MySQLPacket.COM_INIT_DB -> initDB(data, source)
+            MySQLPacket.COM_QUERY -> query(data, source)
             MySQLPacket.COM_PING -> ping(source)
-            MySQLPacket.COM_QUIT -> close("quit cmd",source)
-            MySQLPacket.COM_PROCESS_KILL -> kill(data,source)
-            MySQLPacket.COM_STMT_PREPARE -> stmtPrepare(data,source)
-            MySQLPacket.COM_STMT_SEND_LONG_DATA -> stmtSendLongData(data,source)
-            MySQLPacket.COM_STMT_RESET -> stmtReset(data,source)
-            MySQLPacket.COM_STMT_EXECUTE -> stmtExecute(data,source)
-            MySQLPacket.COM_STMT_CLOSE -> stmtClose(data,source)
-            MySQLPacket.COM_HEARTBEAT -> heartbeat(data,source )
+            MySQLPacket.COM_QUIT -> close("quit cmd", source)
+            MySQLPacket.COM_PROCESS_KILL -> kill(data, source)
+            MySQLPacket.COM_STMT_PREPARE -> stmtPrepare(data, source)
+            MySQLPacket.COM_STMT_SEND_LONG_DATA -> stmtSendLongData(data, source)
+            MySQLPacket.COM_STMT_RESET -> stmtReset(data, source)
+            MySQLPacket.COM_STMT_EXECUTE -> stmtExecute(data, source)
+            MySQLPacket.COM_STMT_CLOSE -> stmtClose(data, source)
+            MySQLPacket.COM_HEARTBEAT -> heartbeat(data, source)
             else -> source.writeErrMessage(ErrorCode.ER_UNKNOWN_COM_ERROR,
                     "Unknown command")
         }
@@ -91,7 +91,7 @@ class MysqlCommandHandler : MysqlPacketHander {
 
     }
 
-    private fun ping( source: OConnection) {
+    private fun ping(source: OConnection) {
         source.writeok()
     }
 
@@ -100,7 +100,7 @@ class MysqlCommandHandler : MysqlPacketHander {
         mm.position(0)
         try {
             val sql = mm.readString(source.charset)
-            source.sqlHander.handle(sql!!,source )
+            source.sqlHander.handle(sql!!, source)
         } catch (e: UnsupportedEncodingException) {
             source.writeErrMessage(ErrorCode.ER_UNKNOWN_CHARACTER_SET, "Unknown charset '" + source.charset + "'")
             e.printStackTrace()

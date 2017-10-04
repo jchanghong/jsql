@@ -36,7 +36,8 @@ object DateUtil {
      * @throws ParseException
      */
     @Throws(ParseException::class)
-    @JvmOverloads fun parseDate(dateStr: String, datePattern: String = DEFAULT_DATE_PATTERN): Date {
+    @JvmOverloads
+    fun parseDate(dateStr: String, datePattern: String = DEFAULT_DATE_PATTERN): Date {
         val dt = DateTimeFormat.forPattern(datePattern).parseDateTime(dateStr)
         return dt.toDate()
     }

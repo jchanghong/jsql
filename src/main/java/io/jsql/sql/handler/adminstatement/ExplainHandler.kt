@@ -34,7 +34,7 @@ class ExplainHandler : SqlStatementHander() {
 
     @Throws(Exception::class)
     override fun handle0(sqlStatement: SQLStatement, c: OConnection): Any? {
-        val explain=sqlStatement as SQLExplainStatement
+        val explain = sqlStatement as SQLExplainStatement
         val documentTx: ODatabaseDocument
         try {
             documentTx = OConnection.DB_ADMIN!!.getdb(c.schema!!)
@@ -43,13 +43,13 @@ class ExplainHandler : SqlStatementHander() {
             return e.message!!
         }
         documentTx.activateOnCurrentThread()
-        var tablename =explain.toString().split(" ")
-        val oClass=documentTx.getClass(tablename[2])
+        var tablename = explain.toString().split(" ")
+        val oClass = documentTx.getClass(tablename[2])
         val element = ODocument()
-        var elements=ArrayList<OElement>()
+        var elements = ArrayList<OElement>()
 
-        element.setProperty("id","1")
-        element.setProperty("select_type","simple")
+        element.setProperty("id", "1")
+        element.setProperty("select_type", "simple")
         /*
         SIMPLE - 简单的 SELECT （没有使用 UNION 或子查询
         PRIMARY - 最外层的 SELECT
@@ -59,22 +59,22 @@ class ExplainHandler : SqlStatementHander() {
         DEPENDENT SUBQUERY - 子查询中的第一个 SUBQUERY 依赖于外部的子查
         DERIVED - 派生表 SELECT（FROM 子句中的子查询
         */
-        element.setProperty("table",oClass.toString())
-        element.setProperty("partitions","")
-        element.setProperty("type","all")//表连接类型
-        element.setProperty("possible_keys","NULL")
-        element.setProperty("key","NULL")
-        element.setProperty("key_len","NULL")
-        element.setProperty("ref","NULL")
-        element.setProperty("rows",oClass.properties().size)
-        element.setProperty("filtered","100.00")
-        element.setProperty("extra","NULL")
+        element.setProperty("table", oClass.toString())
+        element.setProperty("partitions", "")
+        element.setProperty("type", "all")//表连接类型
+        element.setProperty("possible_keys", "NULL")
+        element.setProperty("key", "NULL")
+        element.setProperty("key_len", "NULL")
+        element.setProperty("ref", "NULL")
+        element.setProperty("rows", oClass.properties().size)
+        element.setProperty("filtered", "100.00")
+        element.setProperty("extra", "NULL")
         elements.add(element)
 
 
 
 
-        return MyResultSet(elements, listOf("id","select_type","table","partitions","type","possible_keys","key","key_len","ref","rows","filtered","extra"))
+        return MyResultSet(elements, listOf("id", "select_type", "table", "partitions", "type", "possible_keys", "key", "key_len", "ref", "rows", "filtered", "extra"))
 
     }
 
@@ -98,8 +98,9 @@ class ExplainHandler : SqlStatementHander() {
 
 
 
-        fun handle(x: SQLExplainStatement, connection: OConnection) {
-            connection.writeErrMessage(ErrorCode.ER_CHECK_NO_SUCH_TABLE, "not soupot")
+            fun handle(x: SQLExplainStatement, connection: OConnection) {
+                connection.writeErrMessage(ErrorCode.ER_CHECK_NO_SUCH_TABLE, "not soupot")
+            }
         }
     }
-}}
+}

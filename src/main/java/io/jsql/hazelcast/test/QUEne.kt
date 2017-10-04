@@ -19,7 +19,8 @@ object QUEne {
     internal var logger = LoggerFactory.getLogger("mew")
 
     @Throws(InterruptedException::class)
-    @JvmStatic fun main(args: Array<String>) {
+    @JvmStatic
+    fun main(args: Array<String>) {
         val listener = object : ItemListener<String> {
             override fun itemAdded(item: ItemEvent<String>) {
                 logger.info(item.toString())

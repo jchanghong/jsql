@@ -12,7 +12,7 @@ import io.jsql.sql.handler.SqlStatementHander
 /**
  * @author jsql
  */
-object SavepointHandler :SqlStatementHander(){
+object SavepointHandler : SqlStatementHander() {
     override fun handle0(sqlStatement: SQLStatement, c: OConnection): Any? {
         return null
     }

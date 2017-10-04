@@ -78,7 +78,8 @@ object Mcomputer {
 
      * @param args the input arguments
      */
-    @JvmStatic fun main(args: Array<String>) {
+    @JvmStatic
+    fun main(args: Array<String>) {
         println(dimissc("(1+(1+2)+2)+((1+2))"))
         println(compute("(1+(1+2)+2)+((1+2))"))
         val scanner = Scanner(System.`in`)

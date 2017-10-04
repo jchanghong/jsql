@@ -18,15 +18,16 @@ import java.util.concurrent.ConcurrentMap
  */
 object Map {
     internal var logger = LoggerFactory.getLogger("me")
-    @JvmStatic fun main(args: Array<String>) {
+    @JvmStatic
+    fun main(args: Array<String>) {
         val config = Config()
         val h = Hazelcast.newHazelcastInstance(config)
-        val map:IMap<String,String> = h.getMap<String, String>("mymap")
+        val map: IMap<String, String> = h.getMap<String, String>("mymap")
         map.put("key", "value")
         map["key"]
         logger.info(map["key"])
         //Concurrent Map methods
-       map.putIfAbsent("somekey", "somevalue")
+        map.putIfAbsent("somekey", "somevalue")
         map.replace("key", "value", "newvalue")
     }
 

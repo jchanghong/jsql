@@ -39,7 +39,7 @@ import java.util.ArrayList
  */
 class RowDataPacket(var fieldCount: Int) : MySQLPacket() {
     val fieldValues: MutableList<ByteArray>
-    var value: ByteArray?=null
+    var value: ByteArray? = null
 
     init {
         this.fieldValues = ArrayList<ByteArray>(fieldCount)

@@ -22,7 +22,7 @@ object Usedatabase {
             if (schema.endsWith(";")) {
                 schema = schema.substring(0, schema.length - 1)
             }
-            schema = schema.replace("`","")
+            schema = schema.replace("`", "")
             length = schema.length
             if (schema[0] == '\'' && schema[length - 1] == '\'') {
                 schema = schema.substring(1, length - 1)

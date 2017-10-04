@@ -47,5 +47,6 @@ interface DB {
 
     @Throws(StorageException::class)
     fun exe(sql: String, db: String)
+
     fun close(databaseDocument: ODatabaseDocument)
 }
