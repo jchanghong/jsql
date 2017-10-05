@@ -11,6 +11,7 @@ import io.jsql.mysql.CharsetUtil
 import io.jsql.mysql.mysql.AuthPacket
 import io.jsql.mysql.mysql.MySQLPacket
 import io.jsql.sql.OConnection
+import io.jsql.wireshark.Wireshck
 import io.netty.buffer.Unpooled
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -176,7 +177,8 @@ open class MysqlAuthHander : MysqlPacketHander {
 
         //        ByteBuffer buffer = source.allocate();
         //        source.write(source.writeToBuffer(AUTH_OK, buffer));
-        source.write(Unpooled.wrappedBuffer(AUTH_OK))
+//        source.write(Unpooled.wrappedBuffer(AUTH_OK))
+        source.write(Unpooled.wrappedBuffer(Wireshck.authOK))
         //        boolean clientCompress = Capabilities.CLIENT_COMPRESS==(Capabilities.CLIENT_COMPRESS & auth.clientFlags);
         //        boolean usingCompress = false;
         //        if(clientCompress&&usingCompress)
