@@ -11,6 +11,7 @@ import io.jsql.sql.handler.data_mannipulation.MselectVariables
 import io.jsql.sql.response.MSelect1Response
 import io.jsql.sql.response.MShowDatabases
 import io.jsql.sql.response.MShowTables
+import io.jsql.sql.response.MselectNResponse
 
 import java.util.ArrayList
 
@@ -52,7 +53,15 @@ object ShowHandler {
     }
 
     fun showcollation(x: MySqlShowCollationStatement, connection: OConnection) {
-        MSelect1Response.response(connection, "no", ArrayList<String>())
+//        MSelect1Response.response(connection, "no", ArrayList<String>())
+        MselectNResponse.response(connection, arrayListOf("Collation", "Charset", "Id", "Default", "Compiled", "Sortlen"),
+                arrayListOf("utf8_general_ci", "utf8", "33", "YES", "YES", "1"))
+
+        /*
+        * ------------------------------+----------+-----+---------+----------+---------+
+| Collation                    | Charset  | Id  | Default | Compiled | Sortlen |
+utf8_general_ci              | utf8     |  33 | Yes     | Yes      |       1 |
+        * */
     }
 
     fun showbinlogevent(x: MySqlShowBinLogEventsStatement, connection: OConnection) {
