@@ -4,31 +4,42 @@
 
 package io.jsql.audit
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import java.util.*
-import java.util.concurrent.CountDownLatch
 
 
 /**
 \* Created with IntelliJ IDEA.
 \* User: jiang
-\* Date: 2017/6/15 0015
-\* Time: 14:42
+\* Date: 2017/10/5 0005
+\* Time: 14:52
 \*/
-data class SqlLog(val sql: String, val user: String, val host: String, val time: Date = Date())
-
-
-val jsonmapper = ObjectMapper()
-fun SqlLog.sentoELServer() {
-    elasticUtil.put(this)
-}
-
 /**
  * 插入elasticsearch测试数据
  * 直接运行就可
  * 长时间运行
  * */
 fun main(args: Array<String>) {
+   testlongtime_yunxing()
+//    testinsertquikely()
+}
+
+//快速插入
+fun testinsertquikely() {
+    println(jsonmapper.writeValueAsString(SqlLog("dd", "dd", "dd")))
+    val s = System.currentTimeMillis()
+    for (i in 1..100) {
+        elasticUtil.sentoServerSyn(SqlLog("select * from table$i", "user $i", "local"))
+    }
+    for (i in 1..5) {
+        elasticUtil.sentoServerSyn(LoginLog("user $i", "localhost", true))
+    }
+    println("end------")
+    println((System.currentTimeMillis() - s) / 1000)
+    elasticUtil.close()
+}
+
+//长时间运行
+fun testlongtime_yunxing() {
     println(jsonmapper.writeValueAsString(SqlLog("dd", "dd", "dd")))
     val ran = Random()
     val s = System.currentTimeMillis()
@@ -44,15 +55,3 @@ fun main(args: Array<String>) {
     println((System.currentTimeMillis() - s) / 1000)
     elasticUtil.close()
 }
-
-//private fun insertdate() {
-//    var cat=CountDownLatch(1)
-//    for (i in 1..20) {
-//        val login = LoginLog("user $i", "local", true)
-//        login.sendesServer()
-//    }
-//    for (i in 1..20) {
-//        val login = SqlLog("select * from blog", "user $i", "local")
-//        login.sentoELServer()
-//    }
-//}
