@@ -7,3 +7,5 @@ databases/
 build/
 .gradle/
 out/
+config/log/
+./idea/
